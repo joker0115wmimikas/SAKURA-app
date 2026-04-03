@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>【最強】最強！暗記完璧最強アプリ(最強)</title>
   
-  <!-- 見た目を整えるための Tailwind CSS -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- アイコンを表示するための Phosphor Icons -->
+  <!-- Phosphor Icons -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  <!-- Firebase (基本に忠実な安定版) -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -19,13 +19,17 @@
   <style>
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    
+    @keyframes pulse-red {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(225,29,72,0.5)); }
+      50% { filter: drop-shadow(0 0 15px rgba(225,29,72,1)); }
+    }
+    .animate-pulse-red { animation: pulse-red 2s infinite; }
   </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 selection:bg-blue-200 pb-10">
-  <!-- アプリが描画される場所 -->
+<body class="bg-gray-50 font-sans text-gray-800 selection:bg-blue-200">
   <div id="root"></div>
 
-  <!-- ここからアプリのロジック（純粋なJavaScript） -->
   <script>
     // ==========================================
     // 📚 問題データ (全62問)
@@ -103,11 +107,11 @@
     ];
 
     // ==========================================
-    // アプリの状態（変数）
+    // アプリの状態
     // ==========================================
     const state = {
-      screen: 'home', // 'home', 'quiz', 'result'
-      activeTab: 'study', // 'study', 'analytics'
+      screen: 'home', // 'home', 'quiz', 'result', 'parent_dashboard'
+      activeTab: 'study',
       user: null,
       userStats: {},
       quizQueue: [],
@@ -117,10 +121,12 @@
       choiceResult: null,
       sessionStats: { totalInitial: 0, mistakes: 0 },
       isDataLoaded: false,
-      fbReady: false
+      fbReady: false,
+      // 保護者モード用
+      showPasscode: false,
+      passcodeValue: ''
     };
 
-    // カテゴリー一覧の作成
     const subjects = [];
     const subsList = [...new Set(rawData.map(d => d.subject))];
     subsList.forEach(sub => {
@@ -135,7 +141,6 @@
     if (typeof __firebase_config !== 'undefined') {
       firebaseConfig = JSON.parse(__firebase_config);
     } else {
-      // ▼▼▼ あなたの設定 ▼▼▼
       firebaseConfig = {
         apiKey: "AIzaSyCHGs5PHyfvW57SCJJi8GiDQ_ydH8M-5Vs",
         authDomain: "sakura-app-d3d10.firebaseapp.com",
@@ -151,14 +156,12 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // ログイン処理
     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
       auth.signInWithCustomToken(__initial_auth_token).catch(e => console.error(e));
     } else {
       auth.signInAnonymously().catch(e => console.error(e));
     }
 
-    // データ監視
     auth.onAuthStateChanged(user => {
       state.user = user;
       state.fbReady = true;
@@ -178,7 +181,7 @@
     });
 
     // ==========================================
-    // アプリの機能（関数）
+    // クイズ用関数
     // ==========================================
     function generateChoices(correctAnswer) {
       const others = [...new Set(rawData.filter(d => d.a !== correctAnswer).map(d => d.a))];
@@ -186,10 +189,7 @@
       return [correctAnswer, ...shuffledOthers].sort(() => 0.5 - Math.random());
     }
 
-    window.switchTab = function(tab) {
-      state.activeTab = tab;
-      render();
-    }
+    window.switchTab = function(tab) { state.activeTab = tab; render(); }
 
     window.startQuiz = function(subject, category) {
       let filtered = rawData;
@@ -214,7 +214,6 @@
         alert("すばらしい！現在、記録されている苦手な問題はありません。通常学習を進めましょう！");
         return;
       }
-
       prepareQuiz(weakQuestions.slice(0, 20));
     }
 
@@ -241,20 +240,12 @@
       render();
     }
 
-    window.handleInterrupt = function() {
-      state.screen = 'home';
-      render();
-    }
-
-    window.showAnswer = function() {
-      state.showAnswer = true;
-      render();
-    }
+    window.handleInterrupt = function() { state.screen = 'home'; render(); }
+    window.showAnswer = function() { state.showAnswer = true; render(); }
 
     window.handleAnswer = async function(isCorrect) {
       const currentQ = state.quizQueue[state.currentIndex];
       
-      // データ保存
       if (!currentQ.isRetry && state.user && state.fbReady) {
         const statRef = db.collection('artifacts').doc(appId).collection('users').doc(state.user.uid).collection('stats').doc(currentQ.id);
         const currentStat = state.userStats[currentQ.id] || { corrects: 0, mistakes: 0 };
@@ -293,14 +284,124 @@
       state.choiceResult = isCorrect ? 'correct' : 'wrong';
       render();
 
-      setTimeout(() => {
-        handleAnswer(isCorrect);
-      }, 1200);
+      setTimeout(() => { handleAnswer(isCorrect); }, 1200);
     }
 
-    window.goHome = function() {
-      state.screen = 'home';
+    window.goHome = function() { state.screen = 'home'; render(); }
+
+    // ==========================================
+    // 保護者モード（閻魔大王）用関数
+    // ==========================================
+    window.openPasscode = function() {
+      state.showPasscode = true;
+      state.passcodeValue = '';
       render();
+    }
+
+    window.closePasscode = function() {
+      state.showPasscode = false;
+      state.passcodeValue = '';
+      render();
+    }
+
+    window.inputPasscode = function(val) {
+      if (state.passcodeValue.length < 4) {
+        state.passcodeValue += val;
+      }
+      render();
+
+      if (state.passcodeValue.length === 4) {
+        setTimeout(() => {
+          if (state.passcodeValue === '9664') {
+            state.showPasscode = false;
+            state.screen = 'parent_dashboard';
+          } else {
+            alert('【警告】パスコードが違います。去れ！');
+            state.passcodeValue = '';
+          }
+          render();
+        }, 150);
+      }
+    }
+
+    window.deletePasscode = function() {
+      state.passcodeValue = state.passcodeValue.slice(0, -1);
+      render();
+    }
+
+    // AI（閻魔大王）の評価生成ロジック
+    function generateAiEvaluation() {
+      let totalAttempts = 0;
+      let totalMistakes = 0;
+      let categoryStats = {};
+      
+      rawData.forEach(q => {
+        if(!categoryStats[q.category]) categoryStats[q.category] = { attempts: 0, mistakes: 0, qs: [] };
+        const stat = state.userStats[q.id];
+        if (stat) {
+          const attempts = stat.corrects + stat.mistakes;
+          totalAttempts += attempts;
+          totalMistakes += stat.mistakes;
+          categoryStats[q.category].attempts += attempts;
+          categoryStats[q.category].mistakes += stat.mistakes;
+          categoryStats[q.category].qs.push({ q: q.q, mistakes: stat.mistakes });
+        }
+      });
+
+      if (totalAttempts === 0) {
+        return "なんじゃ、まだ一度もアプリを開いておらぬではないか！\n怠惰は最大の罪なり。まずは小娘にアプリを開かせ、一問でも解かせるのじゃ！";
+      }
+
+      const accuracy = totalAttempts > 0 ? ((totalAttempts - totalMistakes) / totalAttempts) * 100 : 0;
+      let evalText = `ふむ。我の帳簿によると、これまでの総解答数は【${totalAttempts}回】、正答率は【${Math.round(accuracy)}％】じゃな。\n\n`;
+
+      if (accuracy >= 90) {
+        evalText += "見事な精進ぶりじゃ！地道な努力がしっかりと実を結んでおる。\nしかし、悪魔は油断した隙に忍び寄るもの。慢心せず、さらなる高みを目指させよ！\n";
+      } else if (accuracy >= 60) {
+        evalText += "まずまずの出来じゃな。努力の跡は見られるぞ。\nだが、まだ知識が定着しておらぬ部分がちらほら見受けられる。反復こそが記憶の定着への近道じゃ！\n";
+      } else {
+        evalText += "むむっ……これは少々苦戦しておるようじゃな。\n基礎がグラついておるかもしれんぞ。焦らず、一歩ずつ確実に理解させるのじゃ！\n";
+      }
+
+      let worstCategory = null;
+      let maxMistakeRate = -1;
+      
+      for (let cat in categoryStats) {
+        const cStat = categoryStats[cat];
+        if (cStat.attempts > 1) { // 複数回挑戦したものから判定
+          const rate = cStat.mistakes / cStat.attempts;
+          if (rate > maxMistakeRate) {
+            maxMistakeRate = rate;
+            worstCategory = cat;
+          }
+        }
+      }
+
+      // 回数が少ない場合のフォールバック
+      if (!worstCategory) {
+        for (let cat in categoryStats) {
+          const cStat = categoryStats[cat];
+          if (cStat.attempts > 0) {
+            const rate = cStat.mistakes / cStat.attempts;
+            if (rate > maxMistakeRate) {
+              maxMistakeRate = rate;
+              worstCategory = cat;
+            }
+          }
+        }
+      }
+
+      if (worstCategory && maxMistakeRate > 0) {
+        evalText += `\nとくに、【${worstCategory}】の分野に深い闇（弱点）を感じるぞ……。`;
+        const worstQs = categoryStats[worstCategory].qs.sort((a,b) => b.mistakes - a.mistakes);
+        if(worstQs.length > 0 && worstQs[0].mistakes > 0) {
+           evalText += `\nたとえば「${worstQs[0].q.substring(0, 15)}...」といった問題を何度も間違えておるようじゃ。\nこの辺りを重点的に復習させるのが点数アップへの道標じゃ！`;
+        }
+      } else {
+         evalText += `\n今のところ、極端に苦手な深淵は見当たらぬ。この調子で満遍なく学習を続けるがよい！`;
+      }
+
+      return evalText;
     }
 
     // ==========================================
@@ -319,7 +420,6 @@
       let contentHtml = '';
       
       if (state.activeTab === 'analytics') {
-        // 分析タブの構築
         const analyzedData = rawData.map(q => {
           const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 };
           const total = stat.corrects + stat.mistakes;
@@ -378,7 +478,6 @@
           </div>
         `;
       } else {
-        // 学習タブの構築
         const subsHtml = subjects.map(sub => `
           <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
             <h2 class="text-xl font-bold text-gray-800 flex items-center mb-4">
@@ -420,7 +519,7 @@
       }
 
       return `
-        <div class="max-w-2xl mx-auto p-4 animate-fade-in pb-20">
+        <div class="max-w-2xl mx-auto p-4 animate-fade-in pb-10">
           <div class="text-center mb-8 mt-8">
             <div class="inline-flex items-center justify-center p-4 bg-yellow-100 rounded-full mb-4 shadow-inner">
               <i class="ph-fill ph-crown text-5xl text-yellow-500"></i>
@@ -439,6 +538,14 @@
             </button>
           </div>
           ${contentHtml}
+          
+          <!-- 保護者モード入り口（隠しボタン） -->
+          <div class="mt-20 text-center">
+            <button onclick="openPasscode()" class="inline-flex flex-col items-center justify-center text-gray-300 hover:text-red-800 transition-all opacity-20 hover:opacity-100 group">
+              <i class="ph-fill ph-skull text-3xl mb-1 group-hover:animate-pulse-red"></i>
+              <span class="text-[10px] font-bold tracking-widest">深淵は見ている</span>
+            </button>
+          </div>
         </div>
       `;
     }
@@ -613,11 +720,140 @@
       `;
     }
 
+    // ==========================================
+    // 保護者モード UI
+    // ==========================================
+    function renderPasscodeHTML() {
+      return `
+        <div class="fixed inset-0 bg-black/95 flex flex-col items-center justify-center z-50 animate-fade-in px-4">
+            <i class="ph-fill ph-skull text-6xl text-red-700 mb-6 animate-pulse-red"></i>
+            <h3 class="text-red-600 font-bold tracking-[0.3em] mb-8 font-serif">パスコードヲ入力セヨ</h3>
+            
+            <div class="flex gap-4 mb-10">
+                ${[0,1,2,3].map(i => `
+                    <div class="w-4 h-4 rounded-full border-2 border-red-900 ${state.passcodeValue.length > i ? 'bg-red-600 shadow-[0_0_10px_rgba(225,29,72,0.8)]' : 'bg-transparent'} transition-all"></div>
+                `).join('')}
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 w-64 max-w-full font-serif">
+                ${[1,2,3,4,5,6,7,8,9].map(n => `
+                    <button onclick="inputPasscode('${n}')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/40 active:scale-95 transition-all mx-auto shadow-sm">${n}</button>
+                `).join('')}
+                <button onclick="deletePasscode()" class="w-16 h-16 rounded-full flex items-center justify-center text-red-600 text-3xl hover:bg-red-900/40 active:scale-95 transition-all mx-auto"><i class="ph-fill ph-backspace"></i></button>
+                <button onclick="inputPasscode('0')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/40 active:scale-95 transition-all mx-auto shadow-sm">0</button>
+                <button onclick="closePasscode()" class="w-16 h-16 rounded-full text-gray-500 text-sm font-bold hover:text-gray-300 active:scale-95 transition-all mx-auto">戻る</button>
+            </div>
+        </div>
+      `;
+    }
+
+    function renderParentDashboardHTML() {
+      let totalAttempts = 0;
+      let totalMistakes = 0;
+      const analyzedData = rawData.map(q => {
+        const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 };
+        const total = stat.corrects + stat.mistakes;
+        totalAttempts += total;
+        totalMistakes += stat.mistakes;
+        const mistakeRate = total > 0 ? Math.round((stat.mistakes / total) * 100) : 0;
+        return { ...q, stat, total, mistakeRate };
+      }).filter(q => q.total > 0);
+
+      const accuracy = totalAttempts > 0 ? Math.round(((totalAttempts - totalMistakes) / totalAttempts) * 100) : 0;
+
+      const sortedByMistake = [...analyzedData].sort((a, b) => {
+        if (b.mistakeRate !== a.mistakeRate) return b.mistakeRate - a.mistakeRate;
+        return b.stat.mistakes - a.stat.mistakes;
+      });
+
+      let listHtml = sortedByMistake.length === 0 
+        ? `<p class="text-gray-500 text-center py-8 border border-gray-800 rounded-2xl">データが空じゃ。まずは解かせるのだ。</p>`
+        : sortedByMistake.slice(0, 10).map((item, idx) => `
+            <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex items-start shadow-md">
+              <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-red-900/50 text-red-500 border border-red-800' : 'bg-gray-700 text-gray-400'}">
+                ${idx + 1}
+              </div>
+              <div class="flex-grow">
+                <span class="text-[10px] font-bold text-gray-400 border border-gray-600 px-2 py-1 rounded mb-2 inline-block">${item.category}</span>
+                <p class="text-sm text-gray-200 font-bold mb-1 leading-snug">${item.q}</p>
+                <p class="text-xs text-red-400 font-medium">答: ${item.a}</p>
+              </div>
+              <div class="shrink-0 text-right ml-2">
+                <p class="text-red-500 font-bold text-lg">${item.mistakeRate}%</p>
+                <p class="text-[10px] text-gray-500">ミス率</p>
+              </div>
+            </div>
+          `).join('');
+
+      return `
+        <div class="fixed inset-0 min-h-screen bg-gray-950 text-gray-100 overflow-y-auto z-40 animate-fade-in font-serif pb-20">
+          <div class="max-w-2xl mx-auto p-4 sm:p-6">
+            
+            <div class="flex justify-between items-center mb-8 border-b border-red-900 pb-4 pt-4">
+              <h1 class="text-2xl sm:text-3xl font-bold text-red-600 flex items-center tracking-widest">
+                <i class="ph-fill ph-skull text-3xl sm:text-4xl mr-3"></i>閻魔の帳簿
+              </h1>
+              <button onclick="goHome()" class="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-700 hover:text-white active:scale-95 transition-all text-sm font-bold">
+                人間界へ戻る
+              </button>
+            </div>
+
+            <!-- AI（閻魔大王）の評価 -->
+            <div class="bg-gray-900 border-l-4 border-red-600 p-6 sm:p-8 rounded-r-2xl mb-10 relative shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+              <i class="ph-fill ph-quotes text-5xl text-gray-800 absolute top-4 right-4"></i>
+              <h2 class="text-red-500 font-bold mb-4 text-sm tracking-[0.2em] flex items-center">
+                <i class="ph-fill ph-scroll text-lg mr-2"></i>大王の裁き（AI評価）
+              </h2>
+              <p class="text-gray-300 leading-loose whitespace-pre-wrap text-sm sm:text-base">${generateAiEvaluation()}</p>
+            </div>
+
+            <!-- 数値データ -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+              <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
+                <p class="text-xs text-gray-500 mb-1 tracking-wider">総解答数</p>
+                <p class="text-2xl font-black text-gray-200">${totalAttempts}</p>
+              </div>
+              <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
+                <p class="text-xs text-gray-500 mb-1 tracking-wider">正解数</p>
+                <p class="text-2xl font-black text-emerald-500">${totalAttempts - totalMistakes}</p>
+              </div>
+              <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
+                <p class="text-xs text-gray-500 mb-1 tracking-wider">ミス回数</p>
+                <p class="text-2xl font-black text-red-600">${totalMistakes}</p>
+              </div>
+              <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
+                <p class="text-xs text-gray-500 mb-1 tracking-wider">総合正答率</p>
+                <p class="text-2xl font-black text-blue-400">${accuracy}%</p>
+              </div>
+            </div>
+
+            <!-- 苦手ランキング -->
+            <div>
+              <h3 class="text-lg font-bold text-gray-300 mb-4 flex items-center tracking-widest border-l-2 border-red-900 pl-3">
+                <i class="ph-fill ph-warning text-xl mr-2 text-red-600"></i>罪深き問題リスト（苦手トップ）
+              </h3>
+              <div class="space-y-3">${listHtml}</div>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
     function render() {
       const root = document.getElementById('root');
-      if (state.screen === 'home') root.innerHTML = renderHomeHTML();
-      else if (state.screen === 'quiz') root.innerHTML = renderQuizHTML();
-      else if (state.screen === 'result') root.innerHTML = renderResultHTML();
+      let html = '';
+      
+      if (state.screen === 'home') html = renderHomeHTML();
+      else if (state.screen === 'quiz') html = renderQuizHTML();
+      else if (state.screen === 'result') html = renderResultHTML();
+      else if (state.screen === 'parent_dashboard') html = renderParentDashboardHTML();
+
+      if (state.showPasscode) {
+        html += renderPasscodeHTML();
+      }
+
+      root.innerHTML = html;
     }
 
     // 初回描画
