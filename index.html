@@ -7,18 +7,74 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Firebase (安定のCompat版) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
   <style>
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    
     @keyframes pulse-red {
       0%, 100% { filter: drop-shadow(0 0 5px rgba(225,29,72,0.5)); }
       50% { filter: drop-shadow(0 0 15px rgba(225,29,72,1)); }
     }
     .animate-pulse-red { animation: pulse-red 2s infinite; }
+    
+    .guest-stripes { background: repeating-linear-gradient(45deg, #f59e0b, #f59e0b 10px, #fbbf24 10px, #fbbf24 20px); }
+
+    /* 👻 貞子アニメーションシステム（超あからさま版） */
+    .well-container {
+       position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%);
+       width: 250px; height: 90px; z-index: 10;
+    }
+    .well-hole {
+       width: 100%; height: 100%;
+       background: radial-gradient(ellipse at center, #000 20%, #111 60%, #333 100%);
+       border: 12px solid #2a2a2a; border-radius: 50%;
+       box-shadow: 0 0 30px #000 inset, 0 10px 30px rgba(0,0,0,0.9);
+    }
+    .sadako-wrapper {
+       position: absolute; bottom: 12%; left: 50%; 
+       width: 150px; height: 200px; margin-left: -75px;
+       transform-origin: bottom center;
+       transition: all 1.2s cubic-bezier(0.3, 0.1, 0.2, 1);
+       z-index: 5;
+    }
+    .sadako-svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8)); }
+    
+    /* 恐怖の進行レベル */
+    .lvl-0 .sadako-wrapper { transform: translateY(180px) scale(0.3); opacity: 0; }
+    .lvl-1 .sadako-wrapper { transform: translateY(80px) scale(0.8); opacity: 0.9; z-index: 15; } /* 手がかかる */
+    .lvl-2 .sadako-wrapper { transform: translateY(30px) scale(1.2); opacity: 1; z-index: 15; } /* 頭出る */
+    .lvl-3 .sadako-wrapper { transform: translateY(-20px) scale(1.8); opacity: 1; z-index: 15; filter: drop-shadow(0 0 20px rgba(255,0,0,0.3)); } /* 這い出す */
+    .lvl-4 .sadako-wrapper { transform: translateY(-80px) scale(3.5); opacity: 1; z-index: 40; filter: drop-shadow(0 0 40px rgba(255,0,0,0.5)); } /* 迫る */
+    .lvl-5 .sadako-wrapper { transform: translateY(-100px) scale(8); opacity: 1; z-index: 100; filter: drop-shadow(0 0 80px rgba(255,0,0,1)); animation: s-shake 0.05s infinite; } /* 究極の呪い発動 */
+    
+    .s-eye { opacity: 0; transition: opacity 0.5s; }
+    .lvl-5 .s-eye { opacity: 1; animation: s-blink 0.1s infinite; fill: #ff0000; filter: drop-shadow(0 0 10px red); }
+    
+    @keyframes s-shake {
+      0%, 100% { transform: translateY(-100px) scale(8) translateX(0); }
+      25% { transform: translateY(-100px) scale(8) translateX(-8px); }
+      50% { transform: translateY(-100px) scale(8) translateX(8px); }
+    }
+    @keyframes s-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    
+    .bg-cursed { animation: bg-flash 0.1s infinite alternate; }
+    @keyframes bg-flash { from { background-color: #1a0000; } to { background-color: #800000; } }
+
+    .glitch-text { animation: glitch-anim 0.1s infinite; color: #ff0000; text-shadow: 4px 0 #000, -4px 0 #000; font-weight: 900; letter-spacing: 0.1em; }
+    @keyframes glitch-anim {
+      0% { transform: translate(0) skew(0deg); }
+      20% { transform: translate(-4px, 4px) skew(10deg); }
+      40% { transform: translate(-4px, -4px) skew(-10deg); }
+      60% { transform: translate(4px, 4px) skew(5deg); }
+      80% { transform: translate(4px, -4px) skew(-5deg); }
+      100% { transform: translate(0) skew(0deg); }
+    }
   </style>
 </head>
 <body class="bg-gray-50 font-sans text-gray-800 selection:bg-blue-200">
@@ -26,223 +82,154 @@
 
   <script>
     // ==========================================
-    // 📚 問題データ (全184問: 理科＋社会＋英語)
+    // 📚 問題データ (PDFから抽出した完璧な英語データを含む)
     // ==========================================
-    const rawData = [
-      // ==========================================
+    let rawData = [
+      // 🇺🇸 英語 (PDF単語帳から完全手動抽出・修正版)
+      { subject: "英語", category: "英単語", q: "「新しい」を意味する英単語は？", a: "new" },
+      { subject: "英語", category: "英単語", q: "「かっこいい、涼しい」を意味する英単語は？", a: "cool" },
+      { subject: "英語", category: "英単語", q: "「速い、速く」を意味する英単語は？", a: "fast" },
+      { subject: "英語", category: "英単語", q: "「古い、~歳」を意味する英単語は？", a: "old" },
+      { subject: "英語", category: "英単語", q: "「日本の、日本人、日本語」を意味する英単語は？", a: "Japanese" },
+      { subject: "英語", category: "英単語", q: "「素晴らしい」を意味する英単語は？", a: "great" },
+      { subject: "英語", category: "英単語", q: "「悪い」を意味する英単語は？", a: "bad" },
+      { subject: "英語", category: "英単語", q: "「勇敢な」を意味する英単語は？", a: "brave" },
+      { subject: "英語", category: "英単語", q: "「親切な」を意味する英単語は？", a: "kind" },
+      { subject: "英語", category: "英単語", q: "「一生懸命に、難しい」を意味する英単語は？", a: "hard" },
+      { subject: "英語", category: "英単語", q: "「忙しい」を意味する英単語は？", a: "busy" },
+      { subject: "英語", category: "英単語", q: "「たくさんの」を意味する英単語は？", a: "many" },
+      { subject: "英語", category: "英単語", q: "「とても」を意味する英単語は？", a: "very" },
+      { subject: "英語", category: "英単語", q: "「上手に」を意味する英単語は？", a: "well" },
+      { subject: "英語", category: "英単語", q: "「本当に」を意味する英単語は？", a: "really" },
+      { subject: "英語", category: "英単語", q: "「時々」を意味する英単語は？", a: "sometimes" },
+      { subject: "英語", category: "英単語", q: "「~もまた、あまりに〜すぎる」を意味する英単語は？", a: "too" },
+      { subject: "英語", category: "英単語", q: "「どのように、どれくらい」を意味する英単語は？", a: "how" },
+      { subject: "英語", category: "英単語", q: "「今」を意味する英単語は？", a: "now" },
+      { subject: "英語", category: "英単語", q: "「いつも」を意味する英単語は？", a: "always" },
+      { subject: "英語", category: "英単語", q: "「外で、外へ」を意味する英単語は？", a: "outside" },
+      { subject: "英語", category: "英単語", q: "「昨日」を意味する英単語は？", a: "yesterday" },
+      { subject: "英語", category: "英単語", q: "「上へ、起きて」を意味する英単語は？", a: "up" },
+      { subject: "英語", category: "英単語", q: "「･･･を通って」を意味する英単語は？", a: "through" },
+      { subject: "英語", category: "英単語", q: "「ドア、戸」を意味する英単語は？", a: "door" },
+      { subject: "英語", category: "英単語", q: "「･･･の中へ」を意味する英単語は？", a: "into" },
+      { subject: "英語", category: "熟語・表現", q: "「･･･を手に取る」を英語の熟語で？", a: "pick up" },
+      { subject: "英語", category: "英単語", q: "「木製の」を意味する英単語は？", a: "wooden" },
+      { subject: "英語", category: "英単語", q: "「願い」を意味する英単語は？", a: "wish" },
+      { subject: "英語", category: "英単語", q: "「未来」を意味する英単語は？", a: "future" },
+      { subject: "英語", category: "英単語", q: "「明日」を意味する英単語は？", a: "tomorrow" },
+      { subject: "英語", category: "英単語", q: "「計画する」を意味する英単語は？", a: "plan" },
+      { subject: "英語", category: "英単語", q: "「暇な、自由な」を意味する英単語は？", a: "free" },
+      { subject: "英語", category: "英単語", q: "「･･･を意味する」を意味する英単語は？", a: "mean" },
+      { subject: "英語", category: "英単語", q: "「前へ」を意味する英単語は？", a: "forward" },
+      { subject: "英語", category: "熟語・表現", q: "「楽しみに待つ」を英語の熟語で？", a: "look forward to" },
+      { subject: "英語", category: "英単語", q: "「話す」を意味する英単語は？", a: "talk" },
+      { subject: "英語", category: "英単語", q: "「市場」を意味する英単語は？", a: "market" },
+      { subject: "英語", category: "英単語", q: "「お土産」を意味する英単語は？", a: "souvenir" },
+      { subject: "英語", category: "英単語", q: "「場所」を意味する英単語は？", a: "place" },
+      { subject: "英語", category: "英単語", q: "「現れる」を意味する英単語は？", a: "appear" },
+      { subject: "英語", category: "英単語", q: "「あれら」を意味する英単語は？", a: "those" },
+      { subject: "英語", category: "英単語", q: "「買う」を意味する英単語は？", a: "buy" },
+      { subject: "英語", category: "英単語", q: "「人々」を意味する英単語は？", a: "people" },
+      { subject: "英語", category: "英単語", q: "「何か」を意味する英単語は？", a: "anything" },
+      { subject: "英語", category: "英単語", q: "「他に」を意味する英単語は？", a: "else" },
+      { subject: "英語", category: "英単語", q: "「いっぱいの」を意味する英単語は？", a: "full" },
+      { subject: "英語", category: "英単語", q: "「デザート」を意味する英単語は？", a: "dessert" },
+      { subject: "英語", category: "熟語・表現", q: "「〜はいかがですか？」を英語の熟語で？", a: "would like" },
+      { subject: "英語", category: "熟語・表現", q: "「〜したい」を英語の熟語で？", a: "would like to" },
+
       // 🌍 理科
-      // ==========================================
-      { id: "q_001", subject: "理科", category: "大地の変化", q: "地球表面をおおう、厚さ数10〜約100kmの、かたい板状の岩石のかたまり", a: "プレート" },
-      { id: "q_002", subject: "理科", category: "大地の変化", q: "大地が大きな力を受けて盛り上がること", a: "隆起" },
-      { id: "q_003", subject: "理科", category: "大地の変化", q: "大地が大きな力を受けて沈むこと", a: "沈降" },
-      { id: "q_004", subject: "理科", category: "大地の変化", q: "大地が長期間大きな力を受けて、波打つように曲がったつくり", a: "しゅう曲" },
-      { id: "q_005", subject: "理科", category: "大地の変化", q: "大きな力によって大地が割れて動いたときのずれ", a: "断層" },
-      { id: "q_006", subject: "理科", category: "大地の変化", q: "地層や岩石などが地表に現れた崖など", a: "露頭" },
-      
-      { id: "q_007", subject: "理科", category: "地震", q: "地震が起きたとき、最初に岩石が破壊された場所", a: "震源" },
-      { id: "q_008", subject: "理科", category: "地震", q: "震源の真上にある地表の位置", a: "震央" },
-      { id: "q_009", subject: "理科", category: "地震", q: "地震の最初にくる小さなゆれ", a: "初期微動" },
-      { id: "q_010", subject: "理科", category: "地震", q: "初期微動を伝える速い波", a: "P波" },
-      { id: "q_011", subject: "理科", category: "地震", q: "初期微動に続いてはじまる大きなゆれ", a: "主要動" },
-      { id: "q_012", subject: "理科", category: "地震", q: "主要動を伝える遅い波", a: "S波" },
-      { id: "q_013", subject: "理科", category: "地震", q: "初期微動がはじまってから主要動がはじまるまでの時間", a: "初期微動継続時間" },
-      { id: "q_014", subject: "理科", category: "地震", q: "観測地点での地震によるゆれの大きさを表す階級", a: "震度" },
-      { id: "q_015", subject: "理科", category: "地震", q: "地震そのものの規模（エネルギーの大きさ）を表す数値", a: "マグニチュード" },
-      { id: "q_016", subject: "理科", category: "地震", q: "過去にくり返しずれ動き、今後も動く可能性のある断層", a: "活断層" },
-      { id: "q_017", subject: "理科", category: "地震", q: "地震が起こるときの海底の急激な変形などによって発生する波", a: "津波" },
-      { id: "q_040", subject: "理科", category: "地震", q: "初期微動継続時間と震源からの距離には、どのような関係があるか", a: "比例する" },
-      { id: "q_041", subject: "理科", category: "地震", q: "地震のP波とS波の到着時刻の差を利用して、大きなゆれが来る前に知らせるシステム", a: "緊急地震速報" },
-      { id: "q_042", subject: "理科", category: "地震", q: "地震のゆれによって、水分を多く含んだ地盤が液体のようにふるまう現象", a: "液状化" },
-      { id: "q_043", subject: "理科", category: "地震", q: "自然災害による被害を予測し、その被害範囲を地図化したもの", a: "ハザードマップ" },
-      { id: "q_063", subject: "理科", category: "地震", q: "地震が発生したとき、ゆれは震源からどの方向に伝わるか", a: "あらゆる方向（球状）" },
-      { id: "q_064", subject: "理科", category: "地震", q: "震央から遠い地点ほど、地震が発生してからゆれはじめるまでの時間はどうなるか", a: "長くなる" },
-      { id: "q_065", subject: "理科", category: "地震", q: "震央から遠い地点ほど、ふつう地震のゆれの大きさはどうなるか", a: "小さくなる" },
-      { id: "q_066", subject: "理科", category: "地震", q: "マグニチュードの数値が1大きくなると、地震のエネルギーは約何倍になるか", a: "約32倍" },
-      { id: "q_067", subject: "理科", category: "地震", q: "マグニチュードの数値が2大きくなると、地震のエネルギーは約何倍になるか", a: "約1000倍" },
-      { id: "q_069", subject: "理科", category: "地震", q: "P波とS波のうち、伝わる速さが速いのはどちらか", a: "P波" },
+      { subject: "理科", category: "大地の変化", q: "地球表面をおおう、厚さ数10〜約100kmの、かたい板状の岩石のかたまり", a: "プレート" },
+      { subject: "理科", category: "大地の変化", q: "大地が大きな力を受けて盛り上がること", a: "隆起" },
+      { subject: "理科", category: "大地の変化", q: "大地が大きな力を受けて沈むこと", a: "沈降" },
+      { subject: "理科", category: "大地の変化", q: "大地が長期間大きな力を受けて、波打つように曲がったつくり", a: "しゅう曲" },
+      { subject: "理科", category: "大地の変化", q: "大きな力によって大地が割れて動いたときのずれ", a: "断層" },
+      { subject: "理科", category: "大地の変化", q: "地層や岩石などが地表に現れた崖など", a: "露頭" },
+      { subject: "理科", category: "地震", q: "地震が起きたとき、最初に岩石が破壊された場所", a: "震源" },
+      { subject: "理科", category: "地震", q: "震源の真上にある地表の位置", a: "震央" },
+      { subject: "理科", category: "地震", q: "地震の最初にくる小さなゆれ", a: "初期微動" },
+      { subject: "理科", category: "地震", q: "初期微動を伝える速い波", a: "P波" },
+      { subject: "理科", category: "地震", q: "初期微動に続いてはじまる大きなゆれ", a: "主要動" },
+      { subject: "理科", category: "地震", q: "主要動を伝える遅い波", a: "S波" },
+      { subject: "理科", category: "地震", q: "初期微動がはじまってから主要動がはじまるまでの時間", a: "初期微動継続時間" },
+      { subject: "理科", category: "地震", q: "観測地点での地震によるゆれの大きさを表す階級", a: "震度" },
+      { subject: "理科", category: "地震", q: "地震そのものの規模（エネルギーの大きさ）を表す数値", a: "マグニチュード" },
+      { subject: "理科", category: "地震", q: "過去にくり返しずれ動き、今後も動く可能性のある断層", a: "活断層" },
+      { subject: "理科", category: "地震", q: "地震が起こるときの海底の急激な変形などによって発生する波", a: "津波" },
+      { subject: "理科", category: "地震", q: "初期微動継続時間と震源からの距離には、どのような関係があるか", a: "比例する" },
+      { subject: "理科", category: "地震", q: "地震のP波とS波の到着時刻の差を利用して、大きなゆれが来る前に知らせるシステム", a: "緊急地震速報" },
+      { subject: "理科", category: "地震", q: "地震のゆれによって、水分を多く含んだ地盤が液体のようにふるまう現象", a: "液状化" },
+      { subject: "理科", category: "火山と岩石", q: "地下の岩石が高温などでとけてできたもの", a: "マグマ" },
+      { subject: "理科", category: "火山と岩石", q: "マグマが冷えてできた一定の形や色の結晶", a: "鉱物" },
+      { subject: "理科", category: "火山と岩石", q: "マグマのねばりけが小さく、黒っぽい色をした火山の形", a: "傾斜のゆるやかな火山" },
+      { subject: "理科", category: "火山と岩石", q: "マグマのねばりけが大きく、白っぽい色をした火山の形", a: "ドーム状の火山" },
+      { subject: "理科", category: "火山と岩石", q: "マグマが冷え固まってできた岩石", a: "火成岩" },
+      { subject: "理科", category: "火山と岩石", q: "マグマが地表や地表付近で急に冷え固まった岩石", a: "火山岩" },
+      { subject: "理科", category: "火山と岩石", q: "マグマが地下深くでゆっくり冷え固まった岩石", a: "深成岩" },
+      { subject: "理科", category: "火山と岩石", q: "火山岩に見られる、比較的大きな鉱物（斑晶）が細かい粒（石基）にとり囲まれているつくり", a: "斑状組織" },
+      { subject: "理科", category: "火山と岩石", q: "深成岩に見られる、同じくらいの大きさの鉱物が組み合わさってできているつくり", a: "等粒状組織" },
+      { subject: "理科", category: "地層と化石", q: "流水が岩石をけずりとるはたらき", a: "侵食" },
+      { subject: "理科", category: "地層と化石", q: "流水が土砂を運ぶはたらき", a: "運搬" },
+      { subject: "理科", category: "地層と化石", q: "流水が土砂を積もらせるはたらき", a: "堆積" },
+      { subject: "理科", category: "地層と化石", q: "離れた地層を比べるときに目印として利用できる層（火山灰の層など）", a: "かぎ層" },
+      { subject: "理科", category: "地層と化石", q: "地層が堆積した当時の「環境」を推測できる化石", a: "示相化石" },
+      { subject: "理科", category: "地層と化石", q: "地層が堆積した「時代」の推測に役立つ化石", a: "示準化石" },
 
-      { id: "q_018", subject: "理科", category: "火山と岩石", q: "地下の岩石が高温などでとけてできたもの", a: "マグマ" },
-      { id: "q_019", subject: "理科", category: "火山と岩石", q: "マグマが冷えてできた一定の形や色の結晶", a: "鉱物" },
-      { id: "q_020", subject: "理科", category: "火山と岩石", q: "マグマのねばりけが小さく、黒っぽい色をした火山の形", a: "傾斜のゆるやかな火山" },
-      { id: "q_021", subject: "理科", category: "火山と岩石", q: "マグマのねばりけが大きく、白っぽい色をした火山の形", a: "ドーム状の火山" },
-      { id: "q_022", subject: "理科", category: "火山と岩石", q: "マグマが冷え固まってできた岩石", a: "火成岩" },
-      { id: "q_023", subject: "理科", category: "火山と岩石", q: "マグマが地表や地表付近で急に冷え固まった岩石", a: "火山岩" },
-      { id: "q_024", subject: "理科", category: "火山と岩石", q: "マグマが地下深くでゆっくり冷え固まった岩石", a: "深成岩" },
-      { id: "q_025", subject: "理科", category: "火山と岩石", q: "火山岩に見られる、比較的大きな鉱物（斑晶）が細かい粒（石基）にとり囲まれているつくり", a: "斑状組織" },
-      { id: "q_026", subject: "理科", category: "火山と岩石", q: "深成岩に見られる、同じくらいの大きさの鉱物が組み合わさってできているつくり", a: "等粒状組織" },
-      { id: "q_044", subject: "理科", category: "火山と岩石", q: "白っぽく、無色透明や白色の鉱物（セキエイ、チョウ石など）の総称", a: "無色鉱物" },
-      { id: "q_045", subject: "理科", category: "火山と岩石", q: "黒っぽく、黒色や暗緑色の鉱物（黒雲母、角閃石、輝石など）の総称", a: "有色鉱物" },
-      { id: "q_046", subject: "理科", category: "火山と岩石", q: "無色鉱物のうち、不規則に割れる無色透明の鉱物", a: "セキエイ" },
-      { id: "q_047", subject: "理科", category: "火山と岩石", q: "無色鉱物のうち、決まった方向に割れる白色やうすい桃色の鉱物", a: "チョウ石" },
-      { id: "q_048", subject: "理科", category: "火山と岩石", q: "火山岩のうち、白っぽい岩石", a: "流紋岩" },
-      { id: "q_049", subject: "理科", category: "火山と岩石", q: "火山岩のうち、中間の色の岩石", a: "安山岩" },
-      { id: "q_050", subject: "理科", category: "火山と岩石", q: "火山岩のうち、黒っぽい岩石", a: "玄武岩" },
-      { id: "q_051", subject: "理科", category: "火山と岩石", q: "深成岩のうち、白っぽい岩石", a: "花こう岩" },
-      { id: "q_052", subject: "理科", category: "火山と岩石", q: "深成岩のうち、中間の色の岩石", a: "閃緑岩" },
-      { id: "q_053", subject: "理科", category: "火山と岩石", q: "深成岩のうち、黒っぽい岩石", a: "斑れい岩" },
-      { id: "q_071", subject: "理科", category: "火山と岩石", q: "安山岩と花こう岩のうち、黒っぽい鉱物が多くふくまれているのはどちらか", a: "安山岩" },
-      { id: "q_074", subject: "理科", category: "火山と岩石", q: "火山がもたらす恵みとして、地下の熱を利用して発電する仕組み", a: "地熱発電" },
-
-      { id: "q_027", subject: "理科", category: "地層と化石", q: "岩石が、太陽の熱や水のはたらきによって、長い間にくずれたりとかされたりすること", a: "風化" },
-      { id: "q_028", subject: "理科", category: "地層と化石", q: "流水が岩石をけずりとるはたらき", a: "侵食" },
-      { id: "q_029", subject: "理科", category: "地層と化石", q: "流水が土砂を運ぶはたらき", a: "運搬" },
-      { id: "q_030", subject: "理科", category: "地層と化石", q: "流水が土砂を積もらせるはたらき", a: "堆積" },
-      { id: "q_031", subject: "理科", category: "地層と化石", q: "離れた地層を比べるときに目印として利用できる層（火山灰の層など）", a: "かぎ層" },
-      { id: "q_032", subject: "理科", category: "地層と化石", q: "生物の遺骸などが、砕せつ物の堆積によって埋まり、かたい部分などが残ったもの", a: "化石" },
-      { id: "q_033", subject: "理科", category: "地層と化石", q: "地層が堆積した当時の「環境」を推測できる化石", a: "示相化石" },
-      { id: "q_034", subject: "理科", category: "地層と化石", q: "地層が堆積した「時代」の推測に役立つ化石", a: "示準化石" },
-      { id: "q_035", subject: "理科", category: "地層と化石", q: "堆積物が押し固められてできた岩石", a: "堆積岩" },
-      { id: "q_036", subject: "理科", category: "地層と化石", q: "生物の遺骸などでできており、うすい塩酸をかけると二酸化炭素が発生する岩石", a: "石灰岩" },
-      { id: "q_037", subject: "理科", category: "地層と化石", q: "生物の遺骸などでできており、うすい塩酸をかけても変化しない、非常にかたい岩石", a: "チャート" },
-      { id: "q_038", subject: "理科", category: "地層と化石", q: "火山灰や軽石などの火山噴出物が堆積してできた岩石", a: "凝灰岩" },
-      { id: "q_039", subject: "理科", category: "地層と化石", q: "大地の隆起などによって、海底の平らな面が階段状になって陸に現れた地形", a: "海岸段丘" },
-      { id: "q_054", subject: "理科", category: "地層と化石", q: "サンゴの化石が見つかった地層は、当時どのような環境だったと推測できるか", a: "あたたかくて浅い海" },
-      { id: "q_055", subject: "理科", category: "地層と化石", q: "ブナの葉の化石が見つかった地層は、当時どのような環境だったと推測できるか", a: "やや寒冷な気候の陸地" },
-      { id: "q_056", subject: "理科", category: "地層と化石", q: "フズリナや三葉虫は、どの地質年代の示準化石か", a: "古生代" },
-      { id: "q_057", subject: "理科", category: "地層と化石", q: "アンモナイトや恐竜は、どの地質年代の示準化石か", a: "中生代" },
-      { id: "q_058", subject: "理科", category: "地層と化石", q: "ビカリアやマンモス、ナウマンゾウは、どの地質年代の示準化石か", a: "新生代" },
-      { id: "q_059", subject: "理科", category: "地層と化石", q: "地下の様子を探るために、細長い管を地中に打ち込んで土砂を引き上げる調査", a: "ボーリング調査" },
-      { id: "q_060", subject: "理科", category: "地層と化石", q: "断層などの活動を調べるために、地表に溝を掘る調査", a: "トレンチ調査" },
-      { id: "q_075", subject: "理科", category: "地層と化石", q: "れきが押し固められてできた堆積岩", a: "れき岩" },
-      { id: "q_076", subject: "理科", category: "地層と化石", q: "砂が押し固められてできた堆積岩", a: "砂岩" },
-      { id: "q_077", subject: "理科", category: "地層と化石", q: "泥が押し固められてできた堆積岩", a: "泥岩" },
-      { id: "q_078", subject: "理科", category: "地層と化石", q: "カキの化石が見つかった地層は、当時どのような環境だったと推測できるか", a: "河口付近" },
-      { id: "q_080", subject: "理科", category: "地層と化石", q: "古生代、中生代、新生代のように、生物の種類の入れかわりをもとに区別された地球の歴史の時代区分", a: "地質年代" },
-      { id: "q_081", subject: "理科", category: "地層と化石", q: "水中で砕せつ物が堆積するとき、河口から最も遠くまで運ばれるのは、れき・砂・泥のうちどれか", a: "泥" },
-      { id: "q_082", subject: "理科", category: "地層と化石", q: "地層の重なりにおいて、地殻変動などがなければ、ふつう上の層と下の層ではどちらの方が古いか", a: "下の層" },
-      { id: "q_083", subject: "理科", category: "地層と化石", q: "れき、砂、泥を、粒の小さい順に並べよ", a: "泥、砂、れき" },
-
-      // ==========================================
-      // 🏯 社会（歴史）
-      // ==========================================
-      { id: "h_046", subject: "社会", category: "歴史 (古代)", q: "キリスト（イエス）が生まれたとされる年を基準とした年代の表し方", a: "西暦" },
-      { id: "h_047", subject: "社会", category: "歴史 (古代)", q: "西暦を基準に、100年を一区切りにして表す年代の単位", a: "世紀" },
-      { id: "h_048", subject: "社会", category: "歴史 (古代)", q: "約700万年前にアフリカに現れた最古の人類", a: "猿人" },
-      { id: "h_049", subject: "社会", category: "歴史 (古代)", q: "約20万年前に現れた、現在の私たちと同じ種類の人類", a: "新人" },
-      { id: "h_050", subject: "社会", category: "歴史 (古代)", q: "石を打ち砕いてつくった石器", a: "打製石器" },
-      { id: "h_051", subject: "社会", category: "歴史 (古代)", q: "石を磨いてつくった石器", a: "磨製石器" },
-      { id: "h_052", subject: "社会", category: "歴史 (古代)", q: "紀元前3500年ごろ、ティグリス川・ユーフラテス川流域でおこった文明", a: "メソポタミア文明" },
-      { id: "h_053", subject: "社会", category: "歴史 (古代)", q: "ナイル川流域でおこり、象形文字や太陽暦を生み出した文明", a: "エジプト文明" },
-      { id: "h_054", subject: "社会", category: "歴史 (古代)", q: "インダス川流域で栄えた文明", a: "インダス文明" },
-      { id: "h_055", subject: "社会", category: "歴史 (古代)", q: "紀元前1600年ごろ、黄河流域で栄えた、甲骨文字を使用した国", a: "殷" },
-      { id: "h_056", subject: "社会", category: "歴史 (古代)", q: "漢字のもとになった、亀の甲や牛の骨に刻まれた文字", a: "甲骨文字" },
-      { id: "h_057", subject: "社会", category: "歴史 (古代)", q: "紀元前6世紀ごろに儒教を説いた思想家", a: "孔子" },
-      { id: "h_058", subject: "社会", category: "歴史 (古代)", q: "紀元前3世紀に中国を統一した秦の皇帝", a: "始皇帝" },
-      { id: "h_059", subject: "社会", category: "歴史 (古代)", q: "秦の始皇帝が、北方の遊牧民の侵入を防ぐために修築させたもの", a: "万里の長城" },
-      { id: "h_060", subject: "社会", category: "歴史 (古代)", q: "漢の時代に開かれた、ヨーロッパと中国を結んだ交通路", a: "シルクロード" },
-      { id: "h_061", subject: "社会", category: "歴史 (古代)", q: "ギリシャにつくられた、アテネなどの都市国家", a: "ポリス" },
-      { id: "h_062", subject: "社会", category: "歴史 (古代)", q: "紀元前6世紀ごろ、インドで仏教を開いた人物", a: "シャカ" },
-      
-      { id: "h_001", subject: "社会", category: "歴史 (縄文〜古墳)", q: "縄目の文様があり、厚手で黒褐色の土器", a: "縄文土器" },
-      { id: "h_002", subject: "社会", category: "歴史 (縄文〜古墳)", q: "地面に穴を掘り、屋根をつけた縄文時代の住居", a: "たて穴住居" },
-      { id: "h_003", subject: "社会", category: "歴史 (縄文〜古墳)", q: "食べ物の残りかすなどを捨てた、当時のゴミ捨て場", a: "貝塚" },
-      { id: "h_004", subject: "社会", category: "歴史 (縄文〜古墳)", q: "稲を蓄えるためにつくられた、ねずみや湿気を防ぐ建物", a: "高床倉庫" },
-      { id: "h_005", subject: "社会", category: "歴史 (縄文〜古墳)", q: "邪馬台国の女王で、中国の魏に使いを送った人物", a: "卑弥呼" },
-      { id: "h_006", subject: "社会", category: "歴史 (縄文〜古墳)", q: "日本独特の古墳の形で、四角い方墳と円い円墳を合わせた形", a: "前方後円墳" },
-      { id: "h_007", subject: "社会", category: "歴史 (縄文〜古墳)", q: "中国や朝鮮半島から日本に移り住み、新しい技術や文化を伝えた人々", a: "渡来人" },
-
-      { id: "h_008", subject: "社会", category: "歴史 (飛鳥〜奈良)", q: "聖徳太子が定めた、家柄にとらわれず才能や功績のある人物を役人に取り立てる制度", a: "冠位十二階" },
-      { id: "h_009", subject: "社会", category: "歴史 (飛鳥〜奈良)", q: "聖徳太子が建てたといわれる、現存する世界最古の木造建築物", a: "法隆寺" },
-      { id: "h_010", subject: "社会", category: "歴史 (飛鳥〜奈良)", q: "645年、中大兄皇子や中臣鎌足らが蘇我氏を倒して始めた政治の改革", a: "大化の改新" },
-      { id: "h_011", subject: "社会", category: "歴史 (飛鳥〜奈良)", q: "701年に制定された、唐の法律にならって作られた法律", a: "大宝律令" },
-      { id: "h_012", subject: "社会", category: "歴史 (飛鳥〜奈良)", q: "710年に唐の長安をモデルにして、現在の奈良県につくられた都", a: "平城京" },
-      { id: "h_013", subject: "社会", category: "歴史 (飛鳥〜奈良)", q: "新しく開墾した土地の永久私有を認めた法律", a: "墾田永年私財法" },
-      { id: "h_014", subject: "社会", category: "歴史 (飛鳥〜奈良)", q: "聖武天皇の時代に栄えた、仏教の色彩が強い国際豊かな文化", a: "天平文化" },
-      { id: "h_015", subject: "社会", category: "歴史 (飛鳥〜奈良)", q: "聖武天皇が国ごとに建てた寺", a: "国分寺" },
-
-      { id: "h_016", subject: "社会", category: "歴史 (平安)", q: "794年、桓武天皇が現在の京都府に移した都", a: "平安京" },
-      { id: "h_017", subject: "社会", category: "歴史 (平安)", q: "藤原氏が、天皇が幼い時は摂政、成長してからは関白として実権を握った政治", a: "摂関政治" },
-      { id: "h_018", subject: "社会", category: "歴史 (平安)", q: "10世紀ごろから発達した、日本の風土や生活に合った独自の文化", a: "国風文化" },
-      { id: "h_019", subject: "社会", category: "歴史 (平安)", q: "紫式部がかな文字で書いた、世界最古の長編小説", a: "源氏物語" },
-      { id: "h_020", subject: "社会", category: "歴史 (平安)", q: "清少納言がかな文字で書いた随筆", a: "枕草子" },
-      { id: "h_021", subject: "社会", category: "歴史 (平安)", q: "阿弥陀仏にすがり、死後に極楽浄土へ生まれ変わることを願う信仰", a: "浄土信仰" },
-      { id: "h_022", subject: "社会", category: "歴史 (平安)", q: "白河上皇が天皇の位をゆずった後も、上皇として政治の実権を握った政治", a: "院政" },
-
-      { id: "h_023", subject: "社会", category: "歴史 (鎌倉)", q: "平清盛が宋（中国）との間で行った貿易", a: "日宋貿易" },
-      { id: "h_024", subject: "社会", category: "歴史 (鎌倉)", q: "源頼朝が国ごとに置き、軍事・警察などの役割を担った役職", a: "守護" },
-      { id: "h_025", subject: "社会", category: "歴史 (鎌倉)", q: "源頼朝が荘園や公領ごとに置き、年貢の取り立てなどを担った役職", a: "地頭" },
-      { id: "h_026", subject: "社会", category: "歴史 (鎌倉)", q: "1221年、後鳥羽上皇が鎌倉幕府を倒そうとして起こした乱", a: "承久の乱" },
-      { id: "h_027", subject: "社会", category: "歴史 (鎌倉)", q: "1232年、北条泰時が制定した武士の裁判の基準となる法律", a: "御成敗式目" },
-      { id: "h_028", subject: "社会", category: "歴史 (鎌倉)", q: "運慶・快慶らがつくった、東大寺南大門にある力強い仏像", a: "金剛力士像" },
-      { id: "h_029", subject: "社会", category: "歴史 (鎌倉)", q: "平氏の繁栄と滅亡をえがいた、琵琶法師によって語り伝えられた軍記物", a: "平家物語" },
-
-      { id: "h_030", subject: "社会", category: "歴史 (室町)", q: "13世紀初め、チンギス＝ハンが築いた大帝国", a: "モンゴル帝国" },
-      { id: "h_031", subject: "社会", category: "歴史 (室町)", q: "鎌倉時代後期、元（モンゴル）の軍勢が2度にわたって日本に攻めてきた出来事", a: "元寇" },
-      { id: "h_032", subject: "社会", category: "歴史 (室町)", q: "借金の帳消しなどを求める、農民などが団結して起こした反乱", a: "土一揆" },
-      { id: "h_033", subject: "社会", category: "歴史 (室町)", q: "足利義満が京都の北山に建てた、金箔がはられた建物", a: "金閣" },
-      { id: "h_034", subject: "社会", category: "歴史 (室町)", q: "足利義政が京都の東山に建てた、銀箔ははられていない建物", a: "銀閣" },
-      { id: "h_035", subject: "社会", category: "歴史 (室町)", q: "床の間などがもうけられた、現在の和室の原型となった建築様式", a: "書院造" },
-      { id: "h_036", subject: "社会", category: "歴史 (室町)", q: "水墨画を大成した人物", a: "雪舟" },
-      { id: "h_037", subject: "社会", category: "歴史 (室町)", q: "室町時代に明（中国）との間で行われた、正式な貿易船の証明書を使った貿易", a: "勘合貿易" },
-
-      { id: "h_038", subject: "社会", category: "歴史 (安土桃山・大航海)", q: "1543年、ポルトガル人を乗せた船が漂着し、鉄砲が伝えられた島", a: "種子島" },
-      { id: "h_039", subject: "社会", category: "歴史 (安土桃山・大航海)", q: "1549年、キリスト教を日本に伝えたイエズス会の宣教師", a: "フランシスコ・ザビエル" },
-      { id: "h_040", subject: "社会", category: "歴史 (安土桃山・大航海)", q: "織田信長が、市場の税を免除したり座を廃止したりして、商工業の発展を図った政策", a: "楽市・楽座" },
-      { id: "h_041", subject: "社会", category: "歴史 (安土桃山・大航海)", q: "豊臣秀吉が、農民から武器を取り上げて一揆を防ごうとした政策", a: "刀狩" },
-      { id: "h_042", subject: "社会", category: "歴史 (安土桃山・大航海)", q: "豊臣秀吉が、全国の田畑の面積や収穫量を統一した基準で調べた政策", a: "太閤検地" },
-      { id: "h_043", subject: "社会", category: "歴史 (安土桃山・大航海)", q: "ルネサンスの時代、古代ギリシャ・ローマの文化を理想とする動き。日本語で何というか", a: "文芸復興" },
-      { id: "h_044", subject: "社会", category: "歴史 (安土桃山・大航海)", q: "1492年、スペインの援助で大西洋を横断し、西インド諸島に到達した人物", a: "コロンブス" },
-      { id: "h_045", subject: "社会", category: "歴史 (安土桃山・大航海)", q: "初めて世界一周を達成した一行を率いていた人物", a: "マゼラン" },
-
-      // ==========================================
-      // 🗺️ 社会（地理）
-      // ==========================================
-      { id: "g_001", subject: "社会", category: "地理 (世界の姿)", q: "地球表面の海と陸の面積の割合は、およそ何対何？", a: "7：3" },
-      { id: "g_002", subject: "社会", category: "地理 (世界の姿)", q: "海洋の大部分を占める大きな海", a: "大洋" },
-      { id: "g_003", subject: "社会", category: "地理 (世界の姿)", q: "大洋のなかで最も広い海洋", a: "太平洋" },
-      { id: "g_004", subject: "社会", category: "地理 (世界の姿)", q: "ユーラシア、アフリカ、北アメリカ、南アメリカ、オーストラリア、南極の六つを何というか", a: "大陸" },
-      { id: "g_005", subject: "社会", category: "地理 (世界の姿)", q: "まわりを海で囲まれている国", a: "島国" },
-      { id: "g_006", subject: "社会", category: "地理 (世界の姿)", q: "海に面しておらず、周りがすべてほかの国と陸続きの国", a: "内陸国" },
-      { id: "g_007", subject: "社会", category: "地理 (世界の姿)", q: "国と国との境", a: "国境" },
-      { id: "g_008", subject: "社会", category: "地理 (世界の姿)", q: "赤道を0度とし、南北に90度ずつ表したもの", a: "緯度" },
-      { id: "g_009", subject: "社会", category: "地理 (世界の姿)", q: "イギリスのロンドンを通る本初子午線を0度とし、東西に180度ずつ表したもの", a: "経度" },
-      { id: "g_010", subject: "社会", category: "地理 (世界の姿)", q: "0度の緯線", a: "赤道" },
-      { id: "g_011", subject: "社会", category: "地理 (世界の姿)", q: "0度の経線", a: "本初子午線" },
-      { id: "g_012", subject: "社会", category: "地理 (世界の姿)", q: "地球の形や陸地と海洋の位置関係が正しく表される模型", a: "地球儀" },
-      { id: "g_013", subject: "社会", category: "地理 (世界の姿)", q: "経度が15度違うと、何時間の時差が生じるか", a: "1時間" },
-      { id: "g_014", subject: "社会", category: "地理 (世界の姿)", q: "各国が定めている、時刻の基準となる経線", a: "標準時子午線" },
-      { id: "g_015", subject: "社会", category: "地理 (世界の姿)", q: "日本の標準時子午線は、東経何度の経線か", a: "東経135度" },
-      { id: "g_016", subject: "社会", category: "地理 (世界の姿)", q: "西から東に越えたときは日付を1日遅らせ、東から西に越えたときは日付を1日進める線", a: "日付変更線" },
-      { id: "g_017", subject: "社会", category: "地理 (世界の姿)", q: "国の主権が及ぶ範囲。領土、領海、領空からなる。", a: "領域" },
-      { id: "g_018", subject: "社会", category: "地理 (世界の姿)", q: "沿岸国が水産資源や鉱産資源を利用する権利をもつ、領海の外側の海域", a: "排他的経済水域" },
-      { id: "g_019", subject: "社会", category: "地理 (世界の姿)", q: "日本がロシアに対して返還を求めている、北海道に属する島々", a: "北方領土" },
-      { id: "g_020", subject: "社会", category: "地理 (世界の姿)", q: "島根県に属し、韓国が不法に占拠している島", a: "竹島" },
-      { id: "g_021", subject: "社会", category: "地理 (世界の姿)", q: "沖縄県に属し、日本が固有の領土として有効に支配している島々", a: "尖閣諸島" },
-
-      { id: "g_022", subject: "社会", category: "地理 (気候と生活)", q: "一年中気温が高く、降水量が多い気候帯", a: "熱帯" },
-      { id: "g_023", subject: "社会", category: "地理 (気候と生活)", q: "雨が非常に少なく、砂漠などが広がる気候帯", a: "乾燥帯" },
-      { id: "g_024", subject: "社会", category: "地理 (気候と生活)", q: "日本も属する、四季の変化がはっきりしている気候帯", a: "温帯" },
-      { id: "g_025", subject: "社会", category: "地理 (気候と生活)", q: "夏と冬の気温差が大きく、冬は寒さが厳しい気候帯", a: "亜寒帯（冷帯）" },
-      { id: "g_026", subject: "社会", category: "地理 (気候と生活)", q: "一年中寒く、樹木が育たない気候帯", a: "寒帯" },
-      { id: "g_027", subject: "社会", category: "地理 (気候と生活)", q: "乾燥した地域で、川や地下水から水を引いて農業を行うこと", a: "かんがい" },
-      { id: "g_028", subject: "社会", category: "地理 (気候と生活)", q: "草や水を求めて、移動しながら家畜を飼育すること", a: "遊牧" },
-      { id: "g_029", subject: "社会", category: "地理 (気候と生活)", q: "ヨーロッパから南北アメリカ、オセアニアなどに広まった宗教", a: "キリスト教" },
-      { id: "g_030", subject: "社会", category: "地理 (気候と生活)", q: "西アジアを中心として北アフリカなどに広まる宗教。豚肉を食べない。", a: "イスラム教" },
-      { id: "g_031", subject: "社会", category: "地理 (気候と生活)", q: "東南アジアから東アジアにかけて広まる宗教", a: "仏教" },
-      { id: "g_032", subject: "社会", category: "地理 (気候と生活)", q: "インドの国民の約8割が信仰している宗教。牛を神聖な動物と考える。", a: "ヒンドゥー教" },
-
-      { id: "g_033", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "世界最高峰のエベレスト山がある山脈", a: "ヒマラヤ山脈" },
-      { id: "g_034", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "アジア州の東部や南部で、季節によって吹く向きが変わる風", a: "季節風（モンスーン）" },
-      { id: "g_035", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "外国企業が進出しやすいように、中国の沿海部に設けられた特別な地区", a: "経済特区" },
-      { id: "g_036", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "東南アジアの発展を支える中国系の人々", a: "華人" },
-      { id: "g_037", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "同じ土地で1年に2回、同じ作物（稲など）を栽培すること", a: "二期作" },
-      { id: "g_038", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "輸出向けの作物を大規模に栽培する農園", a: "プランテーション" },
-      { id: "g_039", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "1967年に結成された、東南アジア諸国連合の略称", a: "ASEAN" },
-      { id: "g_040", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "ヨーロッパの気候に大きな影響を与える、一年中西から東に向かって吹く風", a: "偏西風" },
-      { id: "g_041", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "氷河にけずられてできた、スカンディナビア半島などでみられる複雑な地形の湾", a: "フィヨルド" },
-      { id: "g_042", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "ヨーロッパの国々の統合を目指し設立された組織。2020年にイギリスが離脱。", a: "EU（ヨーロッパ連合）" },
-      { id: "g_043", subject: "社会", category: "地理 (アジア・ヨーロッパ)", q: "EUの多くの国々で使われている共通通貨", a: "ユーロ" },
-
-      // ==========================================
-      // 🇺🇸 英語
-      // ==========================================
-      { id: "e_001", subject: "英語", category: "英単語", q: "〜を始める、開始する", a: "begin" },
-      { id: "e_002", subject: "英語", category: "英単語", q: "〜を終える、終わる", a: "finish" },
-      { id: "e_003", subject: "英語", category: "英単語", q: "〜を信じる、〜と思う", a: "believe" },
-      { id: "e_004", subject: "英語", category: "英単語", q: "環境", a: "environment" },
-      { id: "e_005", subject: "英語", category: "英単語", q: "政府", a: "government" }
+      // 🏯 社会（歴史・地理）
+      { subject: "社会", category: "歴史", q: "キリスト（イエス）が生まれたとされる年を基準とした年代の表し方", a: "西暦" },
+      { subject: "社会", category: "歴史", q: "約700万年前にアフリカに現れた最古の人類", a: "猿人" },
+      { subject: "社会", category: "歴史", q: "約20万年前に現れた、現在の私たちと同じ種類の人類", a: "新人" },
+      { subject: "社会", category: "歴史", q: "石を打ち砕いてつくった石器", a: "打製石器" },
+      { subject: "社会", category: "歴史", q: "石を磨いてつくった石器", a: "磨製石器" },
+      { subject: "社会", category: "歴史", q: "紀元前3500年ごろ、ティグリス川・ユーフラテス川流域でおこった文明", a: "メソポタミア文明" },
+      { subject: "社会", category: "歴史", q: "ナイル川流域でおこり、象形文字や太陽暦を生み出した文明", a: "エジプト文明" },
+      { subject: "社会", category: "歴史", q: "インダス川流域で栄えた文明", a: "インダス文明" },
+      { subject: "社会", category: "歴史", q: "漢字のもとになった、亀の甲や牛の骨に刻まれた文字", a: "甲骨文字" },
+      { subject: "社会", category: "歴史", q: "紀元前3世紀に中国を統一した秦の皇帝", a: "始皇帝" },
+      { subject: "社会", category: "歴史", q: "漢の時代に開かれた、ヨーロッパと中国を結んだ交通路", a: "シルクロード" },
+      { subject: "社会", category: "歴史", q: "縄目の文様があり、厚手で黒褐色の土器", a: "縄文土器" },
+      { subject: "社会", category: "歴史", q: "地面に穴を掘り、屋根をつけた縄文時代の住居", a: "たて穴住居" },
+      { subject: "社会", category: "歴史", q: "食べ物の残りかすなどを捨てた、当時のゴミ捨て場", a: "貝塚" },
+      { subject: "社会", category: "歴史", q: "稲を蓄えるためにつくられた、ねずみや湿気を防ぐ建物", a: "高床倉庫" },
+      { subject: "社会", category: "歴史", q: "邪馬台国の女王で、中国の魏に使いを送った人物", a: "卑弥呼" },
+      { subject: "社会", category: "歴史", q: "日本独特の古墳の形で、四角い方墳と円い円墳を合わせた形", a: "前方後円墳" },
+      { subject: "社会", category: "歴史", q: "聖徳太子が定めた、家柄にとらわれず才能や功績のある人物を役人に取り立てる制度", a: "冠位十二階" },
+      { subject: "社会", category: "歴史", q: "聖徳太子が建てたといわれる、現存する世界最古の木造建築物", a: "法隆寺" },
+      { subject: "社会", category: "歴史", q: "645年、中大兄皇子や中臣鎌足らが蘇我氏を倒して始めた政治の改革", a: "大化の改新" },
+      { subject: "社会", category: "歴史", q: "701年に制定された、唐の法律にならって作られた法律", a: "大宝律令" },
+      { subject: "社会", category: "歴史", q: "710年に唐の長安をモデルにして、現在の奈良県につくられた都", a: "平城京" },
+      { subject: "社会", category: "歴史", q: "新しく開墾した土地の永久私有を認めた法律", a: "墾田永年私財法" },
+      { subject: "社会", category: "歴史", q: "794年、桓武天皇が現在の京都府に移した都", a: "平安京" },
+      { subject: "社会", category: "歴史", q: "藤原氏が、天皇が幼い時は摂政、成長してからは関白として実権を握った政治", a: "摂関政治" },
+      { subject: "社会", category: "歴史", q: "紫式部がかな文字で書いた、世界最古の長編小説", a: "源氏物語" },
+      { subject: "社会", category: "歴史", q: "清少納言がかな文字で書いた随筆", a: "枕草子" },
+      { subject: "社会", category: "歴史", q: "白河上皇が天皇の位をゆずった後も、上皇として政治の実権を握った政治", a: "院政" },
+      { subject: "社会", category: "歴史", q: "1232年、北条泰時が制定した武士の裁判の基準となる法律", a: "御成敗式目" },
+      { subject: "社会", category: "歴史", q: "1543年、ポルトガル人を乗せた船が漂着し、鉄砲が伝えられた島", a: "種子島" },
+      { subject: "社会", category: "歴史", q: "1549年、キリスト教を日本に伝えたイエズス会の宣教師", a: "フランシスコ・ザビエル" },
+      { subject: "社会", category: "地理", q: "地球表面の海と陸の面積の割合は、およそ何対何？", a: "7：3" },
+      { subject: "社会", category: "地理", q: "大洋のなかで最も広い海洋", a: "太平洋" },
+      { subject: "社会", category: "地理", q: "海に面しておらず、周りがすべてほかの国と陸続きの国", a: "内陸国" },
+      { subject: "社会", category: "地理", q: "赤道を0度とし、南北に90度ずつ表したもの", a: "緯度" },
+      { subject: "社会", category: "地理", q: "イギリスのロンドンを通る本初子午線を0度とし、東西に180度ずつ表したもの", a: "経度" },
+      { subject: "社会", category: "地理", q: "経度が15度違うと、何時間の時差が生じるか", a: "1時間" },
+      { subject: "社会", category: "地理", q: "日本の標準時子午線は、東経何度の経線か", a: "東経135度" },
+      { subject: "社会", category: "地理", q: "一年中気温が高く、降水量が多い気候帯", a: "熱帯" },
+      { subject: "社会", category: "地理", q: "雨が非常に少なく、砂漠などが広がる気候帯", a: "乾燥帯" },
+      { subject: "社会", category: "地理", q: "日本も属する、四季の変化がはっきりしている気候帯", a: "温帯" },
+      { subject: "社会", category: "地理", q: "ヨーロッパの国々の統合を目指し設立された組織。2020年にイギリスが離脱。", a: "EU" }
     ];
 
+    // 重複を排除しIDを付与
+    const uniqueMap = new Map();
+    rawData.forEach((item, index) => {
+      const key = item.subject + item.category + item.q + item.a;
+      if(!uniqueMap.has(key)) uniqueMap.set(key, { ...item, id: 'q_' + index });
+    });
+    rawData = Array.from(uniqueMap.values());
+
+    // ==========================================
+    // アプリの状態管理
+    // ==========================================
     const state = {
       screen: 'home', 
       activeTab: 'study',
@@ -257,7 +244,9 @@
       isDataLoaded: false,
       fbReady: false,
       showPasscode: false,
-      passcodeValue: ''
+      passcodeValue: '',
+      passcodeErrorCount: 0, // 👻 貞子レベル管理
+      isGuest: false 
     };
 
     const subjects = [];
@@ -268,54 +257,83 @@
     });
 
     // ==========================================
-    // Firebase 初期化
+    // Firebase 初期化 (エラーを完全に防ぐ安全設計)
     // ==========================================
-    let firebaseConfig;
-    if (typeof __firebase_config !== 'undefined') {
-      firebaseConfig = JSON.parse(__firebase_config);
-    } else {
-      firebaseConfig = {
-        apiKey: "AIzaSyCHGs5PHyfvW57SCJJi8GiDQ_ydH8M-5Vs",
-        authDomain: "sakura-app-d3d10.firebaseapp.com",
-        projectId: "sakura-app-d3d10",
-        storageBucket: "sakura-app-d3d10.firebasestorage.app",
-        messagingSenderId: "244016922212",
-        appId: "1:244016922212:web:a1f1775a6a6aba2de8a971"
-      };
-    }
-    const appId = (typeof __app_id !== 'undefined') ? __app_id : "sakura-app-d3d10";
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-      auth.signInWithCustomToken(__initial_auth_token).catch(e => console.error(e));
-    } else {
-      auth.signInAnonymously().catch(e => console.error(e));
-    }
-
-    auth.onAuthStateChanged(user => {
-      state.user = user;
-      state.fbReady = true;
-      if (user) {
-        db.collection('artifacts').doc(appId).collection('users').doc(user.uid).collection('stats')
-          .onSnapshot(snapshot => {
-            const stats = {};
-            snapshot.forEach(doc => { stats[doc.id] = doc.data(); });
-            state.userStats = { ...state.userStats, ...stats };
-            state.isDataLoaded = true;
-            render();
-          }, error => {
-            console.error("Firestore接続エラー", error);
-            state.isDataLoaded = true;
-            render();
-          });
+    const defaultAppId = "sakura-app-d3d10"; 
+    const appId = (typeof __app_id !== 'undefined' && __app_id) ? __app_id : defaultAppId;
+    
+    try {
+      let firebaseConfig;
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        firebaseConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
       } else {
-        state.isDataLoaded = true;
-        render();
+        firebaseConfig = {
+          apiKey: "AIzaSyCHGs5PHyfvW57SCJJi8GiDQ_ydH8M-5Vs",
+          authDomain: "sakura-app-d3d10.firebaseapp.com",
+          projectId: "sakura-app-d3d10",
+          storageBucket: "sakura-app-d3d10.firebasestorage.app",
+          messagingSenderId: "244016922212",
+          appId: "1:244016922212:web:a1f1775a6a6aba2de8a971"
+        };
       }
-    });
+
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // ★ 認証状態の監視を先に登録
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          state.user = user;
+          state.fbReady = true;
+          // 家族共通のクラウド領域を監視
+          try {
+             const statsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('shared_stats');
+             statsRef.onSnapshot(snapshot => {
+                 const stats = {};
+                 snapshot.forEach(doc => { stats[doc.id] = doc.data(); });
+                 state.userStats = { ...state.userStats, ...stats };
+                 state.isDataLoaded = true;
+                 render();
+               }, error => {
+                 console.error("Firestore Error:", error);
+                 state.isDataLoaded = true;
+                 render();
+               });
+          } catch(e) {
+             console.error("Snapshot Error:", e);
+             state.isDataLoaded = true;
+             render();
+          }
+        } else {
+          state.isDataLoaded = true;
+          render();
+        }
+      });
+
+      // ★ 認証処理
+      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+        auth.signInWithCustomToken(__initial_auth_token).catch(e => {
+           console.error("Custom Auth Error:", e);
+           state.isDataLoaded = true;
+           render();
+        });
+      } else {
+        auth.signInAnonymously().catch(e => {
+           console.error("Anon Auth Error:", e);
+           // エラー時もアプリを続行させるためローカルモードに移行
+           state.isDataLoaded = true;
+           render();
+        });
+      }
+    } catch(e) {
+      console.error("Firebase Init Error:", e);
+      state.isDataLoaded = true;
+      render();
+    }
 
     // ==========================================
     // クイズ用関数
@@ -327,6 +345,7 @@
     }
 
     window.switchTab = function(tab) { state.activeTab = tab; render(); }
+    window.toggleGuestMode = function() { state.isGuest = !state.isGuest; render(); }
 
     window.startQuiz = function(subject, category) {
       let filtered = rawData;
@@ -335,8 +354,9 @@
       prepareQuiz(filtered);
     }
 
-    window.startWeaknessQuiz = function() {
-      const weakQuestions = rawData.filter(q => {
+    window.startWeaknessQuiz = function(subjectFilter = null) {
+      let targetQuestions = rawData.filter(q => {
+        if (subjectFilter && q.subject !== subjectFilter) return false;
         const stat = state.userStats[q.id];
         if (!stat) return false;
         const total = stat.corrects + stat.mistakes;
@@ -351,11 +371,11 @@
         return rateB - rateA;
       });
 
-      if (weakQuestions.length === 0) {
-        alert("すばらしい！現在、極端に苦手な問題はありません。通常学習を進めましょう！");
+      if (targetQuestions.length === 0) {
+        alert("すばらしい！この範囲の極端に苦手な問題はありません。通常学習を進めましょう！");
         return;
       }
-      prepareQuiz(weakQuestions.slice(0, 20));
+      prepareQuiz(targetQuestions.slice(0, 20));
     }
 
     function prepareQuiz(questions) {
@@ -385,17 +405,21 @@
     window.handleAnswer = async function(isCorrect) {
       const currentQ = state.quizQueue[state.currentIndex];
       
-      const currentStat = state.userStats[currentQ.id] || { corrects: 0, mistakes: 0 };
-      const newData = {
-        corrects: isCorrect ? currentStat.corrects + 1 : currentStat.corrects,
-        mistakes: !isCorrect ? currentStat.mistakes + 1 : currentStat.mistakes,
-        lastAttempt: new Date().toISOString()
-      };
-      state.userStats[currentQ.id] = newData;
+      if (!state.isGuest) {
+        const currentStat = state.userStats[currentQ.id] || { corrects: 0, mistakes: 0 };
+        const newData = {
+          corrects: isCorrect ? currentStat.corrects + 1 : currentStat.corrects,
+          mistakes: !isCorrect ? currentStat.mistakes + 1 : currentStat.mistakes,
+          lastAttempt: new Date().toISOString()
+        };
+        state.userStats[currentQ.id] = newData; 
 
-      if (state.user && state.fbReady) {
-        const statRef = db.collection('artifacts').doc(appId).collection('users').doc(state.user.uid).collection('stats').doc(currentQ.id);
-        statRef.set(newData, { merge: true }).catch(e => console.error("Firebase保存エラー:", e));
+        if (state.user && state.fbReady) {
+          try {
+            const statRef = firebase.firestore().collection('artifacts').doc(appId).collection('public').doc('data').collection('shared_stats').doc(currentQ.id);
+            statRef.set(newData, { merge: true }).catch(e => console.error(e));
+          } catch(e) {}
+        }
       }
 
       if (!isCorrect) {
@@ -429,25 +453,31 @@
     window.goHome = function() { state.screen = 'home'; render(); }
 
     // ==========================================
-    // 保護者モード（閻魔大王）用関数
+    // 👻 保護者モード（貞子システム：超あからさま版）
     // ==========================================
-    window.openPasscode = function() { state.showPasscode = true; state.passcodeValue = ''; render(); }
+    window.openPasscode = function() { 
+      state.showPasscode = true; 
+      state.passcodeValue = ''; 
+      state.passcodeErrorCount = 0; 
+      render(); 
+    }
     window.closePasscode = function() { state.showPasscode = false; state.passcodeValue = ''; render(); }
     
     window.inputPasscode = function(val) {
-      if (state.passcodeValue.length < 4) state.passcodeValue += val;
+      if (state.passcodeValue.length < 6) state.passcodeValue += val;
       render();
-      if (state.passcodeValue.length === 4) {
+      if (state.passcodeValue.length === 6) {
         setTimeout(() => {
-          if (state.passcodeValue === '9664') {
+          if (state.passcodeValue === '115115') { // ★パスコード
             state.showPasscode = false;
+            state.passcodeErrorCount = 0;
             state.screen = 'parent_dashboard';
           } else {
-            alert('【警告】パスコードが違います。去れ！');
+            state.passcodeErrorCount++;
             state.passcodeValue = '';
           }
           render();
-        }, 150);
+        }, 500); // 恐怖のタメ
       }
     }
     window.deletePasscode = function() { state.passcodeValue = state.passcodeValue.slice(0, -1); render(); }
@@ -517,7 +547,7 @@
     // 画面描画ロジック
     // ==========================================
     function renderHomeHTML() {
-      if (!state.fbReady || !state.isDataLoaded) {
+      if (!state.isDataLoaded) {
         return `
           <div class="flex flex-col items-center justify-center py-20 text-gray-500 animate-fade-in">
             <div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
@@ -605,6 +635,11 @@
               <i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button onclick="startWeaknessQuiz('${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors active:scale-95">
+                <span><i class="ph-fill ph-warning text-lg mr-2"></i>${sub.name} の苦手特訓</span>
+                <i class="ph-fill ph-play text-xl"></i>
+              </button>
+
               <button onclick="startQuiz('${sub.name}', 'all')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95">
                 <span>${sub.name} 全てをミックス</span>
                 <i class="ph-fill ph-play text-xl"></i>
@@ -625,7 +660,7 @@
               <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between">
                 <div class="mb-4 sm:mb-0 text-center sm:text-left">
                   <h2 class="text-xl font-bold text-rose-700 mb-1 flex items-center justify-center sm:justify-start">
-                    <i class="ph-fill ph-warning text-xl mr-2"></i>苦手克服モード
+                    <i class="ph-fill ph-warning text-xl mr-2"></i>全科目の苦手克服
                   </h2>
                   <p class="text-sm text-rose-600/80">過去に間違えた問題を優先的に出題します</p>
                 </div>
@@ -639,6 +674,27 @@
         `;
       }
 
+      const guestToggleHtml = `
+        <div class="mb-8 flex justify-center">
+          <label class="flex items-center cursor-pointer bg-white px-4 py-3 rounded-2xl shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="relative">
+              <input type="checkbox" class="sr-only" onchange="toggleGuestMode()" ${state.isGuest ? 'checked' : ''}>
+              <div class="block w-14 h-8 rounded-full transition-colors ${state.isGuest ? 'bg-yellow-400' : 'bg-gray-200'}"></div>
+              <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${state.isGuest ? 'transform translate-x-6' : ''}"></div>
+            </div>
+            <div class="ml-3 text-sm font-bold flex flex-col ${state.isGuest ? 'text-yellow-600' : 'text-gray-700'}">
+              <span class="flex items-center">
+                <i class="ph-fill ph-user-circle text-lg mr-1 ${state.isGuest ? 'text-yellow-500' : 'text-gray-400'}"></i>
+                ゲストモード
+              </span>
+              ${state.isGuest 
+                ? '<span class="text-[10px] text-yellow-600">データは保存されません (お友達用)</span>' 
+                : '<span class="text-[10px] text-gray-400">データは自動保存されます (通常)</span>'}
+            </div>
+          </label>
+        </div>
+      `;
+
       return `
         <div class="max-w-2xl mx-auto p-4 animate-fade-in pb-10">
           <div class="text-center mb-8 mt-8">
@@ -650,6 +706,9 @@
             </h1>
             <p class="text-gray-500 mt-3 font-medium">データ駆動で100点を狙う</p>
           </div>
+          
+          ${guestToggleHtml}
+
           <div class="flex bg-gray-200 p-1 rounded-xl mb-8">
             <button onclick="switchTab('study')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all ${state.activeTab === 'study' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500'}">
               学習する
@@ -758,9 +817,16 @@
         }
       }
 
+      const guestHeaderHtml = state.isGuest ? `
+        <div class="guest-stripes text-yellow-900 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50">
+          現在ゲストモードです（成績は保存されません）
+        </div>
+      ` : '';
+
       return `
-        <div class="max-w-xl mx-auto p-4 min-h-screen flex flex-col pt-6 pb-8 animate-fade-in">
-          <div class="mb-6">
+        <div class="max-w-xl mx-auto p-4 min-h-screen flex flex-col pt-6 pb-8 animate-fade-in relative">
+          ${guestHeaderHtml}
+          <div class="mb-6 ${state.isGuest ? 'mt-4' : ''}">
             <div class="flex justify-between items-end mb-3">
               <button onclick="handleInterrupt()" class="flex items-center justify-center p-2 rounded-xl bg-white border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-800 transition-colors shadow-sm">
                 <i class="ph-fill ph-house text-lg mr-1"></i><span class="text-xs font-bold">中断</span>
@@ -797,12 +863,13 @@
     function renderResultHTML() {
       const isPerfect = state.sessionStats.mistakes === 0;
       return `
-        <div class="max-w-md mx-auto p-6 min-h-screen flex flex-col items-center justify-center text-center animate-fade-in">
-          <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
+        <div class="max-w-md mx-auto p-6 min-h-screen flex flex-col items-center justify-center text-center animate-fade-in relative">
+          ${state.isGuest ? '<div class="guest-stripes text-yellow-900 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50">現在ゲストモードです（成績は保存されません）</div>' : ''}
+          <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 shadow-inner ${state.isGuest ? 'mt-8' : ''}">
             <i class="ph-fill ph-medal text-5xl text-yellow-500"></i>
           </div>
           <h1 class="text-3xl font-extrabold text-gray-800 mb-2">コンプリート！</h1>
-          <p class="text-gray-500 mb-8">すべての問題をクリアしました。<br>データは自動的に保存されています。</p>
+          <p class="text-gray-500 mb-8">すべての問題をクリアしました。<br>${state.isGuest ? '<span class="text-yellow-600 font-bold">※ゲストモードのためデータは保存されません</span>' : 'データは自動的に保存されています。'}</p>
           
           <div class="bg-white w-full p-6 rounded-3xl shadow-sm border border-gray-100 mb-8">
             <h3 class="text-sm text-gray-500 font-medium mb-4 uppercase tracking-wider">今回のセッション記録</h3>
@@ -830,21 +897,67 @@
       `;
     }
 
+    // 👻 究極の貞子パスコードUI（あからさまに怖い）
     function renderPasscodeHTML() {
+      const level = Math.min(state.passcodeErrorCount, 5);
+      
+      const bgClass = level >= 5 ? 'bg-cursed' : 'bg-black/95';
+      let textTitle = 'パスコードヲ入力セヨ';
+      let titleClass = 'text-red-600';
+      
+      if (level >= 3 && level < 5) textTitle = 'ウシロヲフリムクナ...';
+      if (level >= 4) titleClass = 'text-red-600 glitch-text';
+      if (level >= 5) {
+        textTitle = '呪 ワ レ タ 呪 ワ レ タ';
+        titleClass = 'text-red-600 glitch-text text-xl sm:text-2xl';
+      }
+
       return `
-        <div class="fixed inset-0 bg-black/95 flex flex-col items-center justify-center z-50 animate-fade-in px-4">
-            <i class="ph-fill ph-skull text-6xl text-red-700 mb-6 animate-pulse-red"></i>
-            <h3 class="text-red-600 font-bold tracking-[0.3em] mb-8 font-serif">パスコードヲ入力セヨ</h3>
-            <div class="flex gap-4 mb-10">
-                ${[0,1,2,3].map(i => `
-                    <div class="w-4 h-4 rounded-full border-2 border-red-900 ${state.passcodeValue.length > i ? 'bg-red-600 shadow-[0_0_10px_rgba(225,29,72,0.8)]' : 'bg-transparent'} transition-all"></div>
-                `).join('')}
+        <div class="fixed inset-0 ${bgClass} flex flex-col items-center justify-center z-50 animate-fade-in px-4 transition-colors duration-1000 overflow-hidden">
+            
+            <!-- 👻 井戸と貞子のコンテナ -->
+            <div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden">
+               <!-- 貞子本体 -->
+               <div class="sadako-wrapper lvl-${level}">
+                 <svg viewBox="0 0 200 300" class="sadako-svg">
+                   <!-- 腕 -->
+                   <path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#cbd5e1" />
+                   <path d="M 150,300 L 190,200 L 170,190 L 140,300 Z" fill="#cbd5e1" />
+                   <!-- 手 -->
+                   <path d="M 10,200 Q 5,180 20,180 Q 30,180 30,190 Z" fill="#e2e8f0" />
+                   <path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" />
+                   <!-- 体 -->
+                   <path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" />
+                   <!-- 髪（顔を覆う） -->
+                   <path d="M 50,300 C 30,120 170,120 150,300 C 130,180 70,180 50,300 Z" fill="#0a0a0a" />
+                   <!-- 最終形態で光る目 -->
+                   <circle class="s-eye" cx="85" cy="180" r="5" fill="#ff0000" />
+                   <circle class="s-eye" cx="115" cy="180" r="5" fill="#ff0000" />
+                 </svg>
+               </div>
+               <!-- 井戸 -->
+               <div class="well-container">
+                  <div class="well-hole"></div>
+               </div>
             </div>
-            <div class="grid grid-cols-3 gap-4 w-64 max-w-full font-serif">
-                ${[1,2,3,4,5,6,7,8,9].map(n => `<button onclick="inputPasscode('${n}')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/40 active:scale-95 transition-all mx-auto shadow-sm">${n}</button>`).join('')}
-                <button onclick="deletePasscode()" class="w-16 h-16 rounded-full flex items-center justify-center text-red-600 text-3xl hover:bg-red-900/40 active:scale-95 transition-all mx-auto"><i class="ph-fill ph-backspace"></i></button>
-                <button onclick="inputPasscode('0')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/40 active:scale-95 transition-all mx-auto shadow-sm">0</button>
-                <button onclick="closePasscode()" class="w-16 h-16 rounded-full text-gray-500 text-sm font-bold hover:text-gray-300 active:scale-95 transition-all mx-auto">戻る</button>
+
+            <!-- パスコード入力UI -->
+            <div class="relative z-50 flex flex-col items-center mt-10">
+              <i class="ph-fill ph-skull text-6xl text-red-700 mb-6 ${level > 0 ? 'animate-pulse-red' : ''}"></i>
+              <h3 class="${titleClass} font-bold tracking-[0.2em] sm:tracking-[0.3em] mb-8 font-serif whitespace-nowrap">${textTitle}</h3>
+              
+              <div class="flex gap-3 mb-10">
+                  ${[0,1,2,3,4,5].map(i => `
+                      <div class="w-4 h-4 rounded-full border-2 border-red-900 ${state.passcodeValue.length > i ? 'bg-red-600 shadow-[0_0_10px_rgba(225,29,72,0.8)]' : 'bg-transparent'} transition-all"></div>
+                  `).join('')}
+              </div>
+
+              <div class="grid grid-cols-3 gap-4 w-64 max-w-full font-serif">
+                  ${[1,2,3,4,5,6,7,8,9].map(n => `<button onclick="inputPasscode('${n}')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">${n}</button>`).join('')}
+                  <button onclick="deletePasscode()" class="w-16 h-16 rounded-full flex items-center justify-center border border-red-900 text-red-600 text-3xl hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm"><i class="ph-fill ph-backspace"></i></button>
+                  <button onclick="inputPasscode('0')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">0</button>
+                  <button onclick="closePasscode()" class="w-16 h-16 rounded-full border border-gray-800 text-gray-400 text-sm font-bold hover:text-gray-200 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">戻る</button>
+              </div>
             </div>
         </div>
       `;
