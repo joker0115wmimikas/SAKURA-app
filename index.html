@@ -22,49 +22,59 @@
       50% { filter: drop-shadow(0 0 15px rgba(225,29,72,1)); }
     }
     .animate-pulse-red { animation: pulse-red 2s infinite; }
-    
     .guest-stripes { background: repeating-linear-gradient(45deg, #f59e0b, #f59e0b 10px, #fbbf24 10px, #fbbf24 20px); }
 
-    /* 👻 貞子アニメーションシステム（超あからさま版） */
+    /* 👻 貞子アニメーションシステム（超立体・あからさま版） */
+    .sadako-system {
+      position: fixed;
+      bottom: 0; left: 0; right: 0; top: 0;
+      pointer-events: none;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      overflow: hidden;
+    }
     .well-container {
-       position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%);
-       width: 250px; height: 90px; z-index: 10;
+      position: absolute;
+      bottom: 30px;
+      width: 320px; height: 100px;
+      background: radial-gradient(ellipse at center, #000 20%, #111 60%, #333 100%);
+      border: 12px solid #2a2a2a;
+      border-radius: 50%;
+      box-shadow: inset 0 20px 30px #000, 0 15px 30px rgba(0,0,0,0.9);
+      z-index: 11;
     }
-    .well-hole {
-       width: 100%; height: 100%;
-       background: radial-gradient(ellipse at center, #000 20%, #111 60%, #333 100%);
-       border: 12px solid #2a2a2a; border-radius: 50%;
-       box-shadow: 0 0 30px #000 inset, 0 10px 30px rgba(0,0,0,0.9);
+    .sadako-body {
+      position: absolute;
+      bottom: 70px;
+      width: 180px; height: 250px;
+      transform-origin: bottom center;
+      transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s;
+      z-index: 12;
     }
-    .sadako-wrapper {
-       position: absolute; bottom: 12%; left: 50%; 
-       width: 150px; height: 200px; margin-left: -75px;
-       transform-origin: bottom center;
-       transition: all 1.2s cubic-bezier(0.3, 0.1, 0.2, 1);
-       z-index: 5;
-    }
-    .sadako-svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8)); }
+    .sadako-svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.9)); }
     
     /* 恐怖の進行レベル */
-    .lvl-0 .sadako-wrapper { transform: translateY(180px) scale(0.3); opacity: 0; }
-    .lvl-1 .sadako-wrapper { transform: translateY(80px) scale(0.8); opacity: 0.9; z-index: 15; } /* 手がかかる */
-    .lvl-2 .sadako-wrapper { transform: translateY(30px) scale(1.2); opacity: 1; z-index: 15; } /* 頭出る */
-    .lvl-3 .sadako-wrapper { transform: translateY(-20px) scale(1.8); opacity: 1; z-index: 15; filter: drop-shadow(0 0 20px rgba(255,0,0,0.3)); } /* 這い出す */
-    .lvl-4 .sadako-wrapper { transform: translateY(-80px) scale(3.5); opacity: 1; z-index: 40; filter: drop-shadow(0 0 40px rgba(255,0,0,0.5)); } /* 迫る */
-    .lvl-5 .sadako-wrapper { transform: translateY(-100px) scale(8); opacity: 1; z-index: 100; filter: drop-shadow(0 0 80px rgba(255,0,0,1)); animation: s-shake 0.05s infinite; } /* 究極の呪い発動 */
+    .lvl-0 .sadako-body { transform: translateY(250px) scale(0.5); opacity: 0; }
+    .lvl-1 .sadako-body { transform: translateY(120px) scale(0.8); opacity: 1; }
+    .lvl-2 .sadako-body { transform: translateY(60px) scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px rgba(255,0,0,0.2)); }
+    .lvl-3 .sadako-body { transform: translateY(10px) scale(1.6); opacity: 1; z-index: 30; filter: drop-shadow(0 0 25px rgba(255,0,0,0.4)); }
+    .lvl-4 .sadako-body { transform: translateY(-80px) scale(3.5); opacity: 1; z-index: 40; filter: drop-shadow(0 0 40px rgba(255,0,0,0.6)); }
+    .lvl-5 .sadako-body { transform: translateY(-120px) scale(7); opacity: 1; z-index: 100; filter: drop-shadow(0 0 80px rgba(255,0,0,1)); animation: s-shake 0.05s infinite; }
     
-    .s-eye { opacity: 0; transition: opacity 0.5s; }
-    .lvl-5 .s-eye { opacity: 1; animation: s-blink 0.1s infinite; fill: #ff0000; filter: drop-shadow(0 0 10px red); }
+    .s-eye { opacity: 0; transition: opacity 0.5s; fill: #ff0000; filter: drop-shadow(0 0 10px red); }
+    .lvl-5 .s-eye { opacity: 1; animation: s-blink 0.1s infinite; }
     
     @keyframes s-shake {
-      0%, 100% { transform: translateY(-100px) scale(8) translateX(0); }
-      25% { transform: translateY(-100px) scale(8) translateX(-8px); }
-      50% { transform: translateY(-100px) scale(8) translateX(8px); }
+      0%, 100% { transform: translateY(-120px) scale(7) translateX(0); }
+      25% { transform: translateY(-120px) scale(7) translateX(-5px); }
+      50% { transform: translateY(-120px) scale(7) translateX(5px); }
     }
-    @keyframes s-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes s-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.1; } }
     
     .bg-cursed { animation: bg-flash 0.1s infinite alternate; }
-    @keyframes bg-flash { from { background-color: #1a0000; } to { background-color: #800000; } }
+    @keyframes bg-flash { from { background-color: #1a0000; } to { background-color: #600000; } }
 
     .glitch-text { animation: glitch-anim 0.1s infinite; color: #ff0000; text-shadow: 4px 0 #000, -4px 0 #000; font-weight: 900; letter-spacing: 0.1em; }
     @keyframes glitch-anim {
@@ -82,61 +92,9 @@
 
   <script>
     // ==========================================
-    // 📚 問題データ (PDFから抽出した完璧な英語データを含む)
+    // 📚 問題データ (全科目の超特大データベース)
     // ==========================================
     let rawData = [
-      // 🇺🇸 英語 (PDF単語帳から完全手動抽出・修正版)
-      { subject: "英語", category: "英単語", q: "「新しい」を意味する英単語は？", a: "new" },
-      { subject: "英語", category: "英単語", q: "「かっこいい、涼しい」を意味する英単語は？", a: "cool" },
-      { subject: "英語", category: "英単語", q: "「速い、速く」を意味する英単語は？", a: "fast" },
-      { subject: "英語", category: "英単語", q: "「古い、~歳」を意味する英単語は？", a: "old" },
-      { subject: "英語", category: "英単語", q: "「日本の、日本人、日本語」を意味する英単語は？", a: "Japanese" },
-      { subject: "英語", category: "英単語", q: "「素晴らしい」を意味する英単語は？", a: "great" },
-      { subject: "英語", category: "英単語", q: "「悪い」を意味する英単語は？", a: "bad" },
-      { subject: "英語", category: "英単語", q: "「勇敢な」を意味する英単語は？", a: "brave" },
-      { subject: "英語", category: "英単語", q: "「親切な」を意味する英単語は？", a: "kind" },
-      { subject: "英語", category: "英単語", q: "「一生懸命に、難しい」を意味する英単語は？", a: "hard" },
-      { subject: "英語", category: "英単語", q: "「忙しい」を意味する英単語は？", a: "busy" },
-      { subject: "英語", category: "英単語", q: "「たくさんの」を意味する英単語は？", a: "many" },
-      { subject: "英語", category: "英単語", q: "「とても」を意味する英単語は？", a: "very" },
-      { subject: "英語", category: "英単語", q: "「上手に」を意味する英単語は？", a: "well" },
-      { subject: "英語", category: "英単語", q: "「本当に」を意味する英単語は？", a: "really" },
-      { subject: "英語", category: "英単語", q: "「時々」を意味する英単語は？", a: "sometimes" },
-      { subject: "英語", category: "英単語", q: "「~もまた、あまりに〜すぎる」を意味する英単語は？", a: "too" },
-      { subject: "英語", category: "英単語", q: "「どのように、どれくらい」を意味する英単語は？", a: "how" },
-      { subject: "英語", category: "英単語", q: "「今」を意味する英単語は？", a: "now" },
-      { subject: "英語", category: "英単語", q: "「いつも」を意味する英単語は？", a: "always" },
-      { subject: "英語", category: "英単語", q: "「外で、外へ」を意味する英単語は？", a: "outside" },
-      { subject: "英語", category: "英単語", q: "「昨日」を意味する英単語は？", a: "yesterday" },
-      { subject: "英語", category: "英単語", q: "「上へ、起きて」を意味する英単語は？", a: "up" },
-      { subject: "英語", category: "英単語", q: "「･･･を通って」を意味する英単語は？", a: "through" },
-      { subject: "英語", category: "英単語", q: "「ドア、戸」を意味する英単語は？", a: "door" },
-      { subject: "英語", category: "英単語", q: "「･･･の中へ」を意味する英単語は？", a: "into" },
-      { subject: "英語", category: "熟語・表現", q: "「･･･を手に取る」を英語の熟語で？", a: "pick up" },
-      { subject: "英語", category: "英単語", q: "「木製の」を意味する英単語は？", a: "wooden" },
-      { subject: "英語", category: "英単語", q: "「願い」を意味する英単語は？", a: "wish" },
-      { subject: "英語", category: "英単語", q: "「未来」を意味する英単語は？", a: "future" },
-      { subject: "英語", category: "英単語", q: "「明日」を意味する英単語は？", a: "tomorrow" },
-      { subject: "英語", category: "英単語", q: "「計画する」を意味する英単語は？", a: "plan" },
-      { subject: "英語", category: "英単語", q: "「暇な、自由な」を意味する英単語は？", a: "free" },
-      { subject: "英語", category: "英単語", q: "「･･･を意味する」を意味する英単語は？", a: "mean" },
-      { subject: "英語", category: "英単語", q: "「前へ」を意味する英単語は？", a: "forward" },
-      { subject: "英語", category: "熟語・表現", q: "「楽しみに待つ」を英語の熟語で？", a: "look forward to" },
-      { subject: "英語", category: "英単語", q: "「話す」を意味する英単語は？", a: "talk" },
-      { subject: "英語", category: "英単語", q: "「市場」を意味する英単語は？", a: "market" },
-      { subject: "英語", category: "英単語", q: "「お土産」を意味する英単語は？", a: "souvenir" },
-      { subject: "英語", category: "英単語", q: "「場所」を意味する英単語は？", a: "place" },
-      { subject: "英語", category: "英単語", q: "「現れる」を意味する英単語は？", a: "appear" },
-      { subject: "英語", category: "英単語", q: "「あれら」を意味する英単語は？", a: "those" },
-      { subject: "英語", category: "英単語", q: "「買う」を意味する英単語は？", a: "buy" },
-      { subject: "英語", category: "英単語", q: "「人々」を意味する英単語は？", a: "people" },
-      { subject: "英語", category: "英単語", q: "「何か」を意味する英単語は？", a: "anything" },
-      { subject: "英語", category: "英単語", q: "「他に」を意味する英単語は？", a: "else" },
-      { subject: "英語", category: "英単語", q: "「いっぱいの」を意味する英単語は？", a: "full" },
-      { subject: "英語", category: "英単語", q: "「デザート」を意味する英単語は？", a: "dessert" },
-      { subject: "英語", category: "熟語・表現", q: "「〜はいかがですか？」を英語の熟語で？", a: "would like" },
-      { subject: "英語", category: "熟語・表現", q: "「〜したい」を英語の熟語で？", a: "would like to" },
-
       // 🌍 理科
       { subject: "理科", category: "大地の変化", q: "地球表面をおおう、厚さ数10〜約100kmの、かたい板状の岩石のかたまり", a: "プレート" },
       { subject: "理科", category: "大地の変化", q: "大地が大きな力を受けて盛り上がること", a: "隆起" },
@@ -155,7 +113,6 @@
       { subject: "理科", category: "地震", q: "地震そのものの規模（エネルギーの大きさ）を表す数値", a: "マグニチュード" },
       { subject: "理科", category: "地震", q: "過去にくり返しずれ動き、今後も動く可能性のある断層", a: "活断層" },
       { subject: "理科", category: "地震", q: "地震が起こるときの海底の急激な変形などによって発生する波", a: "津波" },
-      { subject: "理科", category: "地震", q: "初期微動継続時間と震源からの距離には、どのような関係があるか", a: "比例する" },
       { subject: "理科", category: "地震", q: "地震のP波とS波の到着時刻の差を利用して、大きなゆれが来る前に知らせるシステム", a: "緊急地震速報" },
       { subject: "理科", category: "地震", q: "地震のゆれによって、水分を多く含んだ地盤が液体のようにふるまう現象", a: "液状化" },
       { subject: "理科", category: "火山と岩石", q: "地下の岩石が高温などでとけてできたもの", a: "マグマ" },
@@ -219,7 +176,116 @@
       { subject: "社会", category: "地理", q: "ヨーロッパの国々の統合を目指し設立された組織。2020年にイギリスが離脱。", a: "EU" }
     ];
 
-    // 重複を排除しIDを付与
+    // ==========================================
+    // 🇺🇸 英語 (超大増強版：200問以上)
+    // ==========================================
+    const engVocab = {
+      // いただいたPDFの内容 + 中1基礎必須単語を完全網羅
+      "新しい": "new", "かっこいい、涼しい": "cool", "速い、速く": "fast", "古い、~歳": "old",
+      "日本の、日本人、日本語": "Japanese", "素晴らしい": "great", "悪い": "bad", "勇敢な": "brave",
+      "親切な": "kind", "一生懸命に、難しい": "hard", "忙しい": "busy", "たくさんの": "many",
+      "とても": "very", "上手に、よく": "well", "本当に": "really", "時々": "sometimes", "いつも": "always",
+      "~もまた、あまりに〜すぎる": "too", "どのように、どれくらい": "how", "今": "now", 
+      "外で、外へ": "outside", "昨日": "yesterday", "明日": "tomorrow", "今日": "today",
+      "上へ、起きて": "up", "下へ": "down", "右": "right", "左": "left",
+      "･･･を通って": "through", "ドア、戸": "door", "窓": "window", "壁": "wall", "床": "floor",
+      "･･･の中へ": "into", "木製の": "wooden", "願い": "wish", "未来": "future",
+      "計画する": "plan", "暇な、自由な": "free", "･･･を意味する": "mean", "前へ": "forward",
+      "話す": "talk", "言う": "say", "教える": "teach", "学ぶ": "learn", "勉強する": "study",
+      "市場": "market", "お土産": "souvenir", "場所": "place", "現れる": "appear",
+      "あれら": "those", "これら": "these", "買う": "buy", "売る": "sell",
+      "人々": "people", "何か": "anything", "他に": "else", "いっぱいの": "full",
+      "デザート": "dessert", "肉": "meat", "魚": "fish", "野菜": "vegetable", "果物": "fruit",
+      "月曜日": "Monday", "火曜日": "Tuesday", "水曜日": "Wednesday", "木曜日": "Thursday",
+      "金曜日": "Friday", "土曜日": "Saturday", "日曜日": "Sunday",
+      "1月": "January", "2月": "February", "3月": "March", "4月": "April",
+      "5月": "May", "6月": "June", "7月": "July", "8月": "August",
+      "9月": "September", "10月": "October", "11月": "November", "12月": "December",
+      "私を、私に": "me", "私のもの": "mine", "彼を、彼に": "him", "彼のもの": "his",
+      "彼女を、彼女に": "her", "彼女のもの": "hers", "私たちを、私たちに": "us", "私たちのもの": "ours",
+      "彼らを、彼らに": "them", "彼らのもの": "theirs",
+      "誰": "who", "何": "what", "どこ": "where", "いつ": "when", "なぜ": "why", "どちら": "which",
+      "歩く": "walk", "走る": "run", "泳ぐ": "swim", "飛ぶ": "fly", "行く": "go", "来る": "come",
+      "見る(自然に目に入る)": "see", "見る(意識して見る)": "look", "見る(動くものを)": "watch",
+      "聞く": "hear", "感じる": "feel", "考える、思う": "think", "知っている": "know",
+      "好き": "like", "愛する": "love", "欲しい": "want", "必要とする": "need", "使う": "use",
+      "作る": "make", "取る、乗る": "take", "置く": "put", "得る、着く": "get", "与える": "give",
+      "助ける、手伝う": "help", "働く": "work", "遊ぶ、演奏する、スポーツをする": "play", "楽しむ": "enjoy", "住む": "live",
+      "動物": "animal", "犬": "dog", "猫": "cat", "鳥": "bird",
+      "木": "tree", "花": "flower", "山": "mountain", "川": "river", "海": "sea",
+      "空": "sky", "太陽": "sun", "月(天体)": "moon", "星": "star", "雨": "rain", "雪": "snow",
+      "学校": "school", "先生": "teacher", "生徒": "student", "友達": "friend", "家族": "family",
+      "父": "father", "母": "mother", "兄・弟": "brother", "姉・妹": "sister",
+      "本": "book", "ペン": "pen", "机": "desk", "椅子": "chair", "部屋": "room",
+      "家": "house", "車": "car", "電車": "train", "バス": "bus", "自転車": "bike",
+      "国": "country", "世界": "world", "言葉、単語": "word", "名前": "name", "写真、絵": "picture",
+      "朝": "morning", "午後": "afternoon", "夕方、夜": "evening", "夜": "night",
+      "時間": "time", "分": "minute", "年": "year", "週": "week", "日": "day",
+      "大きい": "big", "小さい": "small", "背が高い": "tall", "短い、低い": "short", "長い": "long",
+      "熱い、暑い": "hot", "冷たい、寒い": "cold", "暖かい": "warm",
+      "良い": "good", "幸せな": "happy", "悲しい": "sad", "怒った": "angry", "疲れた": "tired",
+      "お腹が空いた": "hungry", "喉が渇いた": "thirsty", "準備ができた": "ready",
+      "〜について": "about", "〜の後に": "after", "〜の前に": "before", "〜の近くに": "near",
+      "〜の下に": "under", "〜と一緒に": "with", "〜なしで": "without",
+      "だから": "so", "しかし": "but", "なぜなら": "because", "もし〜なら": "if",
+      "たいてい": "usually", "しばしば": "often", "決して〜ない": "never", "もう一度": "again", "もしかすると": "maybe"
+    };
+
+    const engPhrases = {
+      "･･･を手に取る": "pick up",
+      "楽しみに待つ": "look forward to",
+      "〜はいかがですか？": "would like",
+      "〜したい（丁寧）": "would like to",
+      "〜が得意である": "be good at ~",
+      "なるほど。/わかった。": "I see.",
+      "すみません。": "Excuse me.",
+      "はい、どうぞ。": "Here you are.",
+      "ありがとう。": "Thank you.",
+      "どういたしまして。": "You're welcome.",
+      "私を〜と呼んでください。": "Call me ~.",
+      "〜したい（一般動詞）": "want to ~",
+      "放課後に": "after school",
+      "幸運を祈る": "Good luck.",
+      "問題ないよ": "No problem.",
+      "少し": "a little",
+      "〜をつける": "turn on",
+      "〜を消す": "turn off",
+      "〜を手伝う": "help ~ with ...",
+      "ちょっと待って": "Just a moment.",
+      "〜に気をつける": "be careful with ~",
+      "何歳ですか？": "How old ...?",
+      "どうしたの？（挨拶・最近どう？）": "What's up?",
+      "どうしたの？（具合が悪い時）": "What's wrong?",
+      "〜のように聞こえる": "sound like",
+      "〜はどうですか？": "How about ~ ?",
+      "休憩する": "take a rest",
+      "〜を楽しむ": "enjoy ~ing",
+      "〜を見る": "look at",
+      "私はエディです": "I am Eddy.",
+      "あなたはサッカーファンですか？": "Are you a soccer fan?",
+      "私は牛乳を飲みます（習慣）": "I drink milk.",
+      "あなたは牛乳を飲みますか？": "Do you drink milk?",
+      "あれは神社ですか？": "Is that a shrine?",
+      "あれは何ですか？": "What is that?",
+      "いつピアノを練習しますか？": "When do you practice the piano?",
+      "どこに住んでいますか？": "Where do you live?",
+      "あれは誰ですか？": "Who is that?",
+      "彼女はピアノを弾きます": "She plays the piano.",
+      "純は今、バスケットをしています": "Jun is playing basketball now.",
+      "私は昨日図書館にいました": "I was in the library yesterday.",
+      "私は昨日テスト勉強をしていました": "I was studying for the test yesterday.",
+      "私は昨日バスケットをしました": "I played basketball yesterday."
+    };
+
+    // 辞書オブジェクトから一括で配列に追加
+    Object.keys(engVocab).forEach(k => {
+      rawData.push({ subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocab[k] });
+    });
+    Object.keys(engPhrases).forEach(k => {
+      rawData.push({ subject: "英語", category: "熟語・表現", q: `「${k}」を英語で言うと？`, a: engPhrases[k] });
+    });
+
+    // 重複を排除し一意なIDを付与
     const uniqueMap = new Map();
     rawData.forEach((item, index) => {
       const key = item.subject + item.category + item.q + item.a;
@@ -257,83 +323,84 @@
     });
 
     // ==========================================
-    // Firebase 初期化 (エラーを完全に防ぐ安全設計)
+    // Firebase 初期化 (エラーを完全に無視する極限安全設計)
     // ==========================================
     const defaultAppId = "sakura-app-d3d10"; 
     const appId = (typeof __app_id !== 'undefined' && __app_id) ? __app_id : defaultAppId;
     
-    try {
-      let firebaseConfig;
-      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-        firebaseConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
-      } else {
-        firebaseConfig = {
-          apiKey: "AIzaSyCHGs5PHyfvW57SCJJi8GiDQ_ydH8M-5Vs",
-          authDomain: "sakura-app-d3d10.firebaseapp.com",
-          projectId: "sakura-app-d3d10",
-          storageBucket: "sakura-app-d3d10.firebasestorage.app",
-          messagingSenderId: "244016922212",
-          appId: "1:244016922212:web:a1f1775a6a6aba2de8a971"
-        };
-      }
-
-      if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-      }
-      
-      const auth = firebase.auth();
-      const db = firebase.firestore();
-
-      // ★ 認証状態の監視を先に登録
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          state.user = user;
-          state.fbReady = true;
-          // 家族共通のクラウド領域を監視
-          try {
-             const statsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('shared_stats');
-             statsRef.onSnapshot(snapshot => {
-                 const stats = {};
-                 snapshot.forEach(doc => { stats[doc.id] = doc.data(); });
-                 state.userStats = { ...state.userStats, ...stats };
-                 state.isDataLoaded = true;
-                 render();
-               }, error => {
-                 console.error("Firestore Error:", error);
-                 state.isDataLoaded = true;
-                 render();
-               });
-          } catch(e) {
-             console.error("Snapshot Error:", e);
-             state.isDataLoaded = true;
-             render();
-          }
+    const initApp = async () => {
+      try {
+        let firebaseConfig;
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+          firebaseConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
         } else {
+          firebaseConfig = {
+            apiKey: "AIzaSyCHGs5PHyfvW57SCJJi8GiDQ_ydH8M-5Vs",
+            authDomain: "sakura-app-d3d10.firebaseapp.com",
+            projectId: "sakura-app-d3d10",
+            storageBucket: "sakura-app-d3d10.firebasestorage.app",
+            messagingSenderId: "244016922212",
+            appId: "1:244016922212:web:a1f1775a6a6aba2de8a971"
+          };
+        }
+
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // 認証状態の監視
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            state.user = user;
+            state.fbReady = true;
+            try {
+               const statsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('shared_stats');
+               statsRef.onSnapshot(snapshot => {
+                   const stats = {};
+                   snapshot.forEach(doc => { stats[doc.id] = doc.data(); });
+                   state.userStats = { ...state.userStats, ...stats };
+                   state.isDataLoaded = true;
+                   render();
+                 }, error => {
+                   console.error("Firestore Error:", error);
+                   state.isDataLoaded = true;
+                   render();
+                 });
+            } catch(e) {
+               console.error("Snapshot Error:", e);
+               state.isDataLoaded = true;
+               render();
+            }
+          } else {
+            state.isDataLoaded = true;
+            render();
+          }
+        });
+
+        // ログイン処理（失敗してもアプリは続行）
+        try {
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await auth.signInWithCustomToken(__initial_auth_token);
+          } else {
+            await auth.signInAnonymously();
+          }
+        } catch(e) {
+          console.warn("Authentication skipped or failed (Local Mode):", e);
           state.isDataLoaded = true;
           render();
         }
-      });
-
-      // ★ 認証処理
-      if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-        auth.signInWithCustomToken(__initial_auth_token).catch(e => {
-           console.error("Custom Auth Error:", e);
-           state.isDataLoaded = true;
-           render();
-        });
-      } else {
-        auth.signInAnonymously().catch(e => {
-           console.error("Anon Auth Error:", e);
-           // エラー時もアプリを続行させるためローカルモードに移行
-           state.isDataLoaded = true;
-           render();
-        });
+      } catch(e) {
+        console.error("Firebase completely failed (Local Mode):", e);
+        state.isDataLoaded = true;
+        render();
       }
-    } catch(e) {
-      console.error("Firebase Init Error:", e);
-      state.isDataLoaded = true;
-      render();
-    }
+    };
+    
+    // 初期化の実行
+    initApp();
 
     // ==========================================
     // クイズ用関数
@@ -453,7 +520,7 @@
     window.goHome = function() { state.screen = 'home'; render(); }
 
     // ==========================================
-    // 👻 保護者モード（貞子システム：超あからさま版）
+    // 👻 保護者モード（貞子システム：究極立体版）
     // ==========================================
     window.openPasscode = function() { 
       state.showPasscode = true; 
@@ -477,7 +544,7 @@
             state.passcodeValue = '';
           }
           render();
-        }, 500); // 恐怖のタメ
+        }, 500);
       }
     }
     window.deletePasscode = function() { state.passcodeValue = state.passcodeValue.slice(0, -1); render(); }
@@ -897,7 +964,7 @@
       `;
     }
 
-    // 👻 究極の貞子パスコードUI（あからさまに怖い）
+    // 👻 超あからさまな貞子パスコードUI
     function renderPasscodeHTML() {
       const level = Math.min(state.passcodeErrorCount, 5);
       
@@ -915,29 +982,27 @@
       return `
         <div class="fixed inset-0 ${bgClass} flex flex-col items-center justify-center z-50 animate-fade-in px-4 transition-colors duration-1000 overflow-hidden">
             
-            <!-- 👻 井戸と貞子のコンテナ -->
-            <div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden">
-               <!-- 貞子本体 -->
-               <div class="sadako-wrapper lvl-${level}">
-                 <svg viewBox="0 0 200 300" class="sadako-svg">
-                   <!-- 腕 -->
-                   <path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#cbd5e1" />
-                   <path d="M 150,300 L 190,200 L 170,190 L 140,300 Z" fill="#cbd5e1" />
-                   <!-- 手 -->
-                   <path d="M 10,200 Q 5,180 20,180 Q 30,180 30,190 Z" fill="#e2e8f0" />
-                   <path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" />
-                   <!-- 体 -->
-                   <path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" />
-                   <!-- 髪（顔を覆う） -->
-                   <path d="M 50,300 C 30,120 170,120 150,300 C 130,180 70,180 50,300 Z" fill="#0a0a0a" />
-                   <!-- 最終形態で光る目 -->
-                   <circle class="s-eye" cx="85" cy="180" r="5" fill="#ff0000" />
-                   <circle class="s-eye" cx="115" cy="180" r="5" fill="#ff0000" />
-                 </svg>
-               </div>
-               <!-- 井戸 -->
-               <div class="well-container">
-                  <div class="well-hole"></div>
+            <div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden lvl-${level}">
+               <div class="relative w-[300px] h-[300px] mt-auto flex items-end justify-center">
+                 
+                 <!-- 貞子本体 -->
+                 <div class="sadako-wrapper">
+                   <svg viewBox="0 0 200 300" class="sadako-svg">
+                     <path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#94a3b8" />
+                     <path d="M 150,300 L 190,200 L 170,190 L 140,300 Z" fill="#94a3b8" />
+                     <path d="M 10,200 Q 5,180 20,180 Q 30,180 30,190 Z" fill="#e2e8f0" />
+                     <path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" />
+                     <path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" />
+                     <path d="M 50,300 C 30,100 170,100 150,300 C 130,150 70,150 50,300 Z" fill="#0a0a0a" />
+                     <circle class="s-eye" cx="85" cy="180" r="6" />
+                     <circle class="s-eye" cx="115" cy="180" r="6" />
+                   </svg>
+                 </div>
+                 
+                 <!-- 井戸 (貞子より前に配置して飛び出ているように見せる) -->
+                 <div class="well-container">
+                    <div class="well-hole"></div>
+                 </div>
                </div>
             </div>
 
@@ -1058,7 +1123,6 @@
       root.innerHTML = html;
     }
 
-    render();
   </script>
 </body>
 </html>
