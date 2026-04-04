@@ -22,59 +22,49 @@
       50% { filter: drop-shadow(0 0 15px rgba(225,29,72,1)); }
     }
     .animate-pulse-red { animation: pulse-red 2s infinite; }
+    
     .guest-stripes { background: repeating-linear-gradient(45deg, #f59e0b, #f59e0b 10px, #fbbf24 10px, #fbbf24 20px); }
 
-    /* 👻 貞子アニメーションシステム（超立体・あからさま版） */
-    .sadako-system {
-      position: fixed;
-      bottom: 0; left: 0; right: 0; top: 0;
-      pointer-events: none;
-      z-index: 10;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      overflow: hidden;
-    }
+    /* 👻 貞子アニメーションシステム（超・あからさま版） */
     .well-container {
-      position: absolute;
-      bottom: 30px;
-      width: 320px; height: 100px;
-      background: radial-gradient(ellipse at center, #000 20%, #111 60%, #333 100%);
-      border: 12px solid #2a2a2a;
-      border-radius: 50%;
-      box-shadow: inset 0 20px 30px #000, 0 15px 30px rgba(0,0,0,0.9);
-      z-index: 11;
+       position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%);
+       width: 250px; height: 90px; z-index: 10;
     }
-    .sadako-body {
-      position: absolute;
-      bottom: 70px;
-      width: 180px; height: 250px;
-      transform-origin: bottom center;
-      transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s;
-      z-index: 12;
+    .well-hole {
+       width: 100%; height: 100%;
+       background: radial-gradient(ellipse at center, #000 20%, #111 60%, #333 100%);
+       border: 12px solid #2a2a2a; border-radius: 50%;
+       box-shadow: 0 0 30px #000 inset, 0 10px 30px rgba(0,0,0,0.9);
     }
-    .sadako-svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.9)); }
+    .sadako-wrapper {
+       position: absolute; bottom: 12%; left: 50%; 
+       width: 150px; height: 200px; margin-left: -75px;
+       transform-origin: bottom center;
+       transition: all 1.2s cubic-bezier(0.3, 0.1, 0.2, 1);
+       z-index: 5;
+    }
+    .sadako-svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8)); }
     
     /* 恐怖の進行レベル */
-    .lvl-0 .sadako-body { transform: translateY(250px) scale(0.5); opacity: 0; }
-    .lvl-1 .sadako-body { transform: translateY(120px) scale(0.8); opacity: 1; }
-    .lvl-2 .sadako-body { transform: translateY(60px) scale(1.1); opacity: 1; filter: drop-shadow(0 0 15px rgba(255,0,0,0.2)); }
-    .lvl-3 .sadako-body { transform: translateY(10px) scale(1.6); opacity: 1; z-index: 30; filter: drop-shadow(0 0 25px rgba(255,0,0,0.4)); }
-    .lvl-4 .sadako-body { transform: translateY(-80px) scale(3.5); opacity: 1; z-index: 40; filter: drop-shadow(0 0 40px rgba(255,0,0,0.6)); }
-    .lvl-5 .sadako-body { transform: translateY(-120px) scale(7); opacity: 1; z-index: 100; filter: drop-shadow(0 0 80px rgba(255,0,0,1)); animation: s-shake 0.05s infinite; }
+    .lvl-0 .sadako-wrapper { transform: translateY(180px) scale(0.3); opacity: 0; }
+    .lvl-1 .sadako-wrapper { transform: translateY(80px) scale(0.8); opacity: 0.9; z-index: 15; } /* 手がかかる */
+    .lvl-2 .sadako-wrapper { transform: translateY(30px) scale(1.2); opacity: 1; z-index: 15; } /* 頭出る */
+    .lvl-3 .sadako-wrapper { transform: translateY(-20px) scale(1.8); opacity: 1; z-index: 15; filter: drop-shadow(0 0 20px rgba(255,0,0,0.3)); } /* 這い出す */
+    .lvl-4 .sadako-wrapper { transform: translateY(-80px) scale(3.5); opacity: 1; z-index: 40; filter: drop-shadow(0 0 40px rgba(255,0,0,0.5)); } /* 迫る */
+    .lvl-5 .sadako-wrapper { transform: translateY(-100px) scale(8); opacity: 1; z-index: 100; filter: drop-shadow(0 0 80px rgba(255,0,0,1)); animation: s-shake 0.05s infinite; } /* 究極の呪い発動 */
     
-    .s-eye { opacity: 0; transition: opacity 0.5s; fill: #ff0000; filter: drop-shadow(0 0 10px red); }
-    .lvl-5 .s-eye { opacity: 1; animation: s-blink 0.1s infinite; }
+    .s-eye { opacity: 0; transition: opacity 0.5s; }
+    .lvl-5 .s-eye { opacity: 1; animation: s-blink 0.1s infinite; fill: #ff0000; filter: drop-shadow(0 0 10px red); }
     
     @keyframes s-shake {
-      0%, 100% { transform: translateY(-120px) scale(7) translateX(0); }
-      25% { transform: translateY(-120px) scale(7) translateX(-5px); }
-      50% { transform: translateY(-120px) scale(7) translateX(5px); }
+      0%, 100% { transform: translateY(-100px) scale(8) translateX(0); }
+      25% { transform: translateY(-100px) scale(8) translateX(-8px); }
+      50% { transform: translateY(-100px) scale(8) translateX(8px); }
     }
-    @keyframes s-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.1; } }
+    @keyframes s-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     
     .bg-cursed { animation: bg-flash 0.1s infinite alternate; }
-    @keyframes bg-flash { from { background-color: #1a0000; } to { background-color: #600000; } }
+    @keyframes bg-flash { from { background-color: #1a0000; } to { background-color: #800000; } }
 
     .glitch-text { animation: glitch-anim 0.1s infinite; color: #ff0000; text-shadow: 4px 0 #000, -4px 0 #000; font-weight: 900; letter-spacing: 0.1em; }
     @keyframes glitch-anim {
@@ -92,7 +82,7 @@
 
   <script>
     // ==========================================
-    // 📚 問題データ (全科目の超特大データベース)
+    // 📚 問題データ (PDFから抽出した完璧なデータを含む)
     // ==========================================
     let rawData = [
       // 🌍 理科
@@ -113,8 +103,15 @@
       { subject: "理科", category: "地震", q: "地震そのものの規模（エネルギーの大きさ）を表す数値", a: "マグニチュード" },
       { subject: "理科", category: "地震", q: "過去にくり返しずれ動き、今後も動く可能性のある断層", a: "活断層" },
       { subject: "理科", category: "地震", q: "地震が起こるときの海底の急激な変形などによって発生する波", a: "津波" },
+      { subject: "理科", category: "地震", q: "初期微動継続時間と震源からの距離には、どのような関係があるか", a: "比例する" },
       { subject: "理科", category: "地震", q: "地震のP波とS波の到着時刻の差を利用して、大きなゆれが来る前に知らせるシステム", a: "緊急地震速報" },
       { subject: "理科", category: "地震", q: "地震のゆれによって、水分を多く含んだ地盤が液体のようにふるまう現象", a: "液状化" },
+      { subject: "理科", category: "地震", q: "自然災害による被害を予測し、その被害範囲を地図化したもの", a: "ハザードマップ" },
+      { subject: "理科", category: "地震", q: "地震が発生したとき、ゆれは震源からどの方向に伝わるか", a: "あらゆる方向（球状）" },
+      { subject: "理科", category: "地震", q: "震央から遠い地点ほど、地震が発生してからゆれはじめるまでの時間はどうなるか", a: "長くなる" },
+      { subject: "理科", category: "地震", q: "震央から遠い地点ほど、ふつう地震のゆれの大きさはどうなるか", a: "小さくなる" },
+      { subject: "理科", category: "地震", q: "マグニチュードの数値が1大きくなると、地震のエネルギーは約何倍になるか", a: "約32倍" },
+      { subject: "理科", category: "地震", q: "P波とS波のうち、伝わる速さが速いのはどちらか", a: "P波" },
       { subject: "理科", category: "火山と岩石", q: "地下の岩石が高温などでとけてできたもの", a: "マグマ" },
       { subject: "理科", category: "火山と岩石", q: "マグマが冷えてできた一定の形や色の結晶", a: "鉱物" },
       { subject: "理科", category: "火山と岩石", q: "マグマのねばりけが小さく、黒っぽい色をした火山の形", a: "傾斜のゆるやかな火山" },
@@ -124,45 +121,91 @@
       { subject: "理科", category: "火山と岩石", q: "マグマが地下深くでゆっくり冷え固まった岩石", a: "深成岩" },
       { subject: "理科", category: "火山と岩石", q: "火山岩に見られる、比較的大きな鉱物（斑晶）が細かい粒（石基）にとり囲まれているつくり", a: "斑状組織" },
       { subject: "理科", category: "火山と岩石", q: "深成岩に見られる、同じくらいの大きさの鉱物が組み合わさってできているつくり", a: "等粒状組織" },
+      { subject: "理科", category: "火山と岩石", q: "白っぽく、無色透明や白色の鉱物（セキエイ、チョウ石など）の総称", a: "無色鉱物" },
+      { subject: "理科", category: "火山と岩石", q: "黒っぽく、黒色や暗緑色の鉱物（黒雲母、角閃石、輝石など）の総称", a: "有色鉱物" },
+      { subject: "理科", category: "火山と岩石", q: "火山岩のうち、白っぽい岩石", a: "流紋岩" },
+      { subject: "理科", category: "火山と岩石", q: "火山岩のうち、中間の色の岩石", a: "安山岩" },
+      { subject: "理科", category: "火山と岩石", q: "火山岩のうち、黒っぽい岩石", a: "玄武岩" },
+      { subject: "理科", category: "火山と岩石", q: "深成岩のうち、白っぽい岩石", a: "花こう岩" },
+      { subject: "理科", category: "火山と岩石", q: "深成岩のうち、中間の色の岩石", a: "閃緑岩" },
+      { subject: "理科", category: "火山と岩石", q: "深成岩のうち、黒っぽい岩石", a: "斑れい岩" },
+      { subject: "理科", category: "火山と岩石", q: "火山がもたらす恵みとして、地下の熱を利用して発電する仕組み", a: "地熱発電" },
+      { subject: "理科", category: "地層と化石", q: "岩石が、太陽の熱や水のはたらきによって、長い間にくずれたりとかされたりすること", a: "風化" },
       { subject: "理科", category: "地層と化石", q: "流水が岩石をけずりとるはたらき", a: "侵食" },
       { subject: "理科", category: "地層と化石", q: "流水が土砂を運ぶはたらき", a: "運搬" },
       { subject: "理科", category: "地層と化石", q: "流水が土砂を積もらせるはたらき", a: "堆積" },
       { subject: "理科", category: "地層と化石", q: "離れた地層を比べるときに目印として利用できる層（火山灰の層など）", a: "かぎ層" },
+      { subject: "理科", category: "地層と化石", q: "生物の遺骸などが、砕せつ物の堆積によって埋まり、かたい部分などが残ったもの", a: "化石" },
       { subject: "理科", category: "地層と化石", q: "地層が堆積した当時の「環境」を推測できる化石", a: "示相化石" },
       { subject: "理科", category: "地層と化石", q: "地層が堆積した「時代」の推測に役立つ化石", a: "示準化石" },
+      { subject: "理科", category: "地層と化石", q: "堆積物が押し固められてできた岩石", a: "堆積岩" },
+      { subject: "理科", category: "地層と化石", q: "生物の遺骸などでできており、うすい塩酸をかけると二酸化炭素が発生する岩石", a: "石灰岩" },
+      { subject: "理科", category: "地層と化石", q: "生物の遺骸などでできており、うすい塩酸をかけても変化しない、非常にかたい岩石", a: "チャート" },
+      { subject: "理科", category: "地層と化石", q: "火山灰や軽石などの火山噴出物が堆積してできた岩石", a: "凝灰岩" },
+      { subject: "理科", category: "地層と化石", q: "大地の隆起などによって、海底の平らな面が階段状になって陸に現れた地形", a: "海岸段丘" },
+      { subject: "理科", category: "地層と化石", q: "サンゴの化石が見つかった地層は、当時どのような環境だったと推測できるか", a: "あたたかくて浅い海" },
+      { subject: "理科", category: "地層と化石", q: "ブナの葉の化石が見つかった地層は、当時どのような環境だったと推測できるか", a: "やや寒冷な気候の陸地" },
+      { subject: "理科", category: "地層と化石", q: "フズリナや三葉虫は、どの地質年代の示準化石か", a: "古生代" },
+      { subject: "理科", category: "地層と化石", q: "アンモナイトや恐竜は、どの地質年代の示準化石か", a: "中生代" },
+      { subject: "理科", category: "地層と化石", q: "ビカリアやマンモス、ナウマンゾウは、どの地質年代の示準化石か", a: "新生代" },
+      { subject: "理科", category: "地層と化石", q: "れきが押し固められてできた堆積岩", a: "れき岩" },
+      { subject: "理科", category: "地層と化石", q: "砂が押し固められてできた堆積岩", a: "砂岩" },
+      { subject: "理科", category: "地層と化石", q: "泥が押し固められてできた堆積岩", a: "泥岩" },
+      { subject: "理科", category: "地層と化石", q: "カキの化石が見つかった地層は、当時どのような環境だったと推測できるか", a: "河口付近" },
+      { subject: "理科", category: "地層と化石", q: "古生代、中生代、新生代のように、生物の種類の入れかわりをもとに区別された地球の歴史の時代区分", a: "地質年代" },
 
-      // 🏯 社会（歴史・地理）
-      { subject: "社会", category: "歴史", q: "キリスト（イエス）が生まれたとされる年を基準とした年代の表し方", a: "西暦" },
-      { subject: "社会", category: "歴史", q: "約700万年前にアフリカに現れた最古の人類", a: "猿人" },
-      { subject: "社会", category: "歴史", q: "約20万年前に現れた、現在の私たちと同じ種類の人類", a: "新人" },
-      { subject: "社会", category: "歴史", q: "石を打ち砕いてつくった石器", a: "打製石器" },
-      { subject: "社会", category: "歴史", q: "石を磨いてつくった石器", a: "磨製石器" },
-      { subject: "社会", category: "歴史", q: "紀元前3500年ごろ、ティグリス川・ユーフラテス川流域でおこった文明", a: "メソポタミア文明" },
-      { subject: "社会", category: "歴史", q: "ナイル川流域でおこり、象形文字や太陽暦を生み出した文明", a: "エジプト文明" },
-      { subject: "社会", category: "歴史", q: "インダス川流域で栄えた文明", a: "インダス文明" },
-      { subject: "社会", category: "歴史", q: "漢字のもとになった、亀の甲や牛の骨に刻まれた文字", a: "甲骨文字" },
-      { subject: "社会", category: "歴史", q: "紀元前3世紀に中国を統一した秦の皇帝", a: "始皇帝" },
-      { subject: "社会", category: "歴史", q: "漢の時代に開かれた、ヨーロッパと中国を結んだ交通路", a: "シルクロード" },
-      { subject: "社会", category: "歴史", q: "縄目の文様があり、厚手で黒褐色の土器", a: "縄文土器" },
-      { subject: "社会", category: "歴史", q: "地面に穴を掘り、屋根をつけた縄文時代の住居", a: "たて穴住居" },
-      { subject: "社会", category: "歴史", q: "食べ物の残りかすなどを捨てた、当時のゴミ捨て場", a: "貝塚" },
-      { subject: "社会", category: "歴史", q: "稲を蓄えるためにつくられた、ねずみや湿気を防ぐ建物", a: "高床倉庫" },
-      { subject: "社会", category: "歴史", q: "邪馬台国の女王で、中国の魏に使いを送った人物", a: "卑弥呼" },
-      { subject: "社会", category: "歴史", q: "日本独特の古墳の形で、四角い方墳と円い円墳を合わせた形", a: "前方後円墳" },
-      { subject: "社会", category: "歴史", q: "聖徳太子が定めた、家柄にとらわれず才能や功績のある人物を役人に取り立てる制度", a: "冠位十二階" },
-      { subject: "社会", category: "歴史", q: "聖徳太子が建てたといわれる、現存する世界最古の木造建築物", a: "法隆寺" },
-      { subject: "社会", category: "歴史", q: "645年、中大兄皇子や中臣鎌足らが蘇我氏を倒して始めた政治の改革", a: "大化の改新" },
-      { subject: "社会", category: "歴史", q: "701年に制定された、唐の法律にならって作られた法律", a: "大宝律令" },
-      { subject: "社会", category: "歴史", q: "710年に唐の長安をモデルにして、現在の奈良県につくられた都", a: "平城京" },
-      { subject: "社会", category: "歴史", q: "新しく開墾した土地の永久私有を認めた法律", a: "墾田永年私財法" },
-      { subject: "社会", category: "歴史", q: "794年、桓武天皇が現在の京都府に移した都", a: "平安京" },
-      { subject: "社会", category: "歴史", q: "藤原氏が、天皇が幼い時は摂政、成長してからは関白として実権を握った政治", a: "摂関政治" },
-      { subject: "社会", category: "歴史", q: "紫式部がかな文字で書いた、世界最古の長編小説", a: "源氏物語" },
-      { subject: "社会", category: "歴史", q: "清少納言がかな文字で書いた随筆", a: "枕草子" },
-      { subject: "社会", category: "歴史", q: "白河上皇が天皇の位をゆずった後も、上皇として政治の実権を握った政治", a: "院政" },
-      { subject: "社会", category: "歴史", q: "1232年、北条泰時が制定した武士の裁判の基準となる法律", a: "御成敗式目" },
-      { subject: "社会", category: "歴史", q: "1543年、ポルトガル人を乗せた船が漂着し、鉄砲が伝えられた島", a: "種子島" },
-      { subject: "社会", category: "歴史", q: "1549年、キリスト教を日本に伝えたイエズス会の宣教師", a: "フランシスコ・ザビエル" },
+      // 🏯 社会
+      { subject: "社会", category: "歴史 (古代)", q: "キリスト（イエス）が生まれたとされる年を基準とした年代の表し方", a: "西暦" },
+      { subject: "社会", category: "歴史 (古代)", q: "西暦を基準に、100年を一区切りにして表す年代の単位", a: "世紀" },
+      { subject: "社会", category: "歴史 (古代)", q: "約700万年前にアフリカに現れた最古の人類", a: "猿人" },
+      { subject: "社会", category: "歴史 (古代)", q: "約20万年前に現れた、現在の私たちと同じ種類の人類", a: "新人" },
+      { subject: "社会", category: "歴史 (古代)", q: "石を打ち砕いてつくった石器", a: "打製石器" },
+      { subject: "社会", category: "歴史 (古代)", q: "石を磨いてつくった石器", a: "磨製石器" },
+      { subject: "社会", category: "歴史 (古代)", q: "紀元前3500年ごろ、ティグリス川・ユーフラテス川流域でおこった文明", a: "メソポタミア文明" },
+      { subject: "社会", category: "歴史 (古代)", q: "ナイル川流域でおこり、象形文字や太陽暦を生み出した文明", a: "エジプト文明" },
+      { subject: "社会", category: "歴史 (古代)", q: "インダス川流域で栄えた文明", a: "インダス文明" },
+      { subject: "社会", category: "歴史 (古代)", q: "紀元前1600年ごろ、黄河流域で栄えた、甲骨文字を使用した国", a: "殷" },
+      { subject: "社会", category: "歴史 (古代)", q: "漢字のもとになった、亀の甲や牛の骨に刻まれた文字", a: "甲骨文字" },
+      { subject: "社会", category: "歴史 (古代)", q: "紀元前6世紀ごろに儒教を説いた思想家", a: "孔子" },
+      { subject: "社会", category: "歴史 (古代)", q: "紀元前3世紀に中国を統一した秦の皇帝", a: "始皇帝" },
+      { subject: "社会", category: "歴史 (古代)", q: "秦の始皇帝が、北方の遊牧民の侵入を防ぐために修築させたもの", a: "万里の長城" },
+      { subject: "社会", category: "歴史 (古代)", q: "漢の時代に開かれた、ヨーロッパと中国を結んだ交通路", a: "シルクロード" },
+      { subject: "社会", category: "歴史 (古代)", q: "ギリシャにつくられた、アテネなどの都市国家", a: "ポリス" },
+      { subject: "社会", category: "歴史 (古代)", q: "紀元前6世紀ごろ、インドで仏教を開いた人物", a: "シャカ" },
+      { subject: "社会", category: "歴史 (日本)", q: "縄目の文様があり、厚手で黒褐色の土器", a: "縄文土器" },
+      { subject: "社会", category: "歴史 (日本)", q: "地面に穴を掘り、屋根をつけた縄文時代の住居", a: "たて穴住居" },
+      { subject: "社会", category: "歴史 (日本)", q: "食べ物の残りかすなどを捨てた、当時のゴミ捨て場", a: "貝塚" },
+      { subject: "社会", category: "歴史 (日本)", q: "稲を蓄えるためにつくられた、ねずみや湿気を防ぐ建物", a: "高床倉庫" },
+      { subject: "社会", category: "歴史 (日本)", q: "邪馬台国の女王で、中国の魏に使いを送った人物", a: "卑弥呼" },
+      { subject: "社会", category: "歴史 (日本)", q: "日本独特の古墳の形で、四角い方墳と円い円墳を合わせた形", a: "前方後円墳" },
+      { subject: "社会", category: "歴史 (日本)", q: "中国や朝鮮半島から日本に移り住み、新しい技術や文化を伝えた人々", a: "渡来人" },
+      { subject: "社会", category: "歴史 (日本)", q: "聖徳太子が定めた、家柄にとらわれず才能や功績のある人物を役人に取り立てる制度", a: "冠位十二階" },
+      { subject: "社会", category: "歴史 (日本)", q: "聖徳太子が建てたといわれる、現存する世界最古の木造建築物", a: "法隆寺" },
+      { subject: "社会", category: "歴史 (日本)", q: "645年、中大兄皇子や中臣鎌足らが蘇我氏を倒して始めた政治の改革", a: "大化の改新" },
+      { subject: "社会", category: "歴史 (日本)", q: "701年に制定された、唐の法律にならって作られた法律", a: "大宝律令" },
+      { subject: "社会", category: "歴史 (日本)", q: "710年に唐の長安をモデルにして、現在の奈良県につくられた都", a: "平城京" },
+      { subject: "社会", category: "歴史 (日本)", q: "新しく開墾した土地の永久私有を認めた法律", a: "墾田永年私財法" },
+      { subject: "社会", category: "歴史 (日本)", q: "聖武天皇の時代に栄えた、仏教の色彩が強い国際豊かな文化", a: "天平文化" },
+      { subject: "社会", category: "歴史 (日本)", q: "794年、桓武天皇が現在の京都府に移した都", a: "平安京" },
+      { subject: "社会", category: "歴史 (日本)", q: "藤原氏が、天皇が幼い時は摂政、成長してからは関白として実権を握った政治", a: "摂関政治" },
+      { subject: "社会", category: "歴史 (日本)", q: "10世紀ごろから発達した、日本の風土や生活に合った独自の文化", a: "国風文化" },
+      { subject: "社会", category: "歴史 (日本)", q: "紫式部がかな文字で書いた、世界最古の長編小説", a: "源氏物語" },
+      { subject: "社会", category: "歴史 (日本)", q: "清少納言がかな文字で書いた随筆", a: "枕草子" },
+      { subject: "社会", category: "歴史 (日本)", q: "白河上皇が天皇の位をゆずった後も、上皇として政治の実権を握った政治", a: "院政" },
+      { subject: "社会", category: "歴史 (日本)", q: "平清盛が宋（中国）との間で行った貿易", a: "日宋貿易" },
+      { subject: "社会", category: "歴史 (日本)", q: "源頼朝が国ごとに置き、軍事・警察などの役割を担った役職", a: "守護" },
+      { subject: "社会", category: "歴史 (日本)", q: "源頼朝が荘園や公領ごとに置き、年貢の取り立てなどを担った役職", a: "地頭" },
+      { subject: "社会", category: "歴史 (日本)", q: "1232年、北条泰時が制定した武士の裁判の基準となる法律", a: "御成敗式目" },
+      { subject: "社会", category: "歴史 (日本)", q: "鎌倉時代後期、元（モンゴル）の軍勢が2度にわたって日本に攻めてきた出来事", a: "元寇" },
+      { subject: "社会", category: "歴史 (日本)", q: "足利義満が京都の北山に建てた、金箔がはられた建物", a: "金閣" },
+      { subject: "社会", category: "歴史 (日本)", q: "足利義政が京都の東山に建てた、銀箔ははられていない建物", a: "銀閣" },
+      { subject: "社会", category: "歴史 (日本)", q: "床の間などがもうけられた、現在の和室の原型となった建築様式", a: "書院造" },
+      { subject: "社会", category: "歴史 (日本)", q: "室町時代に明（中国）との間で行われた、正式な貿易船の証明書を使った貿易", a: "勘合貿易" },
+      { subject: "社会", category: "歴史 (日本)", q: "1543年、ポルトガル人を乗せた船が漂着し、鉄砲が伝えられた島", a: "種子島" },
+      { subject: "社会", category: "歴史 (日本)", q: "1549年、キリスト教を日本に伝えたイエズス会の宣教師", a: "フランシスコ・ザビエル" },
+      { subject: "社会", category: "歴史 (日本)", q: "織田信長が、市場の税を免除したり座を廃止したりして、商工業の発展を図った政策", a: "楽市・楽座" },
+      { subject: "社会", category: "歴史 (日本)", q: "豊臣秀吉が、農民から武器を取り上げて一揆を防ごうとした政策", a: "刀狩" },
+      { subject: "社会", category: "歴史 (日本)", q: "豊臣秀吉が、全国の田畑の面積や収穫量を統一した基準で調べた政策", a: "太閤検地" },
       { subject: "社会", category: "地理", q: "地球表面の海と陸の面積の割合は、およそ何対何？", a: "7：3" },
       { subject: "社会", category: "地理", q: "大洋のなかで最も広い海洋", a: "太平洋" },
       { subject: "社会", category: "地理", q: "海に面しておらず、周りがすべてほかの国と陸続きの国", a: "内陸国" },
@@ -170,17 +213,27 @@
       { subject: "社会", category: "地理", q: "イギリスのロンドンを通る本初子午線を0度とし、東西に180度ずつ表したもの", a: "経度" },
       { subject: "社会", category: "地理", q: "経度が15度違うと、何時間の時差が生じるか", a: "1時間" },
       { subject: "社会", category: "地理", q: "日本の標準時子午線は、東経何度の経線か", a: "東経135度" },
+      { subject: "社会", category: "地理", q: "西から東に越えたときは日付を1日遅らせ、東から西に越えたときは日付を1日進める線", a: "日付変更線" },
+      { subject: "社会", category: "地理", q: "沿岸国が水産資源や鉱産資源を利用する権利をもつ、領海の外側の海域", a: "排他的経済水域" },
+      { subject: "社会", category: "地理", q: "日本がロシアに対して返還を求めている、北海道に属する島々", a: "北方領土" },
+      { subject: "社会", category: "地理", q: "島根県に属し、韓国が不法に占拠している島", a: "竹島" },
+      { subject: "社会", category: "地理", q: "沖縄県に属し、日本が固有の領土として有効に支配している島々", a: "尖閣諸島" },
       { subject: "社会", category: "地理", q: "一年中気温が高く、降水量が多い気候帯", a: "熱帯" },
       { subject: "社会", category: "地理", q: "雨が非常に少なく、砂漠などが広がる気候帯", a: "乾燥帯" },
       { subject: "社会", category: "地理", q: "日本も属する、四季の変化がはっきりしている気候帯", a: "温帯" },
+      { subject: "社会", category: "地理", q: "夏と冬の気温差が大きく、冬は寒さが厳しい気候帯", a: "亜寒帯（冷帯）" },
+      { subject: "社会", category: "地理", q: "一年中寒く、樹木が育たない気候帯", a: "寒帯" },
+      { subject: "社会", category: "地理", q: "アジア州の東部や南部で、季節によって吹く向きが変わる風", a: "季節風（モンスーン）" },
+      { subject: "社会", category: "地理", q: "1967年に結成された、東南アジア諸国連合の略称", a: "ASEAN" },
+      { subject: "社会", category: "地理", q: "ヨーロッパの気候に大きな影響を与える、一年中西から東に向かって吹く風", a: "偏西風" },
+      { subject: "社会", category: "地理", q: "氷河にけずられてできた、スカンディナビア半島などでみられる複雑な地形の湾", a: "フィヨルド" },
       { subject: "社会", category: "地理", q: "ヨーロッパの国々の統合を目指し設立された組織。2020年にイギリスが離脱。", a: "EU" }
     ];
 
     // ==========================================
-    // 🇺🇸 英語 (超大増強版：200問以上)
+    // 🇺🇸 英語 (超大増強版)
     // ==========================================
     const engVocab = {
-      // いただいたPDFの内容 + 中1基礎必須単語を完全網羅
       "新しい": "new", "かっこいい、涼しい": "cool", "速い、速く": "fast", "古い、~歳": "old",
       "日本の、日本人、日本語": "Japanese", "素晴らしい": "great", "悪い": "bad", "勇敢な": "brave",
       "親切な": "kind", "一生懸命に、難しい": "hard", "忙しい": "busy", "たくさんの": "many",
@@ -277,7 +330,6 @@
       "私は昨日バスケットをしました": "I played basketball yesterday."
     };
 
-    // 辞書オブジェクトから一括で配列に追加
     Object.keys(engVocab).forEach(k => {
       rawData.push({ subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocab[k] });
     });
@@ -285,7 +337,6 @@
       rawData.push({ subject: "英語", category: "熟語・表現", q: `「${k}」を英語で言うと？`, a: engPhrases[k] });
     });
 
-    // 重複を排除し一意なIDを付与
     const uniqueMap = new Map();
     rawData.forEach((item, index) => {
       const key = item.subject + item.category + item.q + item.a;
@@ -351,7 +402,6 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // 認証状態の監視
         auth.onAuthStateChanged(user => {
           if (user) {
             state.user = user;
@@ -364,13 +414,11 @@
                    state.userStats = { ...state.userStats, ...stats };
                    state.isDataLoaded = true;
                    render();
-                 }, error => {
-                   console.error("Firestore Error:", error);
+                 }, () => {
                    state.isDataLoaded = true;
                    render();
                  });
             } catch(e) {
-               console.error("Snapshot Error:", e);
                state.isDataLoaded = true;
                render();
             }
@@ -380,26 +428,22 @@
           }
         });
 
-        // ログイン処理（失敗してもアプリは続行）
         try {
           if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await auth.signInWithCustomToken(__initial_auth_token);
+            await auth.signInWithCustomToken(__initial_auth_token).catch(() => {});
           } else {
-            await auth.signInAnonymously();
+            await auth.signInAnonymously().catch(() => {});
           }
         } catch(e) {
-          console.warn("Authentication skipped or failed (Local Mode):", e);
           state.isDataLoaded = true;
           render();
         }
       } catch(e) {
-        console.error("Firebase completely failed (Local Mode):", e);
         state.isDataLoaded = true;
         render();
       }
     };
     
-    // 初期化の実行
     initApp();
 
     // ==========================================
@@ -484,7 +528,7 @@
         if (state.user && state.fbReady) {
           try {
             const statRef = firebase.firestore().collection('artifacts').doc(appId).collection('public').doc('data').collection('shared_stats').doc(currentQ.id);
-            statRef.set(newData, { merge: true }).catch(e => console.error(e));
+            statRef.set(newData, { merge: true }).catch(() => {});
           } catch(e) {}
         }
       }
@@ -623,6 +667,11 @@
         `;
       }
 
+      // 同期状態の表示
+      const syncStatusColor = (state.fbReady && state.user && !state.isGuest) ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500';
+      const syncStatusIcon = (state.fbReady && state.user && !state.isGuest) ? 'ph-cloud-check' : 'ph-cloud-slash';
+      const syncStatusText = (state.fbReady && state.user && !state.isGuest) ? 'クラウド同期ON' : '同期OFF(ローカル保存)';
+      
       let contentHtml = '';
       if (state.activeTab === 'analytics') {
         let totalAttempts = 0;
@@ -763,7 +812,14 @@
       `;
 
       return `
-        <div class="max-w-2xl mx-auto p-4 animate-fade-in pb-10">
+        <div class="relative max-w-2xl mx-auto p-4 animate-fade-in pb-10">
+          
+          <!-- ★ クラウド同期ステータス表示 -->
+          <div class="absolute top-4 right-4 flex items-center text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full ${syncStatusColor} shadow-sm">
+            <i class="ph-fill ${syncStatusIcon} mr-1 text-sm sm:text-lg"></i>
+            ${syncStatusText}
+          </div>
+
           <div class="text-center mb-8 mt-8">
             <div class="inline-flex items-center justify-center p-4 bg-yellow-100 rounded-full mb-4 shadow-inner">
               <i class="ph-fill ph-crown text-5xl text-yellow-500"></i>
@@ -982,27 +1038,31 @@
       return `
         <div class="fixed inset-0 ${bgClass} flex flex-col items-center justify-center z-50 animate-fade-in px-4 transition-colors duration-1000 overflow-hidden">
             
-            <div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden lvl-${level}">
-               <div class="relative w-[300px] h-[300px] mt-auto flex items-end justify-center">
-                 
-                 <!-- 貞子本体 -->
-                 <div class="sadako-wrapper">
-                   <svg viewBox="0 0 200 300" class="sadako-svg">
-                     <path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#94a3b8" />
-                     <path d="M 150,300 L 190,200 L 170,190 L 140,300 Z" fill="#94a3b8" />
-                     <path d="M 10,200 Q 5,180 20,180 Q 30,180 30,190 Z" fill="#e2e8f0" />
-                     <path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" />
-                     <path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" />
-                     <path d="M 50,300 C 30,100 170,100 150,300 C 130,150 70,150 50,300 Z" fill="#0a0a0a" />
-                     <circle class="s-eye" cx="85" cy="180" r="6" />
-                     <circle class="s-eye" cx="115" cy="180" r="6" />
-                   </svg>
-                 </div>
-                 
-                 <!-- 井戸 (貞子より前に配置して飛び出ているように見せる) -->
-                 <div class="well-container">
-                    <div class="well-hole"></div>
-                 </div>
+            <!-- 👻 井戸と貞子のコンテナ -->
+            <div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden">
+               
+               <!-- 貞子本体 -->
+               <div class="sadako-wrapper lvl-${level}">
+                 <svg viewBox="0 0 200 300" class="sadako-svg">
+                   <!-- 腕 -->
+                   <path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#94a3b8" />
+                   <path d="M 150,300 L 190,200 L 170,190 L 140,300 Z" fill="#94a3b8" />
+                   <!-- 手 -->
+                   <path d="M 10,200 Q 5,180 20,180 Q 30,180 30,190 Z" fill="#e2e8f0" />
+                   <path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" />
+                   <!-- 体 -->
+                   <path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" />
+                   <!-- 髪（顔を覆う） -->
+                   <path d="M 50,300 C 30,100 170,100 150,300 C 130,150 70,150 50,300 Z" fill="#0a0a0a" />
+                   <!-- 最終形態で光る目 -->
+                   <circle class="s-eye" cx="85" cy="180" r="4" />
+                   <circle class="s-eye" cx="115" cy="180" r="4" />
+                 </svg>
+               </div>
+               
+               <!-- 井戸 -->
+               <div class="well-container">
+                  <div class="well-hole"></div>
                </div>
             </div>
 
