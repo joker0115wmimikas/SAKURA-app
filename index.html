@@ -24,8 +24,9 @@
     .animate-pulse-red { animation: pulse-red 2s infinite; }
     
     .guest-stripes { background: repeating-linear-gradient(45deg, #f59e0b, #f59e0b 10px, #fbbf24 10px, #fbbf24 20px); }
+    .momoka-stripes { background: repeating-linear-gradient(45deg, #fdba74, #fdba74 10px, #ffedd5 10px, #ffedd5 20px); }
 
-    /* 👻 貞子アニメーションシステム（超・あからさま版） */
+    /* 👻 貞子アニメーションシステム */
     .well-container {
        position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%);
        width: 250px; height: 90px; z-index: 10;
@@ -86,7 +87,7 @@
     // ==========================================
     let rawData = [
       // =====================================
-      // 🔬 新規追加：理科 (物理・化学・生物)
+      // 🔬 理科 (物理・化学・生物・地学)
       // =====================================
       { subject: "理科", category: "気体と水溶液", q: "水にとけにくい気体を集める方法", a: "水上置換法" },
       { subject: "理科", category: "気体と水溶液", q: "水にとけやすく、空気より密度が大きい（重い）気体を集める方法", a: "下方置換法" },
@@ -191,9 +192,6 @@
       { subject: "理科", category: "植物・動物", q: "卵からかえる生まれ方", a: "卵生" },
       { subject: "理科", category: "植物・動物", q: "魚類や両生類の子などが呼吸に使う器官", a: "えら" },
 
-      // =====================================
-      // 🌍 既存：理科 (地学分野)
-      // =====================================
       { subject: "理科", category: "大地の変化", q: "地球表面をおおう、厚さ数10〜約100kmの、かたい板状の岩石のかたまり", a: "プレート" },
       { subject: "理科", category: "大地の変化", q: "大地が大きな力を受けて盛り上がること", a: "隆起" },
       { subject: "理科", category: "大地の変化", q: "大地が大きな力を受けて沈むこと", a: "沈降" },
@@ -372,13 +370,14 @@
     rawData = Array.from(uniqueMap.values());
 
     // ==========================================
-    // アプリの状態管理
+    // アプリの状態管理（★マルチユーザー対応）
     // ==========================================
     const state = {
       screen: 'home', 
       activeTab: 'study',
+      activeUser: 'sakura', // sakura, momoka, guest
       user: null,
-      userStats: {},
+      userStats: {}, // 現在アクティブなユーザーの成績データ
       quizQueue: [],
       currentIndex: 0,
       showAnswer: false,
@@ -389,8 +388,7 @@
       fbReady: false,
       showPasscode: false,
       passcodeValue: '',
-      passcodeErrorCount: 0,
-      isGuest: false 
+      passcodeErrorCount: 0
     };
 
     const subjects = [];
@@ -400,14 +398,22 @@
       subjects.push({ name: sub, categories });
     });
 
+    // ユーザー別のテーマ情報
+    const userThemes = {
+      sakura: { bg: 'bg-pink-100', text: 'text-pink-600', activeBg: 'bg-pink-500', activeText: 'text-white', icon: '🌸', name: 'さくら' },
+      momoka: { bg: 'bg-orange-100', text: 'text-orange-600', activeBg: 'bg-orange-500', activeText: 'text-white', icon: '🍑', name: 'ももか' },
+      guest: { bg: 'bg-yellow-100', text: 'text-yellow-600', activeBg: 'bg-yellow-500', activeText: 'text-white', icon: '👻', name: 'ゲスト' }
+    };
+
     // ==========================================
-    // Firebase 初期化 (エラーを完全に無視する極限安全設計)
+    // Firebase 初期化 & アカウント切り替え
     // ==========================================
     const defaultAppId = "sakura-app-d3d10"; 
     const appId = (typeof __app_id !== 'undefined' && __app_id) ? __app_id : defaultAppId;
     
     let db;
     let auth;
+    let fbUnsubscribe = null; // リスナー解除用
     
     const initApp = async () => {
       try {
@@ -446,24 +452,7 @@
           if (user) {
             state.user = user;
             state.fbReady = true;
-            try {
-               const statsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('shared_stats');
-               statsRef.onSnapshot(snapshot => {
-                   const stats = {};
-                   snapshot.forEach(doc => { stats[doc.id] = doc.data(); });
-                   state.userStats = { ...state.userStats, ...stats };
-                   state.isDataLoaded = true;
-                   render();
-                 }, error => {
-                   console.warn("Firestore Error:", error);
-                   state.isDataLoaded = true;
-                   render();
-                 });
-            } catch(e) {
-               console.warn("Snapshot Error:", e);
-               state.isDataLoaded = true;
-               render();
-            }
+            loadStatsForCurrentUser(); // 初回ロード
           } else {
             state.isDataLoaded = true;
             render();
@@ -476,27 +465,72 @@
         render();
       }
     };
+
+    // ★指定されたユーザーのデータを読み込む関数
+    function loadStatsForCurrentUser() {
+      if (fbUnsubscribe) {
+        fbUnsubscribe(); // 以前のリスナーを解除
+        fbUnsubscribe = null;
+      }
+      
+      state.userStats = {}; // データをリセット
+      state.isDataLoaded = false;
+
+      if (state.activeUser === 'guest') {
+        state.isDataLoaded = true;
+        render();
+        return;
+      }
+
+      if (state.fbReady && state.user) {
+        try {
+          // さくらは既存の 'shared_stats' を引き継ぐ、ももかは新しく 'shared_stats_momoka'
+          const collectionName = state.activeUser === 'sakura' ? 'shared_stats' : 'shared_stats_momoka';
+          const statsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName);
+          
+          fbUnsubscribe = statsRef.onSnapshot(snapshot => {
+             const stats = {};
+             snapshot.forEach(doc => { stats[doc.id] = doc.data(); });
+             state.userStats = stats;
+             state.isDataLoaded = true;
+             render();
+           }, error => {
+             console.warn("Firestore Error:", error);
+             state.isDataLoaded = true;
+             render();
+           });
+        } catch(e) {
+           console.warn("Snapshot Error:", e);
+           state.isDataLoaded = true;
+           render();
+        }
+      } else {
+        state.isDataLoaded = true;
+        render();
+      }
+    }
+
     initApp();
 
+    // ★アカウント切り替え関数
+    window.switchUser = function(user) {
+      if (state.activeUser === user) return;
+      state.activeUser = user;
+      state.activeTab = 'study'; // タブをリセット
+      loadStatsForCurrentUser(); // 新しいユーザーのデータを読み込む
+    }
+
     // ==========================================
-    // 💡 クイズ用関数（★バグ修正：同じ教科からダミー選択肢を生成）
+    // 💡 クイズ用関数
     // ==========================================
     function generateChoices(currentQuestion) {
-      // 1. 出題される問題と「同じ教科」のデータだけを抽出する（英語なら英語だけ）
       const sameSubjectData = rawData.filter(d => d.subject === currentQuestion.subject && d.a !== currentQuestion.a);
-      
-      // 2. その中からダミーの選択肢（正解以外）を重複なしで抽出
       const others = [...new Set(sameSubjectData.map(d => d.a))];
-      
-      // 3. シャッフルして3つ選ぶ
       const shuffledOthers = others.sort(() => 0.5 - Math.random()).slice(0, 3);
-      
-      // 4. 正解を混ぜて、最後に全体をシャッフル
       return [currentQuestion.a, ...shuffledOthers].sort(() => 0.5 - Math.random());
     }
 
     window.switchTab = function(tab) { state.activeTab = tab; render(); }
-    window.toggleGuestMode = function() { state.isGuest = !state.isGuest; render(); }
 
     window.startQuiz = function(subject, category) {
       let filtered = rawData;
@@ -506,6 +540,11 @@
     }
 
     window.startWeaknessQuiz = function(subjectFilter = null) {
+      if (state.activeUser === 'guest') {
+        alert("ゲストモードでは苦手特訓は使えません。アカウントを選択してください。");
+        return;
+      }
+
       let targetQuestions = rawData.filter(q => {
         if (subjectFilter && q.subject !== subjectFilter) return false;
         const stat = state.userStats[q.id];
@@ -533,12 +572,12 @@
       const prepared = questions.map(q => {
         const rand = Math.random();
         let type = 'normal';
-        if (rand < 0.4) type = 'choice'; // 4択問題の確率を少しアップ
+        if (rand < 0.4) type = 'choice'; 
         else if (rand < 0.7) type = 'reverse';
         
         let choices = [];
         if (type === 'choice') {
-          choices = generateChoices(q); // 修正した関数を呼び出し
+          choices = generateChoices(q);
         }
         return { ...q, queueId: Math.random().toString(36).substr(2, 9), quizType: type, choices, isRetry: false };
       }).sort(() => 0.5 - Math.random());
@@ -559,7 +598,8 @@
     window.handleAnswer = async function(isCorrect) {
       const currentQ = state.quizQueue[state.currentIndex];
       
-      if (!state.isGuest) {
+      // ★ゲスト以外の場合のみデータを保存
+      if (state.activeUser !== 'guest') {
         const currentStat = state.userStats[currentQ.id] || { corrects: 0, mistakes: 0 };
         const newData = {
           corrects: isCorrect ? currentStat.corrects + 1 : currentStat.corrects,
@@ -570,7 +610,8 @@
 
         if (state.user && state.fbReady) {
           try {
-            const statRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('shared_stats').doc(currentQ.id);
+            const collectionName = state.activeUser === 'sakura' ? 'shared_stats' : 'shared_stats_momoka';
+            const statRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName).doc(currentQ.id);
             statRef.set(newData, { merge: true }).catch(() => {});
           } catch(e) {}
         }
@@ -607,9 +648,13 @@
     window.goHome = function() { state.screen = 'home'; render(); }
 
     // ==========================================
-    // 👻 保護者モード（貞子システム：究極立体版）
+    // 👻 保護者モード
     // ==========================================
     window.openPasscode = function() { 
+      if (state.activeUser === 'guest') {
+        alert("ゲストモードでは評価データはありません。");
+        return;
+      }
       state.showPasscode = true; 
       state.passcodeValue = ''; 
       state.passcodeErrorCount = 0; 
@@ -622,7 +667,7 @@
       render();
       if (state.passcodeValue.length === 6) {
         setTimeout(() => {
-          if (state.passcodeValue === '115115') { // ★パスコード
+          if (state.passcodeValue === '115115') { 
             state.showPasscode = false;
             state.passcodeErrorCount = 0;
             state.screen = 'parent_dashboard';
@@ -631,7 +676,7 @@
             state.passcodeValue = '';
           }
           render();
-        }, 500); // 恐怖のタメ
+        }, 500);
       }
     }
     window.deletePasscode = function() { state.passcodeValue = state.passcodeValue.slice(0, -1); render(); }
@@ -656,10 +701,12 @@
         }
       });
 
-      if (totalAttempts === 0) return "なんじゃ、まだ一度もアプリを開いておらぬではないか！\n怠惰は最大の罪なり。まずは小娘にアプリを開かせ、一問でも解かせるのじゃ！";
+      const userName = userThemes[state.activeUser].name;
+
+      if (totalAttempts === 0) return `なんじゃ、まだ一度もアプリを開いておらぬではないか！\n怠惰は最大の罪なり。まずは${userName}にアプリを開かせ、一問でも解かせるのじゃ！`;
 
       const accuracy = totalAttempts > 0 ? ((totalAttempts - totalMistakes) / totalAttempts) * 100 : 0;
-      let evalText = `ふむ。我の帳簿によると、これまでの総解答数は【${totalAttempts}回】、正答率は【${Math.round(accuracy)}％】じゃな。\n\n`;
+      let evalText = `ふむ。我の帳簿によると、${userName}のこれまでの総解答数は【${totalAttempts}回】、正答率は【${Math.round(accuracy)}％】じゃな。\n\n`;
 
       if (accuracy >= 90) evalText += "見事な精進ぶりじゃ！地道な努力がしっかりと実を結んでおる。\nしかし、悪魔は油断した隙に忍び寄るもの。慢心せず、さらなる高みを目指させよ！\n";
       else if (accuracy >= 60) evalText += "まずまずの出来じゃな。努力の跡は見られるぞ。\nだが、まだ知識が定着しておらぬ部分がちらほら見受けられる。反復こそが記憶の定着への近道じゃ！\n";
@@ -701,86 +748,99 @@
     // 画面描画ロジック
     // ==========================================
     function renderHomeHTML() {
+      const isGuest = state.activeUser === 'guest';
+      const currentUserTheme = userThemes[state.activeUser];
+
       if (!state.isDataLoaded) {
         return `
           <div class="flex flex-col items-center justify-center py-20 text-gray-500 animate-fade-in">
             <div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
-            システムを準備中...
+            ${currentUserTheme.icon} ${currentUserTheme.name}のデータを準備中...
           </div>
         `;
       }
 
-      const syncStatusColor = (state.fbReady && state.user && !state.isGuest) ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500';
-      const syncStatusIcon = (state.fbReady && state.user && !state.isGuest) ? 'ph-cloud-check' : 'ph-cloud-slash';
-      const syncStatusText = (state.fbReady && state.user && !state.isGuest) ? 'クラウド同期ON' : '同期OFF(ローカル保存)';
+      const syncStatusColor = (state.fbReady && state.user && !isGuest) ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500';
+      const syncStatusIcon = (state.fbReady && state.user && !isGuest) ? 'ph-cloud-check' : 'ph-cloud-slash';
+      const syncStatusText = (state.fbReady && state.user && !isGuest) ? '同期ON' : '同期OFF';
 
       let contentHtml = '';
       if (state.activeTab === 'analytics') {
-        let totalAttempts = 0;
-        let totalMistakes = 0;
+        if (isGuest) {
+          contentHtml = `
+            <div class="animate-fade-in bg-white p-8 rounded-3xl shadow-sm border border-gray-100 text-center">
+              <i class="ph-fill ph-ghost text-5xl text-gray-300 mb-4"></i>
+              <p class="text-gray-500 font-bold">ゲストモードではデータは分析されません。</p>
+              <p class="text-sm text-gray-400 mt-2">上部のアカウントを選択してください。</p>
+            </div>
+          `;
+        } else {
+          let totalAttempts = 0;
+          let totalMistakes = 0;
 
-        const analyzedData = rawData.map(q => {
-          const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 };
-          const total = stat.corrects + stat.mistakes;
-          totalAttempts += total;
-          totalMistakes += stat.mistakes;
-          const mistakeRate = total > 0 ? Math.round((stat.mistakes / total) * 100) : 0;
-          return { ...q, stat, total, mistakeRate };
-        }).filter(q => q.total > 0);
+          const analyzedData = rawData.map(q => {
+            const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 };
+            const total = stat.corrects + stat.mistakes;
+            totalAttempts += total;
+            totalMistakes += stat.mistakes;
+            const mistakeRate = total > 0 ? Math.round((stat.mistakes / total) * 100) : 0;
+            return { ...q, stat, total, mistakeRate };
+          }).filter(q => q.total > 0);
 
-        const sortedByMistake = [...analyzedData].sort((a, b) => {
-          if (b.mistakeRate !== a.mistakeRate) return b.mistakeRate - a.mistakeRate;
-          return b.stat.mistakes - a.stat.mistakes;
-        });
+          const sortedByMistake = [...analyzedData].sort((a, b) => {
+            if (b.mistakeRate !== a.mistakeRate) return b.mistakeRate - a.mistakeRate;
+            return b.stat.mistakes - a.stat.mistakes;
+          });
 
-        const accuracy = totalAttempts > 0 ? Math.round(((totalAttempts - totalMistakes) / totalAttempts) * 100) : 0;
+          const accuracy = totalAttempts > 0 ? Math.round(((totalAttempts - totalMistakes) / totalAttempts) * 100) : 0;
 
-        let listHtml = sortedByMistake.length === 0 
-          ? `<p class="text-gray-500 text-center py-8 bg-white rounded-3xl border border-gray-100 shadow-sm mt-2">まだデータがありません。<br>問題を解くとここに分析が表示されます。</p>`
-          : sortedByMistake.slice(0, 10).map((item, idx) => `
-              <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-start">
-                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-rose-100 text-rose-600' : 'bg-gray-100 text-gray-500'}">
-                  ${idx + 1}
+          let listHtml = sortedByMistake.length === 0 
+            ? `<p class="text-gray-500 text-center py-8 bg-white rounded-3xl border border-gray-100 shadow-sm mt-2">まだデータがありません。<br>問題を解くとここに分析が表示されます。</p>`
+            : sortedByMistake.slice(0, 10).map((item, idx) => `
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-start">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-rose-100 text-rose-600' : 'bg-gray-100 text-gray-500'}">
+                    ${idx + 1}
+                  </div>
+                  <div class="flex-grow">
+                    <span class="text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md mb-2 inline-block">${item.category}</span>
+                    <p class="text-sm text-gray-800 font-bold mb-1 leading-snug">${item.q}</p>
+                    <p class="text-xs text-rose-500 font-medium">答え: ${item.a}</p>
+                  </div>
+                  <div class="shrink-0 text-right ml-2">
+                    <p class="text-rose-600 font-bold text-lg">${item.mistakeRate}%</p>
+                    <p class="text-[10px] text-gray-400">ミス率</p>
+                  </div>
                 </div>
-                <div class="flex-grow">
-                  <span class="text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md mb-2 inline-block">${item.category}</span>
-                  <p class="text-sm text-gray-800 font-bold mb-1 leading-snug">${item.q}</p>
-                  <p class="text-xs text-rose-500 font-medium">答え: ${item.a}</p>
-                </div>
-                <div class="shrink-0 text-right ml-2">
-                  <p class="text-rose-600 font-bold text-lg">${item.mistakeRate}%</p>
-                  <p class="text-[10px] text-gray-400">ミス率</p>
+              `).join('');
+
+          contentHtml = `
+            <div class="space-y-6 animate-fade-in">
+              <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-6 text-white shadow-md relative overflow-hidden">
+                <h2 class="text-xl font-bold mb-4 flex items-center z-10 relative"><i class="ph ph-chart-bar text-2xl mr-2"></i>${currentUserTheme.name}の分析</h2>
+                <div class="grid grid-cols-3 gap-3 z-10 relative">
+                  <div class="bg-white/20 rounded-2xl p-3 text-center">
+                    <p class="text-xs opacity-90 mb-1">取組んだ問題</p>
+                    <p class="text-2xl font-black">${totalAttempts}<span class="text-xs font-normal">回</span></p>
+                  </div>
+                  <div class="bg-white/20 rounded-2xl p-3 text-center">
+                    <p class="text-xs opacity-90 mb-1">累計ミス</p>
+                    <p class="text-2xl font-black">${totalMistakes}<span class="text-xs font-normal">回</span></p>
+                  </div>
+                  <div class="bg-white/20 rounded-2xl p-3 text-center">
+                    <p class="text-xs opacity-90 mb-1">総合正答率</p>
+                    <p class="text-2xl font-black">${accuracy}<span class="text-xs font-normal">%</span></p>
+                  </div>
                 </div>
               </div>
-            `).join('');
-
-        contentHtml = `
-          <div class="space-y-6 animate-fade-in">
-            <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-6 text-white shadow-md">
-              <h2 class="text-xl font-bold mb-4 flex items-center"><i class="ph ph-chart-bar text-2xl mr-2"></i>学習の分析</h2>
-              <div class="grid grid-cols-3 gap-3">
-                <div class="bg-white/20 rounded-2xl p-3 text-center">
-                  <p class="text-xs opacity-90 mb-1">取組んだ問題</p>
-                  <p class="text-2xl font-black">${totalAttempts}<span class="text-xs font-normal">回</span></p>
-                </div>
-                <div class="bg-white/20 rounded-2xl p-3 text-center">
-                  <p class="text-xs opacity-90 mb-1">累計ミス</p>
-                  <p class="text-2xl font-black">${totalMistakes}<span class="text-xs font-normal">回</span></p>
-                </div>
-                <div class="bg-white/20 rounded-2xl p-3 text-center">
-                  <p class="text-xs opacity-90 mb-1">総合正答率</p>
-                  <p class="text-2xl font-black">${accuracy}<span class="text-xs font-normal">%</span></p>
-                </div>
+              <div>
+                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                  <i class="ph-fill ph-warning text-xl mr-2 text-rose-500"></i>要注意！苦手な問題トップ
+                </h3>
+                <div class="space-y-3">${listHtml}</div>
               </div>
             </div>
-            <div>
-              <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                <i class="ph-fill ph-warning text-xl mr-2 text-rose-500"></i>要注意！苦手な問題トップ
-              </h3>
-              <div class="space-y-3">${listHtml}</div>
-            </div>
-          </div>
-        `;
+          `;
+        }
       } else {
         const subsHtml = subjects.map(sub => {
           let iconColor = "text-blue-500";
@@ -793,7 +853,7 @@
               <i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button onclick="startWeaknessQuiz('${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors active:scale-95">
+              <button onclick="startWeaknessQuiz('${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
                 <span><i class="ph-fill ph-warning text-lg mr-2"></i>${sub.name} の苦手特訓</span>
                 <i class="ph-fill ph-play text-xl"></i>
               </button>
@@ -822,7 +882,7 @@
                   </h2>
                   <p class="text-sm text-rose-600/80">過去に間違えた問題を優先的に出題します</p>
                 </div>
-                <button onclick="startWeaknessQuiz()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-rose-500 text-white font-bold hover:bg-rose-600 active:scale-95 transition-all shadow-md flex items-center justify-center">
+                <button onclick="startWeaknessQuiz()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-rose-500 text-white font-bold hover:bg-rose-600 active:scale-95 transition-all shadow-md flex items-center justify-center ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
                   特訓スタート <i class="ph-fill ph-play text-xl ml-2"></i>
                 </button>
               </div>
@@ -832,24 +892,18 @@
         `;
       }
 
-      const guestToggleHtml = `
-        <div class="mb-8 flex justify-center">
-          <label class="flex items-center cursor-pointer bg-white px-4 py-3 rounded-2xl shadow-sm border border-gray-200 hover:bg-gray-50 transition-colors">
-            <div class="relative">
-              <input type="checkbox" class="sr-only" onchange="toggleGuestMode()" ${state.isGuest ? 'checked' : ''}>
-              <div class="block w-14 h-8 rounded-full transition-colors ${state.isGuest ? 'bg-yellow-400' : 'bg-gray-200'}"></div>
-              <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${state.isGuest ? 'transform translate-x-6' : ''}"></div>
-            </div>
-            <div class="ml-3 text-sm font-bold flex flex-col ${state.isGuest ? 'text-yellow-600' : 'text-gray-700'}">
-              <span class="flex items-center">
-                <i class="ph-fill ph-user-circle text-lg mr-1 ${state.isGuest ? 'text-yellow-500' : 'text-gray-400'}"></i>
-                ゲストモード
-              </span>
-              ${state.isGuest 
-                ? '<span class="text-[10px] text-yellow-600">データは保存されません (お友達用)</span>' 
-                : '<span class="text-[10px] text-gray-400">データは自動保存されます (通常)</span>'}
-            </div>
-          </label>
+      // ★アカウント切り替えUI
+      const userSelectorHtml = `
+        <div class="flex justify-center mb-8 bg-white p-2 rounded-full shadow-sm border border-gray-200 inline-flex mx-auto">
+          ${Object.keys(userThemes).map(key => {
+            const theme = userThemes[key];
+            const isActive = state.activeUser === key;
+            return `
+              <button onclick="switchUser('${key}')" class="flex items-center px-4 py-2 sm:px-6 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 ${isActive ? theme.activeBg + ' ' + theme.activeText + ' shadow-md transform scale-105' : 'bg-transparent text-gray-500 hover:bg-gray-100'}">
+                <span class="mr-1 sm:mr-2 text-lg sm:text-xl">${theme.icon}</span> ${theme.name}
+              </button>
+            `;
+          }).join('')}
         </div>
       `;
 
@@ -861,9 +915,9 @@
             ${syncStatusText}
           </div>
 
-          <div class="text-center mb-8 mt-8">
-            <div class="inline-flex items-center justify-center p-4 bg-yellow-100 rounded-full mb-4 shadow-inner">
-              <i class="ph-fill ph-crown text-5xl text-yellow-500"></i>
+          <div class="text-center mb-6 mt-8">
+            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 shadow-inner ${currentUserTheme.bg}">
+              <span class="text-5xl">${currentUserTheme.icon}</span>
             </div>
             <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight leading-tight">
               【最強】最強！<br>暗記完璧最強アプリ(最強)
@@ -871,7 +925,15 @@
             <p class="text-gray-500 mt-3 font-medium">データ駆動で100点を狙う</p>
           </div>
           
-          ${guestToggleHtml}
+          <div class="text-center">
+            ${userSelectorHtml}
+          </div>
+
+          ${isGuest ? `
+            <div class="guest-stripes text-yellow-900 text-xs sm:text-sm font-bold text-center py-2 rounded-xl mb-6 shadow-sm">
+              <i class="ph-fill ph-info text-lg mr-1 align-middle"></i>現在ゲストモードです。データは保存されません。
+            </div>
+          ` : ''}
 
           <div class="flex bg-gray-200 p-1 rounded-xl mb-8">
             <button onclick="switchTab('study')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all ${state.activeTab === 'study' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500'}">
@@ -981,16 +1043,22 @@
         }
       }
 
-      const guestHeaderHtml = state.isGuest ? `
-        <div class="guest-stripes text-yellow-900 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50">
-          現在ゲストモードです（成績は保存されません）
-        </div>
-      ` : '';
+      const isGuest = state.activeUser === 'guest';
+      const currentUserTheme = userThemes[state.activeUser];
+      
+      let headerStripes = '';
+      if (isGuest) {
+        headerStripes = '<div class="guest-stripes text-yellow-900 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50">現在ゲストモードです（成績は保存されません）</div>';
+      } else if (state.activeUser === 'momoka') {
+        headerStripes = '<div class="momoka-stripes text-orange-900 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50">🍑 ももかちゃんのアカウントで学習中</div>';
+      } else {
+        headerStripes = '<div class="bg-pink-200 text-pink-800 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50">🌸 さくらちゃんのアカウントで学習中</div>';
+      }
 
       return `
         <div class="max-w-xl mx-auto p-4 min-h-screen flex flex-col pt-6 pb-8 animate-fade-in relative">
-          ${guestHeaderHtml}
-          <div class="mb-6 ${state.isGuest ? 'mt-4' : ''}">
+          ${headerStripes}
+          <div class="mb-6 mt-4">
             <div class="flex justify-between items-end mb-3">
               <button onclick="handleInterrupt()" class="flex items-center justify-center p-2 rounded-xl bg-white border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-800 transition-colors shadow-sm">
                 <i class="ph-fill ph-house text-lg mr-1"></i><span class="text-xs font-bold">中断</span>
@@ -1026,14 +1094,16 @@
 
     function renderResultHTML() {
       const isPerfect = state.sessionStats.mistakes === 0;
+      const isGuest = state.activeUser === 'guest';
+      const currentUserTheme = userThemes[state.activeUser];
+
       return `
         <div class="max-w-md mx-auto p-6 min-h-screen flex flex-col items-center justify-center text-center animate-fade-in relative">
-          ${state.isGuest ? '<div class="guest-stripes text-yellow-900 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50">現在ゲストモードです（成績は保存されません）</div>' : ''}
-          <div class="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6 shadow-inner ${state.isGuest ? 'mt-8' : ''}">
-            <i class="ph-fill ph-medal text-5xl text-yellow-500"></i>
+          <div class="w-24 h-24 ${currentUserTheme.bg} rounded-full flex items-center justify-center mb-6 shadow-inner mt-8">
+            <span class="text-5xl">${currentUserTheme.icon}</span>
           </div>
           <h1 class="text-3xl font-extrabold text-gray-800 mb-2">コンプリート！</h1>
-          <p class="text-gray-500 mb-8">すべての問題をクリアしました。<br>${state.isGuest ? '<span class="text-yellow-600 font-bold">※ゲストモードのためデータは保存されません</span>' : 'データは自動的に保存されています。'}</p>
+          <p class="text-gray-500 mb-8">すべての問題をクリアしました。<br>${isGuest ? '<span class="text-yellow-600 font-bold">※ゲストモードのためデータは保存されません</span>' : `${currentUserTheme.name}のデータとして保存しました！`}</p>
           
           <div class="bg-white w-full p-6 rounded-3xl shadow-sm border border-gray-100 mb-8">
             <h3 class="text-sm text-gray-500 font-medium mb-4 uppercase tracking-wider">今回のセッション記録</h3>
@@ -1061,7 +1131,6 @@
       `;
     }
 
-    // 👻 超あからさまな貞子パスコードUI
     function renderPasscodeHTML() {
       const level = Math.min(state.passcodeErrorCount, 5);
       
@@ -1079,12 +1148,8 @@
       return `
         <div class="fixed inset-0 ${bgClass} flex flex-col items-center justify-center z-50 animate-fade-in px-4 transition-colors duration-1000 overflow-hidden">
             
-            <!-- 👻 井戸と貞子のコンテナ -->
             <div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden">
-               
                <div class="relative w-full h-[400px] flex justify-center">
-                 
-                 <!-- 貞子本体 -->
                  <div class="sadako-body lvl-${level}">
                    <svg viewBox="0 0 200 300" class="sadako-svg">
                      <path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#94a3b8" />
@@ -1093,20 +1158,16 @@
                      <path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" />
                      <path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" />
                      <path d="M 50,300 C 30,100 170,100 150,300 C 130,150 70,150 50,300 Z" fill="#0a0a0a" />
-                     <!-- 最終形態で光る目 -->
                      <circle class="s-eye" cx="85" cy="180" r="4" />
                      <circle class="s-eye" cx="115" cy="180" r="4" />
                    </svg>
                  </div>
-                 
-                 <!-- 井戸の手前のフチ -->
                  <div class="well-container">
                     <div class="well-hole"></div>
                  </div>
                </div>
             </div>
 
-            <!-- パスコード入力UI -->
             <div class="relative z-50 flex flex-col items-center mt-10">
               <i class="ph-fill ph-skull text-6xl text-red-700 mb-6 ${level > 0 ? 'animate-pulse-red' : ''}"></i>
               <h3 class="${titleClass} font-bold tracking-[0.2em] sm:tracking-[0.3em] mb-8 font-serif whitespace-nowrap">${textTitle}</h3>
@@ -1129,6 +1190,7 @@
     }
 
     function renderParentDashboardHTML() {
+      const userName = userThemes[state.activeUser].name;
       let totalAttempts = 0;
       let totalMistakes = 0;
       const analyzedData = rawData.map(q => {
@@ -1170,7 +1232,7 @@
           <div class="max-w-2xl mx-auto p-4 sm:p-6">
             <div class="flex justify-between items-center mb-8 border-b border-red-900 pb-4 pt-4">
               <h1 class="text-2xl sm:text-3xl font-bold text-red-600 flex items-center tracking-widest">
-                <i class="ph-fill ph-skull text-3xl sm:text-4xl mr-3"></i>閻魔の帳簿
+                <i class="ph-fill ph-skull text-3xl sm:text-4xl mr-3"></i>閻魔の帳簿<span class="text-sm text-gray-400 ml-3 tracking-normal">(${userName}の記録)</span>
               </h1>
               <button onclick="goHome()" class="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-700 hover:text-white active:scale-95 transition-all text-sm font-bold">
                 人間界へ戻る
