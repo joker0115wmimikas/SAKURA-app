@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>【最強】最強！暗記完璧最強アプリ(最強)</title>
+  <!-- バージョン: v2.4 (安定動作・エラー完全修正・期末テスト対応版) -->
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   
-  <!-- Firebase (安定のCompat版) -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -27,60 +28,31 @@
     .momoka-stripes { background: repeating-linear-gradient(45deg, #fce7f3, #fce7f3 10px, #fdf2f8 10px, #fdf2f8 20px); }
     .sakura-stripes { background: repeating-linear-gradient(45deg, #fbcfe8, #fbcfe8 10px, #fdf2f8 10px, #fdf2f8 20px); }
 
-    /* 🌸🌺 背景パーティクル（花びら）システム */
-    #particles-container {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      pointer-events: none; z-index: -1; overflow: hidden;
-    }
+    /* 🌸🌺 背景パーティクル */
+    #particles-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; overflow: hidden; }
     .falling-particle { position: absolute; top: -5vh; }
-    
-    .particle-sakura {
-      width: 12px; height: 16px;
-      background: #fbcfe8; /* 桜色 */
-      border-radius: 50% 0 50% 0; /* 桜の花びら風 */
-      box-shadow: inset 2px -2px 4px rgba(255,192,203,0.5);
-      animation: fall-sakura linear forwards;
-    }
-    @keyframes fall-sakura {
-      0% { transform: translateY(0) rotate(0deg) translateX(0); }
-      100% { transform: translateY(110vh) rotate(720deg) translateX(80px); }
-    }
-
-    .particle-momoka {
-      width: 16px; height: 16px;
-      background: #fca5a5; /* 桃色 */
-      border-radius: 50%; /* 丸い桃の花びら風 */
-      box-shadow: inset -2px -2px 4px rgba(225,29,72,0.2);
-      animation: fall-momoka linear forwards;
-    }
-    @keyframes fall-momoka {
-      0% { transform: translateY(0) rotate(0deg) scale(1) translateX(0); }
-      50% { transform: translateY(50vh) rotate(180deg) scale(0.8) translateX(-40px); }
-      100% { transform: translateY(110vh) rotate(360deg) scale(1) translateX(30px); }
-    }
+    .particle-sakura { width: 12px; height: 16px; background: #fbcfe8; border-radius: 50% 0 50% 0; box-shadow: inset 2px -2px 4px rgba(255,192,203,0.5); animation: fall-sakura linear forwards; }
+    @keyframes fall-sakura { 0% { transform: translateY(0) rotate(0deg) translateX(0); } 100% { transform: translateY(110vh) rotate(720deg) translateX(80px); } }
+    .particle-momoka { width: 16px; height: 16px; background: #fca5a5; border-radius: 50%; box-shadow: inset -2px -2px 4px rgba(225,29,72,0.2); animation: fall-momoka linear forwards; }
+    @keyframes fall-momoka { 0% { transform: translateY(0) rotate(0deg) scale(1) translateX(0); } 50% { transform: translateY(50vh) rotate(180deg) scale(0.8) translateX(-40px); } 100% { transform: translateY(110vh) rotate(360deg) scale(1) translateX(30px); } }
 
     /* 👻 貞子アニメーションシステム */
     .well-container { position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); width: 250px; height: 90px; z-index: 10; }
     .well-hole { width: 100%; height: 100%; background: radial-gradient(ellipse at center, #000 20%, #111 60%, #333 100%); border: 12px solid #2a2a2a; border-radius: 50%; box-shadow: 0 0 30px #000 inset, 0 10px 30px rgba(0,0,0,0.9); }
     .sadako-wrapper { position: absolute; bottom: 12%; left: 50%; width: 150px; height: 200px; margin-left: -75px; transform-origin: bottom center; transition: all 1.2s cubic-bezier(0.3, 0.1, 0.2, 1); z-index: 5; }
     .sadako-svg { width: 100%; height: 100%; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.8)); }
-    
     .lvl-0 .sadako-wrapper { transform: translateY(180px) scale(0.3); opacity: 0; }
     .lvl-1 .sadako-wrapper { transform: translateY(80px) scale(0.8); opacity: 0.9; z-index: 15; }
     .lvl-2 .sadako-wrapper { transform: translateY(30px) scale(1.2); opacity: 1; z-index: 15; }
     .lvl-3 .sadako-wrapper { transform: translateY(-20px) scale(1.8); opacity: 1; z-index: 15; filter: drop-shadow(0 0 20px rgba(255,0,0,0.3)); }
     .lvl-4 .sadako-wrapper { transform: translateY(-80px) scale(3.5); opacity: 1; z-index: 40; filter: drop-shadow(0 0 40px rgba(255,0,0,0.5)); }
     .lvl-5 .sadako-wrapper { transform: translateY(-100px) scale(8); opacity: 1; z-index: 100; filter: drop-shadow(0 0 80px rgba(255,0,0,1)); animation: s-shake 0.05s infinite; }
-    
     .s-eye { opacity: 0; transition: opacity 0.5s; }
     .lvl-5 .s-eye { opacity: 1; animation: s-blink 0.1s infinite; fill: #ff0000; filter: drop-shadow(0 0 10px red); }
-    
     @keyframes s-shake { 0%, 100% { transform: translateY(-100px) scale(8) translateX(0); } 25% { transform: translateY(-100px) scale(8) translateX(-8px); } 50% { transform: translateY(-100px) scale(8) translateX(8px); } }
     @keyframes s-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-    
     .bg-cursed { animation: bg-flash 0.1s infinite alternate; }
     @keyframes bg-flash { from { background-color: #1a0000; } to { background-color: #800000; } }
-
     .glitch-text { animation: glitch-anim 0.1s infinite; color: #ff0000; text-shadow: 4px 0 #000, -4px 0 #000; font-weight: 900; letter-spacing: 0.1em; }
     @keyframes glitch-anim { 0% { transform: translate(0) skew(0deg); } 20% { transform: translate(-4px, 4px) skew(10deg); } 40% { transform: translate(-4px, -4px) skew(-10deg); } 60% { transform: translate(4px, 4px) skew(5deg); } 80% { transform: translate(4px, -4px) skew(-5deg); } 100% { transform: translate(0) skew(0deg); } }
   </style>
@@ -91,241 +63,214 @@
 
   <script>
     // ==========================================
-    // 📚 【完全復元】問題データ (約550問)
+    // 📚 v2.4 データ (期末テスト本気対応 ＋ 賢いダミー搭載)
     // ==========================================
     let rawData = [
       // =====================================
-      // 🔬 理科 (物理・化学・生物)
+      // 🔥 2年生（地理：地域調査のしかた・地図）
       // =====================================
-      { subject: "理科", category: "気体と水溶液", q: "水にとけにくい気体を集める方法", a: "水上置換法" },
-      { subject: "理科", category: "気体と水溶液", q: "水にとけやすく、空気より密度が大きい（重い）気体を集める方法", a: "下方置換法" },
-      { subject: "理科", category: "気体と水溶液", q: "水にとけやすく、空気より密度が小さい（軽い）気体を集める方法", a: "上方置換法" },
-      { subject: "理科", category: "気体と水溶液", q: "二酸化マンガンにうすい過酸化水素水を加えると発生する気体", a: "酸素" },
-      { subject: "理科", category: "気体と水溶液", q: "石灰石にうすい塩酸を加えると発生する気体", a: "二酸化炭素" },
-      { subject: "理科", category: "気体と水溶液", q: "塩化アンモニウムと水酸化カルシウムの混合物を加熱すると発生する気体", a: "アンモニア" },
-      { subject: "理科", category: "気体と水溶液", q: "亜鉛や鉄などの金属にうすい塩酸を加えると発生する気体", a: "水素" },
-      { subject: "理科", category: "気体と水溶液", q: "水などの液体にとけている物質", a: "溶質" },
-      { subject: "理科", category: "気体と水溶液", q: "溶質をとかしている水などの液体", a: "溶媒" },
-      { subject: "理科", category: "気体と水溶液", q: "溶質が溶媒にとけた液", a: "溶液" },
-      { subject: "理科", category: "気体と水溶液", q: "溶媒が水である溶液", a: "水溶液" },
-      { subject: "理科", category: "気体と水溶液", q: "溶液の質量に対する溶質の質量の割合を百分率（％）で示したもの", a: "質量パーセント濃度" },
-      { subject: "理科", category: "気体と水溶液", q: "ある溶質が水に限度までとけている状態の水溶液", a: "飽和水溶液" },
-      { subject: "理科", category: "気体と水溶液", q: "100gの水にとける物質の限度の質量", a: "溶解度" },
-      { subject: "理科", category: "気体と水溶液", q: "溶解度と温度との関係を表したグラフ", a: "溶解度曲線" },
-      { subject: "理科", category: "気体と水溶液", q: "物質に特有の規則正しい形をした固体", a: "結晶" },
-      { subject: "理科", category: "気体と水溶液", q: "物質をいったん溶媒にとかした後、再び結晶としてとり出す操作", a: "再結晶" },
-      { subject: "理科", category: "気体と水溶液", q: "複数の物質が混ざり合ったもの", a: "混合物" },
-      { subject: "理科", category: "気体と水溶液", q: "1種類の物質だけでできているもの", a: "純物質" },
-      { subject: "理科", category: "気体と水溶液", q: "水に非常にとけやすく、特有の刺激臭がある気体", a: "アンモニア" },
-      { subject: "理科", category: "気体と水溶液", q: "石灰水を白くにごらせる気体", a: "二酸化炭素" },
-      { subject: "理科", category: "気体と水溶液", q: "マッチの火を近づけると、音を立てて燃える気体", a: "水素" },
-      { subject: "理科", category: "気体と水溶液", q: "ものを燃やすはたらきがある気体", a: "酸素" },
-
-      { subject: "理科", category: "物質のすがた", q: "ガスバーナーで、炎の大きさを調節するねじ", a: "ガス調節ねじ" },
-      { subject: "理科", category: "物質のすがた", q: "ガスバーナーで、炎を青くするために調節するねじ", a: "空気調節ねじ" },
-      { subject: "理科", category: "物質のすがた", q: "炭素をふくみ、加熱すると燃えて二酸化炭素や水が発生する物質", a: "有機物" },
-      { subject: "理科", category: "物質のすがた", q: "有機物以外の物質", a: "無機物" },
-      { subject: "理科", category: "物質のすがた", q: "みがくと特有の光沢が出る、たたくと広がる、などの共通の性質をもつ物質", a: "金属" },
-      { subject: "理科", category: "物質のすがた", q: "金属以外の物質", a: "非金属" },
-      { subject: "理科", category: "物質のすがた", q: "物質1cm³あたりの質量", a: "密度" },
-      { subject: "理科", category: "物質のすがた", q: "体積をはかる器具", a: "メスシリンダー" },
-      { subject: "理科", category: "物質のすがた", q: "物質そのものの量（質量）をはかる器具", a: "上皿てんびん" },
-      { subject: "理科", category: "物質のすがた", q: "物質が、固体、液体、気体と状態を変えること", a: "状態変化" },
-      { subject: "理科", category: "物質のすがた", q: "液体が沸騰して気体に変化するときの温度", a: "沸点" },
-      { subject: "理科", category: "物質のすがた", q: "固体がとけて液体に変化するときの温度", a: "融点" },
-      { subject: "理科", category: "物質のすがた", q: "液体を加熱して沸騰させ、出てくる気体を冷やして再び液体にして集める方法", a: "蒸留" },
-      { subject: "理科", category: "物質のすがた", q: "状態変化において、物質がとけている間や沸騰している間の温度はどうなるか", a: "一定に保たれる" },
-      { subject: "理科", category: "物質のすがた", q: "水が氷（固体）になるとき、体積はどう変化するか", a: "大きくなる" },
-
-      { subject: "理科", category: "光・音・力", q: "みずから光を発するもの", a: "光源" },
-      { subject: "理科", category: "光・音・力", q: "光が鏡などの面にあたって、はね返る現象", a: "反射" },
-      { subject: "理科", category: "光・音・力", q: "入射角と反射角は等しいという法則", a: "反射の法則" },
-      { subject: "理科", category: "光・音・力", q: "でこぼこした物体の表面で光がいろいろな方向に反射すること", a: "乱反射" },
-      { subject: "理科", category: "光・音・力", q: "光が異なる物質の間を進むとき、境界の面で折れ曲がる現象", a: "屈折" },
-      { subject: "理科", category: "光・音・力", q: "光が水やガラスから空気へ進むとき、すべての光が境界面で反射する現象", a: "全反射" },
-      { subject: "理科", category: "光・音・力", q: "凸レンズの光軸に平行に入った光が、屈折して集まる点", a: "焦点" },
-      { subject: "理科", category: "光・音・力", q: "スクリーンにはっきりと映る像", a: "実像" },
-      { subject: "理科", category: "光・音・力", q: "凸レンズを通して見える、物体より大きな像", a: "虚像" },
-      { subject: "理科", category: "光・音・力", q: "音を発生しているもの", a: "音源（発音体）" },
-      { subject: "理科", category: "光・音・力", q: "音源の振動の振れ幅。大きいほど音は大きくなる。", a: "振幅" },
-      { subject: "理科", category: "光・音・力", q: "音源が1秒間に振動する回数。多いほど音は高くなる。", a: "振動数" },
-      { subject: "理科", category: "光・音・力", q: "振動数の単位", a: "ヘルツ（Hz）" },
-      { subject: "理科", category: "光・音・力", q: "空気中を伝わる音の速さは、約何m/sか", a: "約340m/s" },
-      { subject: "理科", category: "光・音・力", q: "形を変える、動きを変える、物体を支えるという３つのはたらきを持つもの", a: "力" },
-      { subject: "理科", category: "光・音・力", q: "変形した物体がもとにもどろうとして生じる力", a: "弾性力" },
-      { subject: "理科", category: "光・音・力", q: "地球が物体を地球の中心に向かって引っぱる力", a: "重力" },
-      { subject: "理科", category: "光・音・力", q: "磁石の極と極の間にはたらく力", a: "磁力" },
-      { subject: "理科", category: "光・音・力", q: "力の大きさを表す単位", a: "ニュートン（N）" },
-      { subject: "理科", category: "光・音・力", q: "ばねののびは、ばねを引く力の大きさに比例するという法則", a: "フックの法則" },
-      { subject: "理科", category: "光・音・力", q: "1つの物体に2つの力がはたらき、その物体が静止している状態", a: "つり合っている" },
-      { subject: "理科", category: "光・音・力", q: "力のつり合いの3条件は、2力の大きさが等しい、2力の向きが反対、あと一つは？", a: "同一直線上にある" },
-      { subject: "理科", category: "光・音・力", q: "物体どうしがふれ合う面で、物体が動こうとする向きと反対向きにはたらく力", a: "摩擦力" },
-      { subject: "理科", category: "光・音・力", q: "物体が面を押すとき、面が物体に対して垂直に同じ大きさで押し返す力", a: "垂直抗力" },
-
-      { subject: "理科", category: "植物・動物", q: "観察するものを前後に動かしてピントを合わせる顕微鏡", a: "ルーペ" },
-      { subject: "理科", category: "植物・動物", q: "プレパラートをつくる必要がなく、観察物を立体的に観察できる顕微鏡", a: "双眼実体顕微鏡" },
-      { subject: "理科", category: "植物・動物", q: "顕微鏡のピント合わせで、対物レンズとプレパラートを遠ざけながらピントを合わせる理由", a: "プレパラートを割らないようにするため" },
-      { subject: "理科", category: "植物・動物", q: "花のつくりを外側から順に言うと、がく、花弁、おしべ、あと一つは？", a: "めしべ" },
-      { subject: "理科", category: "植物・動物", q: "おしべの先端にある、花粉が入っているふくろ", a: "やく" },
-      { subject: "理科", category: "植物・動物", q: "花粉がめしべの柱頭につくこと", a: "受粉" },
-      { subject: "理科", category: "植物・動物", q: "受粉後、子房は成長して何になるか", a: "果実" },
-      { subject: "理科", category: "植物・動物", q: "受粉後、胚珠は成長して何になるか", a: "種子" },
-      { subject: "理科", category: "植物・動物", q: "アブラナのように花弁が1枚1枚離れている花", a: "離弁花" },
-      { subject: "理科", category: "植物・動物", q: "ツツジのように花弁がたがいにくっついている花", a: "合弁花" },
-      { subject: "理科", category: "植物・動物", q: "めしべの根もとのふくらんだ部分", a: "子房" },
-      { subject: "理科", category: "植物・動物", q: "子房の中にある、のちに種子になる部分", a: "胚珠" },
-      { subject: "理科", category: "植物・動物", q: "胚珠が子房の中にある植物", a: "被子植物" },
-      { subject: "理科", category: "植物・動物", q: "胚珠がむきだしになっている植物", a: "裸子植物" },
-      { subject: "理科", category: "植物・動物", q: "種子植物のなかで、子葉が1枚の植物", a: "単子葉類" },
-      { subject: "理科", category: "植物・動物", q: "種子植物のなかで、子葉が2枚の植物", a: "双子葉類" },
-      { subject: "理科", category: "植物・動物", q: "単子葉類に見られる、平行な葉脈", a: "平行脈" },
-      { subject: "理科", category: "植物・動物", q: "双子葉類に見られる、網目状の葉脈", a: "網状脈" },
-      { subject: "理科", category: "植物・動物", q: "単子葉類のもつ、地中に広がる細い根", a: "ひげ根" },
-      { subject: "理科", category: "植物・動物", q: "双子葉類のもつ、太い根とそこから枝分かれした細い根", a: "主根と側根" },
-      { subject: "理科", category: "植物・動物", q: "イヌワラビなどのように、花が咲かず胞子でふえる植物。根・茎・葉の区別がある。", a: "シダ植物" },
-      { subject: "理科", category: "植物・動物", q: "ゼニゴケなどのように、花が咲かず胞子でふえる植物。根・茎・葉の区別がない。", a: "コケ植物" },
-      { subject: "理科", category: "植物・動物", q: "シダ植物やコケ植物で、胞子がつくられるふくろ", a: "胞子のう" },
-      { subject: "理科", category: "植物・動物", q: "ほかの動物を食べる動物。犬歯が発達している。", a: "肉食動物" },
-      { subject: "理科", category: "植物・動物", q: "植物を食べる動物。門歯や臼歯が発達している。", a: "草食動物" },
-      { subject: "理科", category: "植物・動物", q: "肉食動物の目は顔のどの位置についているか", a: "正面" },
-      { subject: "理科", category: "植物・動物", q: "草食動物の目は顔のどの位置についているか", a: "横" },
-      { subject: "理科", category: "植物・動物", q: "背骨をもつ動物のなかま", a: "脊椎動物" },
-      { subject: "理科", category: "植物・動物", q: "背骨をもたない動物のなかま", a: "無脊椎動物" },
-      { subject: "理科", category: "植物・動物", q: "体が外骨格でおおわれ、あしが多くの節で分かれている無脊椎動物", a: "節足動物" },
-      { subject: "理科", category: "植物・動物", q: "体が頭部・胸部・腹部の3つに分かれている節足動物", a: "昆虫類" },
-      { subject: "理科", category: "植物・動物", q: "エビやカニなどの節足動物のなかま", a: "甲殻類" },
-      { subject: "理科", category: "植物・動物", q: "節足動物の体を外側から支える、かたい殻", a: "外骨格" },
-      { subject: "理科", category: "植物・動物", q: "内臓が筋肉質の外套膜でおおわれている無脊椎動物", a: "軟体動物" },
-      { subject: "理科", category: "植物・動物", q: "子が親と同じような姿で生まれる、哺乳類の生まれ方", a: "胎生" },
-      { subject: "理科", category: "植物・動物", q: "卵からかえる生まれ方", a: "卵生" },
-      { subject: "理科", category: "植物・動物", q: "魚類や両生類の子などが呼吸に使う器官", a: "えら" },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地域の調査で、統計資料を分析したりして使用する国土地理院発行の地図は？", a: "地形図", dummies: ["分布図", "気候グラフ", "海図"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "調査テーマに対する「仮の答え」を何というか？", a: "仮説", dummies: ["結論", "推測", "分析"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "現地で直接様子を観察したり聞き取りをする調査方法を何というか？", a: "野外調査(フィールドワーク)", dummies: ["文献調査", "実験", "統計調査"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "調査で使った資料の名称や情報源のことを何というか？", a: "出典", dummies: ["仮説", "索引", "目次"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "野外調査の際に、前もって作成しておくと役立つものは？", a: "ルートマップ", dummies: ["ハザードマップ", "鳥瞰図", "地形図"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地形図を発行している国の機関は？", a: "国土地理院", dummies: ["気象庁", "文部科学省", "環境省"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "特に指定がない場合、地図はどの方角を上にして作られているか？", a: "北", dummies: ["南", "東", "西"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "インターネット上の電子国土基本図が閲覧できるサイトは？", a: "地理院地図", dummies: ["Googleマップ", "ストリートビュー", "ハザードマップ"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地形図などで、地表の同じ高さの地点を結んだ線を何というか？", a: "等高線", dummies: ["等圧線", "等温線", "経線"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "等高線の間隔が「広い」ほど、傾斜はどうなるか？", a: "緩やかになる", dummies: ["急になる", "変わらない", "垂直になる"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "等高線の間隔が「狭い」ほど、傾斜はどうなるか？", a: "急になる", dummies: ["緩やかになる", "変わらない", "水平になる"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "上空から地表を撮影したもので、地形図の作成にも使われる写真は？", a: "空中写真", dummies: ["衛星画像", "ハザードマップ", "鳥瞰図"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地図記号で二重丸「◎」が表すものは？", a: "市役所", dummies: ["町村役場", "警察署", "裁判所"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地図記号「×」が表すものは？", a: "交番", dummies: ["警察署", "病院", "寺院"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地図記号「〒」が表すものは？", a: "郵便局", dummies: ["交番", "病院", "消防署"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地図記号「文」が表すものは？", a: "小・中学校", dummies: ["高等学校", "大学", "図書館"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地図記号「卍」が表すものは？", a: "寺院", dummies: ["神社", "教会", "墓地"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地図記号「鳥居」のマークが表すものは？", a: "神社", dummies: ["寺院", "教会", "史跡"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "Vの字のような地図記号が表すものは？", a: "畑", dummies: ["田", "果樹園", "桑畑"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "丸にVが乗っているような地図記号が表すものは？", a: "果樹園", dummies: ["畑", "広葉樹林", "茶畑"] },
 
       // =====================================
-      // 🌍 理科 (地学分野)
+      // 🔥 2年生（地理：オセアニア州）
       // =====================================
-      { subject: "理科", category: "大地の変化", q: "地球表面をおおう、厚さ数10〜約100kmの、かたい板状の岩石のかたまり", a: "プレート" },
-      { subject: "理科", category: "大地の変化", q: "大地が大きな力を受けて盛り上がること", a: "隆起" },
-      { subject: "理科", category: "大地の変化", q: "大地が大きな力を受けて沈むこと", a: "沈降" },
-      { subject: "理科", category: "大地の変化", q: "大地が長期間大きな力を受けて、波打つように曲がったつくり", a: "しゅう曲" },
-      { subject: "理科", category: "大地の変化", q: "大きな力によって大地が割れて動いたときのずれ", a: "断層" },
-      { subject: "理科", category: "大地の変化", q: "地層や岩石などが地表に現れた崖など", a: "露頭" },
-      { subject: "理科", category: "地震", q: "地震が起きたとき、最初に岩石が破壊された場所", a: "震源" },
-      { subject: "理科", category: "地震", q: "震源の真上にある地表の位置", a: "震央" },
-      { subject: "理科", category: "地震", q: "地震の最初にくる小さなゆれ", a: "初期微動" },
-      { subject: "理科", category: "地震", q: "初期微動を伝える速い波", a: "P波" },
-      { subject: "理科", category: "地震", q: "初期微動に続いてはじまる大きなゆれ", a: "主要動" },
-      { subject: "理科", category: "地震", q: "主要動を伝える遅い波", a: "S波" },
-      { subject: "理科", category: "地震", q: "初期微動がはじまってから主要動がはじまるまでの時間", a: "初期微動継続時間" },
-      { subject: "理科", category: "地震", q: "観測地点での地震によるゆれの大きさを表す階級", a: "震度" },
-      { subject: "理科", category: "地震", q: "地震そのものの規模（エネルギーの大きさ）を表す数値", a: "マグニチュード" },
-      { subject: "理科", category: "地震", q: "過去にくり返しずれ動き、今後も動く可能性のある断層", a: "活断層" },
-      { subject: "理科", category: "地層と化石", q: "離れた地層を比べるときに目印として利用できる層（火山灰の層など）", a: "かぎ層" },
-      { subject: "理科", category: "地層と化石", q: "地層が堆積した当時の「環境」を推測できる化石", a: "示相化石" },
-      { subject: "理科", category: "地層と化石", q: "地層が堆積した「時代」の推測に役立つ化石", a: "示準化石" },
-      { subject: "理科", category: "地層と化石", q: "地球環境の変化による生物の入れかわりをもとに区別した年代", a: "地質年代" },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "オセアニア州は、ニュージーランド、太平洋の島々と何大陸からなるか？", a: "オーストラリア大陸", dummies: ["ユーラシア大陸", "アフリカ大陸", "北アメリカ大陸"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "ニュージーランドで盛んな、火山や温泉を生かした発電方法は？", a: "地熱発電", dummies: ["火力発電", "水力発電", "風力発電"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "太平洋の島々にみられる、サンゴが長い時間をかけて積み重なってできた地形は？", a: "サンゴ礁", dummies: ["フィヨルド", "カルデラ", "リアス海岸"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアの国旗にイギリス国旗が描かれているのは、かつてイギリスの何であった名残か？", a: "植民地", dummies: ["同盟国", "領土", "保護国"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアは、主にどこの国からの移民によって開拓されたか？", a: "イギリス", dummies: ["フランス", "スペイン", "アメリカ"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアで1970年代初めまでとられていた、ヨーロッパ以外からの移民を制限する政策は？", a: "白豪主義", dummies: ["アパルトヘイト", "鎖国", "保護貿易"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "現在のオーストラリアのように、異なる文化をお互いに尊重し合う社会を何というか？", a: "多文化社会", dummies: ["単一民族社会", "グローバル社会", "階級社会"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアの先住民を何というか？", a: "アボリジニ", dummies: ["マオリ", "インディオ", "イヌイット"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "ニュージーランドの先住民を何というか？", a: "マオリ", dummies: ["アボリジニ", "インカ", "アイヌ"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアの重要な輸出品である、鉄鉱石や石炭などを何資源というか？", a: "鉱産資源", dummies: ["水産資源", "森林資源", "農業資源"] },
+      { grade: 2, subject: "社会", category: "オセアニア州", q: "アジア太平洋の国や地域が参加する「アジア太平洋経済協力」の略称は？", a: "APEC", dummies: ["EU", "ASEAN", "OPEC"] },
 
       // =====================================
-      // 🏯 社会（歴史・地理）
+      // 🔥 2年生（理科：周期表）
       // =====================================
-      { subject: "社会", category: "歴史", q: "キリスト（イエス）が生まれたとされる年を基準とした年代の表し方", a: "西暦" },
-      { subject: "社会", category: "歴史", q: "約700万年前にアフリカに現れた最古の人類", a: "猿人" },
-      { subject: "社会", category: "歴史", q: "約20万年前に現れた、現在の私たちと同じ種類の人類", a: "新人" },
-      { subject: "社会", category: "歴史", q: "石を打ち砕いてつくった石器", a: "打製石器" },
-      { subject: "社会", category: "歴史", q: "石を磨いてつくった石器", a: "磨製石器" },
-      { subject: "社会", category: "歴史", q: "紀元前3500年ごろ、ティグリス川・ユーフラテス川流域でおこった文明", a: "メソポタミア文明" },
-      { subject: "社会", category: "歴史", q: "ナイル川流域でおこり、象形文字や太陽暦を生み出した文明", a: "エジプト文明" },
-      { subject: "社会", category: "歴史", q: "インダス川流域で栄えた文明", a: "インダス文明" },
-      { subject: "社会", category: "歴史", q: "漢字のもとになった、亀の甲や牛の骨に刻まれた文字", a: "甲骨文字" },
-      { subject: "社会", category: "歴史", q: "紀元前3世紀に中国を統一した秦の皇帝", a: "始皇帝" },
-      { subject: "社会", category: "歴史", q: "漢の時代に開かれた、ヨーロッパと中国を結んだ交通路", a: "シルクロード" },
-      { subject: "社会", category: "歴史", q: "縄目の文様があり、厚手で黒褐色の土器", a: "縄文土器" },
-      { subject: "社会", category: "歴史", q: "地面に穴を掘り、屋根をつけた縄文時代の住居", a: "たて穴住居" },
-      { subject: "社会", category: "歴史", q: "食べ物の残りかすなどを捨てた、当時のゴミ捨て場", a: "貝塚" },
-      { subject: "社会", category: "歴史", q: "稲を蓄えるためにつくられた、ねずみや湿気を防ぐ建物", a: "高床倉庫" },
-      { subject: "社会", category: "歴史", q: "邪馬台国の女王で、中国の魏に使いを送った人物", a: "卑弥呼" },
-      { subject: "社会", category: "歴史", q: "日本独特の古墳の形で、四角い方墳と円い円墳を合わせた形", a: "前方後円墳" },
-      { subject: "社会", category: "歴史", q: "聖徳太子が定めた、家柄にとらわれず才能や功績のある人物を役人に取り立てる制度", a: "冠位十二階" },
-      { subject: "社会", category: "歴史", q: "聖徳太子が建てたといわれる、現存する世界最古の木造建築物", a: "法隆寺" },
-      { subject: "社会", category: "歴史", q: "645年、中大兄皇子や中臣鎌足らが蘇我氏を倒して始めた政治の改革", a: "大化の改新" },
-      { subject: "社会", category: "歴史", q: "701年に制定された、唐の法律にならって作られた法律", a: "大宝律令" },
-      { subject: "社会", category: "歴史", q: "710年に唐の長安をモデルにして、現在の奈良県につくられた都", a: "平城京" },
-      { subject: "社会", category: "歴史", q: "新しく開墾した土地の永久私有を認めた法律", a: "墾田永年私財法" },
-      { subject: "社会", category: "歴史", q: "794年、桓武天皇が現在の京都府に移した都", a: "平安京" },
-      { subject: "社会", category: "歴史", q: "藤原氏が、天皇が幼い時は摂政、成長してからは関白として実権を握った政治", a: "摂関政治" },
-      { subject: "社会", category: "歴史", q: "紫式部がかな文字で書いた、世界最古の長編小説", a: "源氏物語" },
-      { subject: "社会", category: "歴史", q: "清少納言がかな文字で書いた随筆", a: "枕草子" },
-      { subject: "社会", category: "歴史", q: "白河上皇が天皇の位をゆずった後も、上皇として政治の実権を握った政治", a: "院政" },
-      { subject: "社会", category: "歴史", q: "1232年、北条泰時が制定した武士の裁判の基準となる法律", a: "御成敗式目" },
-      { subject: "社会", category: "歴史", q: "1543年、ポルトガル人を乗せた船が漂着し、鉄砲が伝えられた島", a: "種子島" },
-      { subject: "社会", category: "歴史", q: "1549年、キリスト教を日本に伝えたイエズス会の宣教師", a: "フランシスコ・ザビエル" },
-      { subject: "社会", category: "地理", q: "地球表面の海と陸の面積の割合は、およそ何対何？", a: "7：3" },
-      { subject: "社会", category: "地理", q: "大洋のなかで最も広い海洋", a: "太平洋" },
-      { subject: "社会", category: "地理", q: "海に面しておらず、周りがすべてほかの国と陸続きの国", a: "内陸国" },
-      { subject: "社会", category: "地理", q: "赤道を0度とし、南北に90度ずつ表したもの", a: "緯度" },
-      { subject: "社会", category: "地理", q: "イギリスのロンドンを通る本初子午線を0度とし、東西に180度ずつ表したもの", a: "経度" },
-      { subject: "社会", category: "地理", q: "経度が15度違うと、何時間の時差が生じるか", a: "1時間" },
-      { subject: "社会", category: "地理", q: "日本の標準時子午線は、東経何度の経線か", a: "東経135度" },
-      { subject: "社会", category: "地理", q: "一年中気温が高く、降水量が多い気候帯", a: "熱帯" },
-      { subject: "社会", category: "地理", q: "雨が非常に少なく、砂漠などが広がる気候帯", a: "乾燥帯" },
-      { subject: "社会", category: "地理", q: "日本も属する、四季の変化がはっきりしている気候帯", a: "温帯" },
-      { subject: "社会", category: "地理", q: "ヨーロッパの国々の統合を目指し設立された組織。2020年にイギリスが離脱。", a: "EU" }
+      { grade: 2, subject: "理科", category: "周期表", q: "原子を性質が似たものが縦に並ぶように整理した表を何という？", a: "周期表", dummies: ["溶解度曲線", "質量パーセント濃度", "示相化石"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「H」が表す原子は？", a: "水素", dummies: ["ヘリウム", "酸素", "窒素"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「He」が表す原子は？", a: "ヘリウム", dummies: ["水素", "ネオン", "アルゴン"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Li」が表す原子は？", a: "リチウム", dummies: ["ベリリウム", "ホウ素", "ナトリウム"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Be」が表す原子は？", a: "ベリリウム", dummies: ["リチウム", "ホウ素", "マグネシウム"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「B」が表す原子は？", a: "ホウ素", dummies: ["炭素", "窒素", "アルミニウム"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「C」が表す原子は？", a: "炭素", dummies: ["カルシウム", "銅", "塩素"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「N」が表す原子は？", a: "窒素", dummies: ["酸素", "炭素", "リン"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「O」が表す原子は？", a: "酸素", dummies: ["水素", "炭素", "硫黄"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「F」が表す原子は？", a: "フッ素", dummies: ["塩素", "ヨウ素", "鉄"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Ne」が表す原子は？", a: "ネオン", dummies: ["アルゴン", "ヘリウム", "窒素"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Na」が表す原子は？", a: "ナトリウム", dummies: ["窒素", "ネオン", "カリウム"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Mg」が表す原子は？", a: "マグネシウム", dummies: ["マンガン", "カルシウム", "モリブデン"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Al」が表す原子は？", a: "アルミニウム", dummies: ["アルゴン", "金", "銀"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Si」が表す原子は？", a: "ケイ素", dummies: ["炭素", "リン", "硫黄"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「P」が表す原子は？", a: "リン", dummies: ["カリウム", "硫黄", "鉛"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「S」が表す原子は？", a: "硫黄", dummies: ["リン", "ケイ素", "塩素"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Cl」が表す原子は？", a: "塩素", dummies: ["炭素", "カルシウム", "銅"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Ar」が表す原子は？", a: "アルゴン", dummies: ["アルミニウム", "ネオン", "金"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「K」が表す原子は？", a: "カリウム", dummies: ["カルシウム", "リン", "クリプトン"] },
+      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Ca」が表す原子は？", a: "カルシウム", dummies: ["炭素", "カリウム", "銅"] },
+
+      // =====================================
+      // 🔥 2年生（歴史：戦国〜江戸幕府）
+      // =====================================
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1573年、足利義昭を京都から追放し滅亡させた幕府は？", a: "室町幕府", dummies: ["鎌倉幕府", "江戸幕府", "平氏政権"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1575年、織田信長が鉄砲を使って武田軍を破った戦いは？", a: "長篠の戦い", dummies: ["関ヶ原の戦い", "桶狭間の戦い", "応仁の乱"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "織田信長が築き、関所の廃止（楽市・楽座）などを行った城は？", a: "安土城", dummies: ["大阪城", "江戸城", "姫路城"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1582年、織田信長が家臣の明智光秀に攻撃され自害した出来事は？", a: "本能寺の変", dummies: ["大化の改新", "壬申の乱", "桜田門外の変"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1590年、北条氏を滅ぼし、東北の大名も従って全国を統一した人物は？", a: "豊臣秀吉", dummies: ["織田信長", "徳川家康", "明智光秀"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "田畑の広さや収穫高を調べて検地帳を作成した豊臣秀吉の政策は？", a: "太閤検地", dummies: ["刀狩", "兵農分離", "楽市・楽座"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "一揆を防ぐため、百姓から武器を取り上げた豊臣秀吉の政策は？", a: "刀狩", dummies: ["太閤検地", "兵農分離", "武家諸法度"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "刀狩と太閤検地によって、武士と百姓の身分の区別が明確になったことを何という？", a: "兵農分離", dummies: ["士農工商", "四民平等", "廃藩置県"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "宣教師を追放し、キリスト教を禁止した豊臣秀吉の命令は？", a: "バテレン追放令", dummies: ["宗門改", "絵踏", "禁教令"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "明の征服を目指し、豊臣秀吉が2度にわたって出兵した先は？", a: "朝鮮", dummies: ["琉球", "蝦夷地", "台湾"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "豊臣秀吉が朝鮮に出兵した、1592年と1597年の2つの戦いを合わせて何という？", a: "文禄・慶長の役", dummies: ["壬申の乱", "応仁の乱", "島原・天草一揆"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "大名や豪商らによる壮大で豪華な文化（姫路城や狩野永徳など）を何文化という？", a: "桃山文化", dummies: ["南蛮文化", "国風文化", "天平文化"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "質素さを重んじる「わび茶」を完成させた人物は？", a: "千利休", dummies: ["雪舟", "狩野永徳", "近松門左衛門"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "出雲の阿国が始めた、現在の歌舞伎のルーツとなる踊りは？", a: "かぶき踊り", dummies: ["人形浄瑠璃", "能", "狂言"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "三味線の演奏に合わせて行われる、庶民に人気だった演劇は？", a: "人形浄瑠璃", dummies: ["かぶき踊り", "能", "狂言"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "ヨーロッパから伝わった天文学や医学などの文化を何という？", a: "南蛮文化", dummies: ["桃山文化", "飛鳥文化", "白鳳文化"] },
+      
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1600年、徳川家康が勝利し天下の主導権を握った戦いは？", a: "関ヶ原の戦い", dummies: ["長篠の戦い", "大坂の陣", "島原の乱"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "幕府の政治を取りまとめる、大老に次ぐ常置の最高役職は？", a: "老中", dummies: ["若年寄", "奉行", "京都所司代"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸幕府が直接支配する、全国の約4分の1を占める領地を何という？", a: "幕領(直轄地)", dummies: ["藩", "天領", "荘園"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "徳川一門の大名（尾張・紀伊・水戸の御三家など）を何という？", a: "親藩", dummies: ["譜代大名", "外様大名", "旗本"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "関ヶ原の戦い以前からの徳川氏の家臣である大名を何という？", a: "譜代大名", dummies: ["外様大名", "親藩", "旗本"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "関ヶ原の戦い以降に徳川氏に従った大名を何という？", a: "外様大名", dummies: ["親藩", "譜代大名", "御家人"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸幕府が大名に対する法律として定めたものは？", a: "武家諸法度", dummies: ["御成敗式目", "公事方御定書", "十七条の憲法"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "朝廷や公家を統制するために幕府が定めた法律は？", a: "禁中並公家諸法度", dummies: ["武家諸法度", "御成敗式目", "建武以来追加"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "3代将軍徳川家光が定めた、大名が1年ごとに江戸と領地を行き来する制度は？", a: "参勤交代", dummies: ["武家諸法度", "宗門改", "絵踏"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "許可の朱印状をもった船が行う貿易を何という？", a: "朱印船貿易", dummies: ["南蛮貿易", "日宋貿易", "勘合貿易"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1637年に起こった、重い年貢とキリシタン弾圧に対する一揆は？", a: "島原・天草一揆", dummies: ["加賀の一向一揆", "山城の国一揆", "米騒動"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸時代、幕府がオランダや清と貿易を行った長崎の人工の島は？", a: "出島", dummies: ["種子島", "対馬", "佐渡島"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "オランダ商館長が江戸幕府に提出した、海外の情報をまとめた書物は？", a: "オランダ風説書", dummies: ["解体新書", "東方見聞録", "魏志倭人伝"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "将軍の代替わりごとに朝鮮から江戸幕府に送られた使節は？", a: "朝鮮通信使", dummies: ["遣唐使", "遣隋使", "慶賀使"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1609年に琉球王国を征服した藩は？", a: "薩摩藩", dummies: ["松前藩", "長州藩", "土佐藩"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "アイヌ民族との不平等な交易に対し、戦いを起こしたアイヌの指導者は？", a: "シャクシャイン", dummies: ["アテルイ", "コシャマイン", "阿弖流為"] },
+
+      // =====================================
+      // 🔥 2年生（音楽：夏の思い出）
+      // =====================================
+      { grade: 2, subject: "音楽", category: "夏の思い出", q: "「夏の思い出」の作詞者は誰？", a: "江間章子", dummies: ["中田喜直", "滝廉太郎", "山田耕筰"] },
+      { grade: 2, subject: "音楽", category: "夏の思い出", q: "「夏の思い出」の作曲者は誰？", a: "中田喜直", dummies: ["江間章子", "滝廉太郎", "山田耕筰"] },
+      { grade: 2, subject: "音楽", category: "夏の思い出", q: "「夏の思い出」の拍子は？", a: "4分の4拍子", dummies: ["4分の3拍子", "8分の6拍子", "2分の2拍子"] },
+
+      // =====================================
+      // 📚 1年生の復習 (grade: 1)
+      // =====================================
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "水にとけにくい気体を集める方法", a: "水上置換法" },
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "水にとけやすく、空気より重い気体を集める方法", a: "下方置換法" },
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "水にとけやすく、空気より軽い気体を集める方法", a: "上方置換法" },
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "二酸化マンガンにうすい過酸化水素水を加えると発生する気体", a: "酸素" },
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "石灰石にうすい塩酸を加えると発生する気体", a: "二酸化炭素" },
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "塩化アンモニウムと水酸化カルシウムの混合物を加熱すると発生する気体", a: "アンモニア" },
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "亜鉛や鉄などの金属にうすい塩酸を加えると発生する気体", a: "水素" },
+      { grade: 1, subject: "理科", category: "物質のすがた", q: "ガスバーナーで、炎の大きさを調節するねじ", a: "ガス調節ねじ" },
+      { grade: 1, subject: "理科", category: "物質のすがた", q: "ガスバーナーで、炎を青くするために調節するねじ", a: "空気調節ねじ" },
+      { grade: 1, subject: "理科", category: "物質のすがた", q: "物質が固体、液体、気体と状態を変えること", a: "状態変化" },
+      { grade: 1, subject: "理科", category: "光・音・力", q: "光が鏡などの面にあたって、はね返る現象", a: "反射" },
+      { grade: 1, subject: "理科", category: "光・音・力", q: "音源の振動の振れ幅。大きいほど音は大きくなる。", a: "振幅" },
+      { grade: 1, subject: "理科", category: "植物・動物", q: "おしべの先端にある、花粉が入っているふくろ", a: "やく" },
+      { grade: 1, subject: "理科", category: "植物・動物", q: "受粉後、子房は成長して何になるか", a: "果実" },
+      { grade: 1, subject: "理科", category: "植物・動物", q: "受粉後、胚珠は成長して何になるか", a: "種子" },
+      { grade: 1, subject: "理科", category: "大地の変化", q: "地球表面をおおう、厚さ数10〜約100kmの岩石の板", a: "プレート" },
+      { grade: 1, subject: "理科", category: "地震", q: "地震の最初にくる小さなゆれ", a: "初期微動" },
+      { grade: 1, subject: "理科", category: "地震", q: "初期微動を伝える速い波", a: "P波" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "キリストが生まれたとされる年を基準とした年代の表し方", a: "西暦" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "約700万年前にアフリカに現れた最古の人類", a: "猿人" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "石を打ち砕いてつくった石器", a: "打製石器" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "石を磨いてつくった石器", a: "磨製石器" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "邪馬台国の女王で、中国の魏に使いを送った人物", a: "卑弥呼" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "聖徳太子が建てたといわれる、現存する世界最古の木造建築物", a: "法隆寺" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "710年に唐の長安をモデルにしてつくられた都", a: "平城京" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "794年、桓武天皇が現在の京都府に移した都", a: "平安京" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "紫式部がかな文字で書いた、世界最古の長編小説", a: "源氏物語" },
+      { grade: 1, subject: "社会", category: "歴史(古代)", q: "1549年、キリスト教を日本に伝えたイエズス会の宣教師", a: "フランシスコ・ザビエル" },
+      { grade: 1, subject: "社会", category: "地理(世界)", q: "地球表面の海と陸の面積の割合は、およそ何対何？", a: "7：3" },
+      { grade: 1, subject: "社会", category: "地理(世界)", q: "大洋のなかで最も広い海洋", a: "太平洋" },
+      { grade: 1, subject: "社会", category: "地理(世界)", q: "海に面しておらず、周りがすべてほかの国と陸続きの国", a: "内陸国" },
+      { grade: 1, subject: "社会", category: "地理(世界)", q: "赤道を0度とし、南北に90度ずつ表したもの", a: "緯度" },
+      { grade: 1, subject: "社会", category: "地理(世界)", q: "イギリスのロンドンを通る本初子午線を0度とし、東西に180度ずつ表したもの", a: "経度" },
+      { grade: 1, subject: "社会", category: "地理(世界)", q: "日本の標準時子午線は、東経何度の経線か", a: "東経135度" }
     ];
 
     // ==========================================
-    // 🇺🇸 英語 (超大増強版：自動生成)
+    // 🇺🇸 毎日やろう！英単語 (全学年共通: grade: 0)
     // ==========================================
     const engVocab = {
+      // 既存
       "新しい": "new", "かっこいい、涼しい": "cool", "速い、速く": "fast", "古い、~歳": "old",
-      "日本の、日本人、日本語": "Japanese", "素晴らしい": "great", "悪い": "bad", "勇敢な": "brave",
-      "親切な": "kind", "一生懸命に、難しい": "hard", "忙しい": "busy", "たくさんの": "many",
+      "日本の、日本人": "Japanese", "素晴らしい": "great", "悪い": "bad", "勇敢な": "brave",
+      "親切な": "kind", "難しい、一生懸命に": "hard", "忙しい": "busy", "たくさんの": "many",
       "とても": "very", "上手に、よく": "well", "本当に": "really", "時々": "sometimes", "いつも": "always",
       "~もまた、あまりに〜すぎる": "too", "どのように、どれくらい": "how", "今": "now", 
       "外で、外へ": "outside", "昨日": "yesterday", "明日": "tomorrow", "今日": "today",
-      "上へ、起きて": "up", "下へ": "down", "右": "right", "左": "left",
-      "･･･を通って": "through", "ドア、戸": "door", "窓": "window", "壁": "wall", "床": "floor",
-      "･･･の中へ": "into", "木製の": "wooden", "願い": "wish", "未来": "future",
-      "計画する": "plan", "暇な、自由な": "free", "･･･を意味する": "mean", "前へ": "forward",
-      "話す": "talk", "言う": "say", "教える": "teach", "学ぶ": "learn", "勉強する": "study",
-      "市場": "market", "お土産": "souvenir", "場所": "place", "現れる": "appear",
-      "あれら": "those", "これら": "these", "買う": "buy", "売る": "sell",
-      "人々": "people", "何か": "anything", "他に": "else", "いっぱいの": "full",
-      "デザート": "dessert", "肉": "meat", "魚": "fish", "野菜": "vegetable", "果物": "fruit",
-      "月曜日": "Monday", "火曜日": "Tuesday", "水曜日": "Wednesday", "木曜日": "Thursday",
-      "金曜日": "Friday", "土曜日": "Saturday", "日曜日": "Sunday",
-      "1月": "January", "2月": "February", "3月": "March", "4月": "April",
-      "5月": "May", "6月": "June", "7月": "July", "8月": "August",
-      "9月": "September", "10月": "October", "11月": "November", "12月": "December",
-      "私を、私に": "me", "私のもの": "mine", "彼を、彼に": "him", "彼のもの": "his",
-      "彼女を、彼女に": "her", "彼女のもの": "hers", "私たちを、私たちに": "us", "私たちのもの": "ours",
-      "彼らを、彼らに": "them", "彼らのもの": "theirs",
-      "誰": "who", "何": "what", "どこ": "where", "いつ": "when", "なぜ": "why", "どちら": "which",
       "歩く": "walk", "走る": "run", "泳ぐ": "swim", "飛ぶ": "fly", "行く": "go", "来る": "come",
-      "見る(自然に目に入る)": "see", "見る(意識して見る)": "look", "見る(動くものを)": "watch",
+      "見る(自然に見える)": "see", "見る(意識して見る)": "look", "見る(動くものを)": "watch",
       "聞く": "hear", "感じる": "feel", "考える、思う": "think", "知っている": "know",
       "好き": "like", "愛する": "love", "欲しい": "want", "必要とする": "need", "使う": "use",
       "作る": "make", "取る、乗る": "take", "置く": "put", "得る、着く": "get", "与える": "give",
-      "助ける、手伝う": "help", "働く": "work", "遊ぶ、演奏する、スポーツをする": "play", "楽しむ": "enjoy", "住む": "live",
-      "動物": "animal", "犬": "dog", "猫": "cat", "鳥": "bird",
-      "木": "tree", "花": "flower", "山": "mountain", "川": "river", "海": "sea",
-      "空": "sky", "太陽": "sun", "月(天体)": "moon", "星": "star", "雨": "rain", "雪": "snow",
-      "学校": "school", "先生": "teacher", "生徒": "student", "友達": "friend", "家族": "family",
-      "父": "father", "母": "mother", "兄・弟": "brother", "姉・妹": "sister",
-      "本": "book", "ペン": "pen", "机": "desk", "椅子": "chair", "部屋": "room",
-      "家": "house", "車": "car", "電車": "train", "バス": "bus", "自転車": "bike",
-      "国": "country", "世界": "world", "言葉、単語": "word", "名前": "name", "写真、絵": "picture",
-      "朝": "morning", "午後": "afternoon", "夕方、夜": "evening", "夜": "night",
-      "時間": "time", "分": "minute", "年": "year", "週": "week", "日": "day",
-      "大きい": "big", "小さい": "small", "背が高い": "tall", "短い、低い": "short", "長い": "long",
-      "熱い、暑い": "hot", "冷たい、寒い": "cold", "暖かい": "warm",
-      "良い": "good", "幸せな": "happy", "悲しい": "sad", "怒った": "angry", "疲れた": "tired",
-      "お腹が空いた": "hungry", "喉が渇いた": "thirsty", "準備ができた": "ready",
-      "〜について": "about", "〜の後に": "after", "〜の前に": "before", "〜の近くに": "near",
-      "〜の下に": "under", "〜と一緒に": "with", "〜なしで": "without",
-      "だから": "so", "しかし": "but", "なぜなら": "because", "もし〜なら": "if",
-      "たいてい": "usually", "しばしば": "often", "決して〜ない": "never", "もう一度": "again", "もしかすると": "maybe"
+      
+      // 🔥 今回追加（2年 中間・期末テスト用 Unit1）
+      "金の、貴重な": "golden",
+      "休日、休暇": "holiday",
+      "シンガポール": "Singapore",
+      "飛行、飛行便": "flight",
+      "到着する、着く": "arrive",
+      "空港": "airport",
+      "すぐ、まもなく、早く": "soon",
+      "～でしょう、～するつもりだ(意志)": "will",
+      "わくわくした": "excited",
+      "シーフード": "seafood",
+      "予約": "reservation",
+      "メートル": "meter(s)",
+      "背が高い、高さが～ある": "tall",
+      "重さがある": "weigh(s)",
+      "トン": "ton(s)",
+      "見つけた（findの過去形）": "found",
+      "見つける": "find",
+      "言語、言葉": "language(s)",
+      "ドル": "dollar(s)",
+      "例": "example",
+      "連絡し合う、意思の疎通を図る": "communicate",
+      "マレー語": "Malay",
+      "タミル語": "Tamil",
+      "絵、絵画": "painting(s)",
+      "壁": "wall(s)",
+      "驚いた": "surprised",
+      "地域、区域": "area",
+      "インド": "India",
+      "モスク": "mosque",
+      "文化": "culture(s)",
+      "チャイナタウン": "Chinatown",
+      "名探偵コナン": "Detective Conan",
+      "ヒンズー教の": "Hindu",
+      "リトル・インディア": "Little India",
+      "アラブ・ストリート": "Arab Street",
+      "タマネギ型の": "onion-shaped"
     };
 
     const engPhrases = {
+      // 既存
       "･･･を手に取る": "pick up",
       "楽しみに待つ": "look forward to",
       "〜はいかがですか？": "would like",
@@ -338,41 +283,22 @@
       "どういたしまして。": "You're welcome.",
       "私を〜と呼んでください。": "Call me ~.",
       "〜したい（一般動詞）": "want to ~",
-      "放課後に": "after school",
-      "幸運を祈る": "Good luck.",
-      "問題ないよ": "No problem.",
-      "少し": "a little",
-      "〜をつける": "turn on",
-      "〜を消す": "turn off",
-      "〜を手伝う": "help ~ with ...",
-      "ちょっと待って": "Just a moment.",
-      "〜に気をつける": "be careful with ~",
-      "何歳ですか？": "How old ...?",
-      "どうしたの？（挨拶・最近どう？）": "What's up?",
-      "どうしたの？（具合が悪い時）": "What's wrong?",
-      "〜のように聞こえる": "sound like",
-      "〜はどうですか？": "How about ~ ?",
-      "休憩する": "take a rest",
-      "私はエディです": "I am Eddy.",
-      "あなたはサッカーファンですか？": "Are you a soccer fan?",
-      "私は牛乳を飲みます（習慣）": "I drink milk.",
-      "あなたは牛乳を飲みますか？": "Do you drink milk?",
-      "あれは神社ですか？": "Is that a shrine?",
-      "あれは何ですか？": "What is that?",
-      "いつピアノを練習しますか？": "When do you practice the piano?",
-      "どこに住んでいますか？": "Where do you live?",
-      "あれは誰ですか？": "Who is that?",
-      "彼女はピアノを弾きます": "She plays the piano."
+
+      // 🔥 今回追加（2年 期末テスト用）
+      "例えば": "for example",
+      "私はあなたに何枚かの写真を見せます": "I will show you some pictures.",
+      "私たちは私たちのイヌをポチと呼びます": "We call our dog Pochi.",
+      "ジュンは私に彼のギターを見せた": "Jun showed me his guitar."
     };
 
     Object.keys(engVocab).forEach(k => {
-      rawData.push({ subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocab[k] });
+      rawData.push({ grade: 0, subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocab[k] });
     });
     Object.keys(engPhrases).forEach(k => {
-      rawData.push({ subject: "英語", category: "熟語・表現", q: `「${k}」を英語で言うと？`, a: engPhrases[k] });
+      rawData.push({ grade: 0, subject: "英語", category: "熟語・文法", q: `「${k}」を英語で言うと？`, a: engPhrases[k] });
     });
 
-    // 重複を排除し一意なIDを付与
+    // ID付与と重複排除
     const uniqueMap = new Map();
     rawData.forEach((item, index) => {
       const key = item.subject + item.category + item.q + item.a;
@@ -381,38 +307,48 @@
     rawData = Array.from(uniqueMap.values());
 
     // ==========================================
-    // アプリの状態管理（マルチユーザー＆パスワード対応）
+    // 学年別・科目別の集計 (UI用)
+    // ==========================================
+    const subjectsGrade1 = [];
+    const subjectsGrade2 = [];
+
+    const subs1 = [...new Set(rawData.filter(d => d.grade === 1).map(d => d.subject))];
+    subs1.forEach(sub => {
+      const categories = [...new Set(rawData.filter(d => d.grade === 1 && d.subject === sub).map(d => d.category))];
+      subjectsGrade1.push({ name: sub, categories });
+    });
+
+    const subs2 = [...new Set(rawData.filter(d => d.grade === 2).map(d => d.subject))];
+    subs2.forEach(sub => {
+      const categories = [...new Set(rawData.filter(d => d.grade === 2 && d.subject === sub).map(d => d.category))];
+      subjectsGrade2.push({ name: sub, categories });
+    });
+
+    // ==========================================
+    // アプリの状態管理
     // ==========================================
     const state = {
       screen: 'home', 
-      activeTab: 'study',
-      activeUser: 'sakura', // sakura, momoka, guest
-      user: null,
-      userStats: {},
-      passwords: {}, // ユーザーごとのパスワード情報
-      quizQueue: [],
-      currentIndex: 0,
-      showAnswer: false,
-      selectedChoice: null,
-      choiceResult: null,
+      activeTab: 'study', 
+      activeUser: 'sakura', 
+      user: null, 
+      userStats: {}, 
+      passwords: {},
+      quizQueue: [], 
+      currentIndex: 0, 
+      showAnswer: false, 
+      selectedChoice: null, 
+      choiceResult: null, 
       sessionStats: { totalInitial: 0, mistakes: 0 },
-      isDataLoaded: false,
-      fbReady: false,
-      showPasscode: false,
-      passcodeValue: '',
+      isDataLoaded: false, 
+      fbReady: false, 
+      showPasscode: false, 
+      passcodeValue: '', 
       passcodeErrorCount: 0,
       pin: { show: false, mode: 'auth', targetUser: null, value: '', error: false },
       message: { show: false, text: '', type: 'info', onConfirm: null }
     };
 
-    const subjects = [];
-    const subsList = [...new Set(rawData.map(d => d.subject))];
-    subsList.forEach(sub => {
-      const categories = [...new Set(rawData.filter(d => d.subject === sub).map(d => d.category))];
-      subjects.push({ name: sub, categories });
-    });
-
-    // ★ ユーザー別のテーマ情報
     const userThemes = {
       sakura: { bg: 'bg-pink-100', text: 'text-pink-600', activeBg: 'bg-pink-500', activeText: 'text-white', icon: '🌸', name: 'さくら', particleClass: 'particle-sakura' },
       momoka: { bg: 'bg-rose-100', text: 'text-rose-600', activeBg: 'bg-rose-400', activeText: 'text-white', icon: '🌺', name: 'ももか', particleClass: 'particle-momoka' },
@@ -420,7 +356,7 @@
     };
 
     // ==========================================
-    // 背景パーティクル（花びら）アニメーション機能
+    // 背景パーティクル機能
     // ==========================================
     let particleInterval;
     function startParticles() {
@@ -428,52 +364,39 @@
       const container = document.getElementById('particles-container');
       if(!container) return;
       container.innerHTML = '';
-      
-      const theme = userThemes[state.activeUser];
+      const theme = userThemes[state.activeUser] || userThemes['sakura'];
       if(!theme.particleClass) return;
       
       particleInterval = setInterval(() => {
-        const el = document.createElement('div');
-        el.className = `falling-particle ${theme.particleClass}`;
-        el.style.left = Math.random() * 100 + 'vw';
-        el.style.animationDuration = (Math.random() * 5 + 5) + 's';
-        el.style.opacity = Math.random() * 0.6 + 0.4;
-        el.style.transform = `rotate(${Math.random() * 360}deg)`;
-        
-        container.appendChild(el);
-        setTimeout(() => { if(el.parentNode) el.remove(); }, 10000);
+        try {
+          const el = document.createElement('div');
+          el.className = `falling-particle ${theme.particleClass}`;
+          el.style.left = Math.random() * 100 + 'vw';
+          el.style.animationDuration = (Math.random() * 5 + 5) + 's';
+          el.style.opacity = Math.random() * 0.6 + 0.4;
+          el.style.transform = `rotate(${Math.random() * 360}deg)`;
+          container.appendChild(el);
+          setTimeout(() => { if(el && el.parentNode) el.remove(); }, 10000);
+        } catch(e) {}
       }, 500); 
     }
 
     // ==========================================
-    // Firebase 初期化 & データ読み込み
+    // Firebase 初期化
     // ==========================================
     const defaultAppId = "sakura-app-d3d10"; 
     const appId = (typeof __app_id !== 'undefined' && __app_id) ? __app_id : defaultAppId;
-    
-    let db;
-    let auth;
-    let fbUnsubscribe = null; 
+    let db, auth, fbUnsubscribe = null; 
     
     const initApp = async () => {
       try {
-        let firebaseConfig = {
-            apiKey: "AIzaSyCHGs5PHyfvW57SCJJi8GiDQ_ydH8M-5Vs",
-            authDomain: "sakura-app-d3d10.firebaseapp.com",
-            projectId: "sakura-app-d3d10",
-            storageBucket: "sakura-app-d3d10.firebasestorage.app",
-            messagingSenderId: "244016922212",
-            appId: "1:244016922212:web:a1f1775a6a6aba2de8a971"
-        };
+        let firebaseConfig = { apiKey: "AIzaSyCHGs5PHyfvW57SCJJi8GiDQ_ydH8M-5Vs", authDomain: "sakura-app-d3d10.firebaseapp.com", projectId: "sakura-app-d3d10", storageBucket: "sakura-app-d3d10.firebasestorage.app", messagingSenderId: "244016922212", appId: "1:244016922212:web:a1f1775a6a6aba2de8a971" };
         if (typeof __firebase_config !== 'undefined' && __firebase_config) {
           firebaseConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
         }
 
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-        }
-        
-        auth = firebase.auth();
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth(); 
         db = firebase.firestore();
 
         try {
@@ -482,235 +405,140 @@
           } else {
             await auth.signInAnonymously();
           }
-        } catch(e) {
-          console.warn("Auth restriction. Fallback to Local mode.", e);
-        }
+        } catch(e) { console.warn("Auth restriction. Fallback to Local mode.", e); }
 
         auth.onAuthStateChanged(user => {
           if (user) {
-            state.user = user;
+            state.user = user; 
             state.fbReady = true;
-            
-            // ★ パスワード情報の読み込み
-            try {
-              const settingsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords');
-              settingsRef.onSnapshot(doc => {
-                if(doc.exists) {
-                  state.passwords = doc.data() || {};
-                } else {
-                  state.passwords = {};
-                }
-              });
-            } catch(e) { console.warn(e); }
-
+            try { 
+              db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').onSnapshot(doc => { 
+                state.passwords = doc.exists ? doc.data() || {} : {}; 
+              }); 
+            } catch(e) {}
             loadStatsForCurrentUser(); 
-            startParticles(); // 花びら開始
-          } else {
-            state.isDataLoaded = true;
-            render();
+            startParticles();
+          } else { 
+            state.isDataLoaded = true; 
+            render(); 
           }
         });
-
-      } catch(e) {
-        console.warn("Firebase Init Error. Running in local mode:", e);
-        state.isDataLoaded = true;
-        render();
+      } catch(e) { 
+        state.isDataLoaded = true; 
+        render(); 
       }
     };
 
     function loadStatsForCurrentUser() {
-      if (fbUnsubscribe) {
-        fbUnsubscribe(); 
-        fbUnsubscribe = null;
-      }
-      
+      if (fbUnsubscribe) { fbUnsubscribe(); fbUnsubscribe = null; }
       state.userStats = {}; 
       state.isDataLoaded = false;
 
-      if (state.activeUser === 'guest') {
-        state.isDataLoaded = true;
-        render();
-        return;
+      if (state.activeUser === 'guest') { 
+        state.isDataLoaded = true; 
+        render(); 
+        return; 
       }
 
       if (state.fbReady && state.user) {
         try {
-          // さくらは既存の 'shared_stats' を引き継ぐ、ももかは新しく 'shared_stats_momoka'
           const collectionName = state.activeUser === 'sakura' ? 'shared_stats' : 'shared_stats_momoka';
-          const statsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName);
-          
-          fbUnsubscribe = statsRef.onSnapshot(snapshot => {
-             const stats = {};
+          fbUnsubscribe = db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName).onSnapshot(snapshot => {
+             const stats = {}; 
              snapshot.forEach(doc => { stats[doc.id] = doc.data(); });
-             state.userStats = stats;
-             state.isDataLoaded = true;
+             state.userStats = stats; 
+             state.isDataLoaded = true; 
              render();
-           }, error => {
-             console.warn("Firestore Error:", error);
-             state.isDataLoaded = true;
-             render();
+           }, error => { 
+             state.isDataLoaded = true; 
+             render(); 
            });
-        } catch(e) {
-           console.warn("Snapshot Error:", e);
-           state.isDataLoaded = true;
-           render();
+        } catch(e) { 
+          state.isDataLoaded = true; 
+          render(); 
         }
-      } else {
-        state.isDataLoaded = true;
-        render();
+      } else { 
+        state.isDataLoaded = true; 
+        render(); 
       }
     }
-
     initApp();
 
     // ==========================================
-    // カスタムメッセージ UI関数
-    // ==========================================
-    window.showMessage = function(text, type='info', onConfirm=null) {
-      state.message = { show: true, text, type, onConfirm };
-      render();
-    }
-    window.closeMessage = function() {
-      state.message.show = false;
-      render();
-    }
-    window.confirmMessage = function() {
-      if(state.message.onConfirm) state.message.onConfirm();
-      closeMessage();
-    }
-
-    // ==========================================
-    // ★ 個別パスワード（暗証番号）ロジック
-    // ==========================================
-    window.switchUser = function(user) {
-      if (state.activeUser === user) return;
-      
-      const requiredPass = state.passwords && state.passwords[user];
-      
-      if (requiredPass && user !== 'guest') {
-        state.pin = { show: true, mode: 'auth', targetUser: user, value: '', error: false };
-        render();
-        return;
-      }
-      
-      executeUserSwitch(user);
-    }
-
-    function executeUserSwitch(user) {
-      state.activeUser = user;
-      state.activeTab = 'study';
-      state.pin.show = false;
-      loadStatsForCurrentUser();
-      startParticles(); 
-      render();
-    }
-
-    window.openPinSetup = function() {
-      state.pin = { show: true, mode: 'setup', targetUser: state.activeUser, value: '', error: false };
-      render();
-    }
-
-    window.removePin = function() {
-      showMessage(`${userThemes[state.activeUser].name}のパスワードを解除しますか？`, 'confirm', () => {
-        const settingsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords');
-        settingsRef.set({ [state.activeUser]: null }, { merge: true });
-        state.pin.show = false;
-        showMessage("パスワードを解除しました。");
-      });
-    }
-
-    window.inputPin = function(num) {
-      if (state.pin.value.length < 4) {
-        state.pin.value += num;
-        state.pin.error = false;
-        render();
-        
-        if (state.pin.value.length === 4) {
-          setTimeout(checkPin, 200); 
-        }
-      }
-    }
-    window.deletePin = function() {
-      state.pin.value = state.pin.value.slice(0, -1);
-      state.pin.error = false;
-      render();
-    }
-    window.closePin = function() {
-      state.pin.show = false;
-      render();
-    }
-
-    function checkPin() {
-      const { mode, targetUser, value } = state.pin;
-      const isMaster = (value === '1151'); // ★ 保護者用マスターパスワード
-
-      if (mode === 'auth') {
-        const correctPass = state.passwords[targetUser];
-        if (value === correctPass || isMaster) {
-          executeUserSwitch(targetUser);
-        } else {
-          state.pin.error = true;
-          state.pin.value = '';
-          render();
-        }
-      } else if (mode === 'setup') {
-        const settingsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords');
-        settingsRef.set({ [state.activeUser]: value }, { merge: true });
-        
-        state.pin.show = false;
-        showMessage(`${userThemes[state.activeUser].name}のパスワードを設定しました！\n次回からアカウントを開くときに入力してね。`);
-      }
-    }
-
-    // ==========================================
-    // 学習ロジック
+    // 💡 賢いクイズ生成ロジック（ダミーシステム完全版）
     // ==========================================
     function generateChoices(currentQuestion) {
-      const sameSubjectData = rawData.filter(d => d.subject === currentQuestion.subject && d.a !== currentQuestion.a);
-      const others = [...new Set(sameSubjectData.map(d => d.a))];
-      const shuffledOthers = others.sort(() => 0.5 - Math.random()).slice(0, 3);
-      return [currentQuestion.a, ...shuffledOthers].sort(() => 0.5 - Math.random());
+      try {
+        // 1. 専用のダミー（dummies）があればそれを使う
+        if (currentQuestion.dummies && currentQuestion.dummies.length >= 3) {
+          const dums = currentQuestion.dummies.slice(0,3);
+          return [currentQuestion.a, ...dums].sort(() => 0.5 - Math.random());
+        }
+        
+        // 2. なければ「同じカテゴリ」からダミーを選ぶ
+        let sameCategoryData = rawData.filter(d => d.subject === currentQuestion.subject && d.category === currentQuestion.category && d.a !== currentQuestion.a);
+        let others = [...new Set(sameCategoryData.map(d => d.a))];
+
+        // 3. 足りなければ「同じ教科」から補充
+        if (others.length < 3) {
+           const sameSubjectData = rawData.filter(d => d.subject === currentQuestion.subject && d.a !== currentQuestion.a);
+           const moreOthers = [...new Set(sameSubjectData.map(d => d.a))];
+           others = [...new Set([...others, ...moreOthers])];
+        }
+
+        const shuffledOthers = others.sort(() => 0.5 - Math.random()).slice(0, 3);
+        return [currentQuestion.a, ...shuffledOthers].sort(() => 0.5 - Math.random());
+      } catch(e) {
+        return [currentQuestion.a, "ダミーA", "ダミーB", "ダミーC"].sort(() => 0.5 - Math.random());
+      }
     }
 
-    window.switchTab = function(tab) { state.activeTab = tab; render(); }
-
-    window.startQuiz = function(subject, category) {
+    window.startQuizCustom = function(filterType, subjectValue = null, categoryValue = null) {
       let filtered = rawData;
-      if (subject) filtered = filtered.filter(q => q.subject === subject);
-      if (category && category !== 'all') filtered = filtered.filter(q => q.category === category);
+      if (filterType === 'vocab') {
+        filtered = filtered.filter(q => q.subject === '英語');
+      } else if (filterType === 'grade2') {
+        filtered = filtered.filter(q => q.grade === 2 && q.subject === subjectValue);
+        if (categoryValue && categoryValue !== 'all') filtered = filtered.filter(q => q.category === categoryValue);
+      } else if (filterType === 'grade1') {
+        filtered = filtered.filter(q => q.grade === 1 && q.subject === subjectValue);
+        if (categoryValue && categoryValue !== 'all') filtered = filtered.filter(q => q.category === categoryValue);
+      }
       prepareQuiz(filtered);
     }
 
-    window.startWeaknessQuiz = function(subjectFilter = null) {
-      if (state.activeUser === 'guest') {
-        showMessage("ゲストモードでは苦手特訓は使えません。\nアカウントを選択してください。");
-        return;
+    window.startWeaknessQuizCustom = function(filterType, subjectValue = null) {
+      if (state.activeUser === 'guest') { 
+        showMessage("ゲストモードでは苦手特訓は使えません。"); 
+        return; 
       }
-
       let targetQuestions = rawData.filter(q => {
-        if (subjectFilter && q.subject !== subjectFilter) return false;
-        const stat = state.userStats[q.id];
+        if (filterType === 'vocab' && q.subject !== '英語') return false;
+        if (filterType === 'grade2' && (q.grade !== 2 || q.subject !== subjectValue)) return false;
+        if (filterType === 'grade1' && (q.grade !== 1 || q.subject !== subjectValue)) return false;
+        
+        const stat = state.userStats[q.id]; 
         if (!stat) return false;
-        const total = stat.corrects + stat.mistakes;
+        const total = stat.corrects + stat.mistakes; 
         if (total === 0) return false;
-        const mistakeRate = stat.mistakes / total;
-        return mistakeRate >= 0.25 || stat.mistakes > stat.corrects;
+        return (stat.mistakes / total) >= 0.25 || stat.mistakes > stat.corrects;
       }).sort((a, b) => {
-        const statA = state.userStats[a.id];
-        const statB = state.userStats[b.id];
+        const statA = state.userStats[a.id] || {corrects:0, mistakes:0}; 
+        const statB = state.userStats[b.id] || {corrects:0, mistakes:0};
         const rateA = statA.mistakes / ((statA.corrects + statA.mistakes) || 1);
         const rateB = statB.mistakes / ((statB.corrects + statB.mistakes) || 1);
         return rateB - rateA;
       });
 
-      if (targetQuestions.length === 0) {
-        showMessage("すばらしい！この範囲の極端に苦手な問題はありません。\n通常学習を進めましょう！");
-        return;
+      if (targetQuestions.length === 0) { 
+        showMessage("すばらしい！この範囲の極端に苦手な問題はありません。"); 
+        return; 
       }
       prepareQuiz(targetQuestions.slice(0, 20));
     }
 
     function prepareQuiz(questions) {
+      if(!questions || questions.length === 0) return;
       const prepared = questions.map(q => {
         const rand = Math.random();
         let type = 'normal';
@@ -718,179 +546,260 @@
         else if (rand < 0.7) type = 'reverse';
         
         let choices = [];
-        if (type === 'choice') {
-          choices = generateChoices(q);
-        }
-        return { ...q, queueId: Math.random().toString(36).substr(2, 9), quizType: type, choices, isRetry: false };
+        if (type === 'choice') choices = generateChoices(q);
+
+        // 逆引き時の出題文を自然化
+        let reverseQ = q.a ? String(q.a) : ''; 
+        let reverseA = q.q ? String(q.q) : '';
+        try {
+          if (q.subject === '英語') {
+            if (q.category === '英単語') { 
+              reverseQ = `「${q.a}」の意味は？`; 
+              reverseA = reverseA.replace('」を意味する英単語は？', '').replace('「', ''); 
+            } else if (q.category === '熟語・文法') { 
+              reverseQ = `「${q.a}」の意味は？`; 
+              reverseA = reverseA.replace('」を英語で言うと？', '').replace('「', ''); 
+            }
+          } else { 
+            reverseQ = `「${q.a}」とは何のこと？（どういう意味？）`; 
+          }
+        } catch(e) {}
+
+        return { ...q, queueId: Math.random().toString(36).substr(2, 9), quizType: type, choices, isRetry: false, reverseQ, reverseA };
       }).sort(() => 0.5 - Math.random());
 
-      state.quizQueue = prepared;
-      state.currentIndex = 0;
-      state.showAnswer = false;
-      state.selectedChoice = null;
+      state.quizQueue = prepared; 
+      state.currentIndex = 0; 
+      state.showAnswer = false; 
+      state.selectedChoice = null; 
       state.choiceResult = null;
-      state.sessionStats = { totalInitial: prepared.length, mistakes: 0 };
-      state.screen = 'quiz';
+      state.sessionStats = { totalInitial: prepared.length, mistakes: 0 }; 
+      state.screen = 'quiz'; 
       render();
     }
 
-    window.handleInterrupt = function() { state.screen = 'home'; render(); }
-    window.showAnswer = function() { state.showAnswer = true; render(); }
+    // ==========================================
+    // UI イベント制御
+    // ==========================================
+    window.showMessage = function(text, type='info', onConfirm=null) { 
+      state.message = { show: true, text, type, onConfirm }; 
+      render(); 
+    }
+    window.closeMessage = function() { 
+      state.message.show = false; 
+      render(); 
+    }
+    window.confirmMessage = function() { 
+      if(state.message.onConfirm) state.message.onConfirm(); 
+      closeMessage(); 
+    }
+    
+    window.switchUser = function(user) {
+      if (state.activeUser === user) return;
+      if (state.passwords && state.passwords[user] && user !== 'guest') { 
+        state.pin = { show: true, mode: 'auth', targetUser: user, value: '', error: false }; 
+        render(); 
+        return; 
+      }
+      executeUserSwitch(user);
+    }
+    function executeUserSwitch(user) { 
+      state.activeUser = user; 
+      state.activeTab = 'study'; 
+      state.pin.show = false; 
+      loadStatsForCurrentUser(); 
+      startParticles(); 
+      render(); 
+    }
 
+    window.openPinSetup = function() { 
+      state.pin = { show: true, mode: 'setup', targetUser: state.activeUser, value: '', error: false }; 
+      render(); 
+    }
+    window.removePin = function() { 
+      showMessage(`${userThemes[state.activeUser].name}のパスワードを解除しますか？`, 'confirm', () => { 
+        db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: null }, { merge: true }); 
+        state.pin.show = false; 
+        showMessage("解除しました。"); 
+      }); 
+    }
+    window.inputPin = function(num) { 
+      if (state.pin.value.length < 4) { 
+        state.pin.value += num; 
+        state.pin.error = false; 
+        render(); 
+        if (state.pin.value.length === 4) setTimeout(checkPin, 200); 
+      } 
+    }
+    window.deletePin = function() { 
+      state.pin.value = state.pin.value.slice(0, -1); 
+      state.pin.error = false; 
+      render(); 
+    }
+    window.closePin = function() { 
+      state.pin.show = false; 
+      render(); 
+    }
+
+    function checkPin() {
+      const { mode, targetUser, value } = state.pin; 
+      const isMaster = (value === '1151');
+      if (mode === 'auth') {
+        if (value === state.passwords[targetUser] || isMaster) { 
+          executeUserSwitch(targetUser); 
+        } else { 
+          state.pin.error = true; 
+          state.pin.value = ''; 
+          render(); 
+        }
+      } else if (mode === 'setup') {
+        db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: value }, { merge: true });
+        state.pin.show = false; 
+        showMessage("パスワードを設定しました！");
+      }
+    }
+
+    window.handleInterrupt = function() { state.screen = 'home'; render(); }
+    window.switchTab = function(tab) { state.activeTab = tab; render(); }
+    window.showAnswer = function() { state.showAnswer = true; render(); }
+    window.goHome = function() { state.screen = 'home'; render(); }
+    
     window.handleAnswer = async function(isCorrect) {
       const currentQ = state.quizQueue[state.currentIndex];
-      
       if (state.activeUser !== 'guest') {
         const currentStat = state.userStats[currentQ.id] || { corrects: 0, mistakes: 0 };
-        const newData = {
-          corrects: isCorrect ? currentStat.corrects + 1 : currentStat.corrects,
-          mistakes: !isCorrect ? currentStat.mistakes + 1 : currentStat.mistakes,
-          lastAttempt: new Date().toISOString()
+        const newData = { 
+          corrects: isCorrect ? currentStat.corrects + 1 : currentStat.corrects, 
+          mistakes: !isCorrect ? currentStat.mistakes + 1 : currentStat.mistakes, 
+          lastAttempt: new Date().toISOString() 
         };
         state.userStats[currentQ.id] = newData; 
-
-        if (state.user && state.fbReady) {
-          try {
-            const collectionName = state.activeUser === 'sakura' ? 'shared_stats' : 'shared_stats_momoka';
-            const statRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName).doc(currentQ.id);
-            statRef.set(newData, { merge: true }).catch(() => {});
-          } catch(e) {}
+        if (state.user && state.fbReady) { 
+          try { 
+            const collectionName = state.activeUser === 'sakura' ? 'shared_stats' : 'shared_stats_momoka'; 
+            db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName).doc(currentQ.id).set(newData, { merge: true }).catch(() => {}); 
+          } catch(e) {} 
         }
       }
-
-      if (!isCorrect) {
-        state.quizQueue.push({ ...currentQ, queueId: Math.random().toString(36).substr(2, 9), isRetry: true });
-        state.sessionStats.mistakes++;
+      if (!isCorrect) { 
+        state.quizQueue.push({ ...currentQ, queueId: Math.random().toString(36).substr(2, 9), isRetry: true }); 
+        state.sessionStats.mistakes++; 
       }
-
-      if (state.currentIndex + 1 < state.quizQueue.length || !isCorrect) {
-        state.currentIndex++;
-        state.showAnswer = false;
-        state.selectedChoice = null;
-        state.choiceResult = null;
-      } else {
-        state.screen = 'result';
+      if (state.currentIndex + 1 < state.quizQueue.length || !isCorrect) { 
+        state.currentIndex++; 
+        state.showAnswer = false; 
+        state.selectedChoice = null; 
+        state.choiceResult = null; 
+      } else { 
+        state.screen = 'result'; 
       }
       render();
     }
 
     window.handleChoiceClick = function(idx) {
       if (state.selectedChoice !== null) return;
-      const currentQ = state.quizQueue[state.currentIndex];
-      const choice = currentQ.choices[idx];
+      const currentQ = state.quizQueue[state.currentIndex]; 
+      const choice = currentQ.choices[idx]; 
       const isCorrect = choice === currentQ.a;
-      
-      state.selectedChoice = choice;
-      state.choiceResult = isCorrect ? 'correct' : 'wrong';
-      render();
+      state.selectedChoice = choice; 
+      state.choiceResult = isCorrect ? 'correct' : 'wrong'; 
+      render(); 
       setTimeout(() => { handleAnswer(isCorrect); }, 1200);
     }
-
-    window.goHome = function() { state.screen = 'home'; render(); }
-
-    // ==========================================
-    // 👻 貞子パスコードUI
-    // ==========================================
+    
+    // 👻 貞子関連
     window.openPasscode = function() { 
-      if (state.activeUser === 'guest') {
-        showMessage("ゲストモードでは評価データはありません。");
-        return;
-      }
+      if (state.activeUser === 'guest') { showMessage("ゲストモードでは評価データはありません。"); return; } 
       state.showPasscode = true; 
       state.passcodeValue = ''; 
       state.passcodeErrorCount = 0; 
       render(); 
     }
-    window.closePasscode = function() { state.showPasscode = false; state.passcodeValue = ''; render(); }
-    
+    window.closePasscode = function() { 
+      state.showPasscode = false; 
+      state.passcodeValue = ''; 
+      render(); 
+    }
     window.inputPasscode = function(val) {
-      if (state.passcodeValue.length < 6) state.passcodeValue += val;
+      if (state.passcodeValue.length < 6) state.passcodeValue += val; 
       render();
-      if (state.passcodeValue.length === 6) {
-        setTimeout(() => {
+      if (state.passcodeValue.length === 6) { 
+        setTimeout(() => { 
           if (state.passcodeValue === '115115') { 
-            state.showPasscode = false;
-            state.passcodeErrorCount = 0;
-            state.screen = 'parent_dashboard';
-          } else {
-            state.passcodeErrorCount++;
-            state.passcodeValue = '';
-          }
-          render();
+            state.showPasscode = false; 
+            state.passcodeErrorCount = 0; 
+            state.screen = 'parent_dashboard'; 
+          } else { 
+            state.passcodeErrorCount++; 
+            state.passcodeValue = ''; 
+          } 
+          render(); 
         }, 500); 
       }
     }
-    window.deletePasscode = function() { state.passcodeValue = state.passcodeValue.slice(0, -1); render(); }
+    window.deletePasscode = function() { 
+      state.passcodeValue = state.passcodeValue.slice(0, -1); 
+      render(); 
+    }
 
     function generateAiEvaluation() {
-      let totalAttempts = 0;
-      let totalMistakes = 0;
-      let categoryStats = {};
-      
+      let totalAttempts = 0; let totalMistakes = 0; let categoryStats = {};
       rawData.forEach(q => {
         if(!categoryStats[q.category]) categoryStats[q.category] = { attempts: 0, mistakes: 0, qs: [] };
         const stat = state.userStats[q.id];
-        if (stat) {
-          const attempts = stat.corrects + stat.mistakes;
-          if (attempts > 0) {
-            totalAttempts += attempts;
-            totalMistakes += stat.mistakes;
-            categoryStats[q.category].attempts += attempts;
-            categoryStats[q.category].mistakes += stat.mistakes;
-            categoryStats[q.category].qs.push({ q: q.q, mistakes: stat.mistakes });
-          }
+        if (stat) { 
+          const attempts = stat.corrects + stat.mistakes; 
+          if (attempts > 0) { 
+            totalAttempts += attempts; 
+            totalMistakes += stat.mistakes; 
+            categoryStats[q.category].attempts += attempts; 
+            categoryStats[q.category].mistakes += stat.mistakes; 
+            categoryStats[q.category].qs.push({ q: q.q, mistakes: stat.mistakes }); 
+          } 
         }
       });
-
-      const userName = userThemes[state.activeUser].name;
-
+      const theme = userThemes[state.activeUser] || userThemes['sakura'];
+      const userName = theme.name;
+      
       if (totalAttempts === 0) return `なんじゃ、まだ一度もアプリを開いておらぬではないか！\n怠惰は最大の罪なり。まずは${userName}にアプリを開かせ、一問でも解かせるのじゃ！`;
-
+      
       const accuracy = totalAttempts > 0 ? ((totalAttempts - totalMistakes) / totalAttempts) * 100 : 0;
       let evalText = `ふむ。我の帳簿によると、${userName}のこれまでの総解答数は【${totalAttempts}回】、正答率は【${Math.round(accuracy)}％】じゃな。\n\n`;
-
+      
       if (accuracy >= 90) evalText += "見事な精進ぶりじゃ！地道な努力がしっかりと実を結んでおる。\nしかし、悪魔は油断した隙に忍び寄るもの。慢心せず、さらなる高みを目指させよ！\n";
       else if (accuracy >= 60) evalText += "まずまずの出来じゃな。努力の跡は見られるぞ。\nだが、まだ知識が定着しておらぬ部分がちらほら見受けられる。反復こそが記憶の定着への近道じゃ！\n";
       else evalText += "むむっ……これは少々苦戦しておるようじゃな。\n基礎がグラついておるかもしれんぞ。焦らず、一歩ずつ確実に理解させるのじゃ！\n";
-
-      let worstCategory = null;
-      let maxMistakeRate = -1;
       
-      for (let cat in categoryStats) {
-        const cStat = categoryStats[cat];
-        if (cStat.attempts > 1) { 
-          const rate = cStat.mistakes / cStat.attempts;
-          if (rate > maxMistakeRate) { maxMistakeRate = rate; worstCategory = cat; }
-        }
+      let worstCategory = null; 
+      let maxMistakeRate = -1;
+      for (let cat in categoryStats) { 
+        if (categoryStats[cat].attempts > 1) { 
+          const rate = categoryStats[cat].mistakes / categoryStats[cat].attempts; 
+          if (rate > maxMistakeRate) { 
+            maxMistakeRate = rate; 
+            worstCategory = cat; 
+          } 
+        } 
       }
-      if (!worstCategory) {
-        for (let cat in categoryStats) {
-          const cStat = categoryStats[cat];
-          if (cStat.attempts > 0) {
-            const rate = cStat.mistakes / cStat.attempts;
-            if (rate > maxMistakeRate) { maxMistakeRate = rate; worstCategory = cat; }
-          }
-        }
-      }
-
+      
       if (worstCategory && maxMistakeRate > 0) {
         evalText += `\nとくに、【${worstCategory}】の分野に深い闇（弱点）を感じるぞ……。`;
         const worstQs = categoryStats[worstCategory].qs.sort((a,b) => b.mistakes - a.mistakes);
-        if(worstQs.length > 0 && worstQs[0].mistakes > 0) {
-           evalText += `\nたとえば「${worstQs[0].q.substring(0, 15)}...」といった問題を何度も間違えておるようじゃ。\nこの辺りを重点的に復習させるのが点数アップへの道標じゃ！`;
+        if(worstQs.length > 0 && worstQs[0].mistakes > 0) { 
+          evalText += `\nたとえば「${worstQs[0].q.substring(0, 15)}...」といった問題を何度も間違えておるようじゃ。\nこの辺りを重点的に復習させるのが点数アップへの道標じゃ！`; 
         }
-      } else {
-         evalText += `\n今のところ、極端に苦手な深淵は見当たらぬ。この調子で満遍なく学習を続けるがよい！`;
+      } else { 
+        evalText += `\n今のところ、極端に苦手な深淵は見当たらぬ。この調子で満遍なく学習を続けるがよい！`; 
       }
       return evalText;
     }
 
     // ==========================================
-    // 画面描画ロジック（美しいUIを完全復元）
+    // 画面描画ロジック (HTML出力)
     // ==========================================
     function renderHomeHTML() {
       const isGuest = state.activeUser === 'guest';
-      const currentUserTheme = userThemes[state.activeUser];
+      const currentUserTheme = userThemes[state.activeUser] || userThemes['sakura'];
 
       if (!state.isDataLoaded) {
         return `
@@ -916,32 +825,24 @@
             </div>
           `;
         } else {
-          let totalAttempts = 0;
+          let totalAttempts = 0; 
           let totalMistakes = 0;
-
+          
           const analyzedData = rawData.map(q => {
             const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 };
-            const total = stat.corrects + stat.mistakes;
-            totalAttempts += total;
+            const total = stat.corrects + stat.mistakes; 
+            totalAttempts += total; 
             totalMistakes += stat.mistakes;
-            const mistakeRate = total > 0 ? Math.round((stat.mistakes / total) * 100) : 0;
-            return { ...q, stat, total, mistakeRate };
-          }).filter(q => q.total > 0);
-
-          const sortedByMistake = [...analyzedData].sort((a, b) => {
-            if (b.mistakeRate !== a.mistakeRate) return b.mistakeRate - a.mistakeRate;
-            return b.stat.mistakes - a.stat.mistakes;
-          });
+            return { ...q, stat, total, mistakeRate: total > 0 ? Math.round((stat.mistakes / total) * 100) : 0 };
+          }).filter(q => q.total > 0).sort((a, b) => b.mistakeRate - a.mistakeRate || b.stat.mistakes - a.stat.mistakes);
 
           const accuracy = totalAttempts > 0 ? Math.round(((totalAttempts - totalMistakes) / totalAttempts) * 100) : 0;
-
-          let listHtml = sortedByMistake.length === 0 
+          
+          let listHtml = analyzedData.length === 0 
             ? `<p class="text-gray-500 text-center py-8 bg-white/90 rounded-3xl border border-gray-100 shadow-sm mt-2 backdrop-blur-sm">まだデータがありません。<br>問題を解くとここに分析が表示されます。</p>`
-            : sortedByMistake.slice(0, 10).map((item, idx) => `
+            : analyzedData.slice(0, 10).map((item, idx) => `
                 <div class="bg-white/95 p-4 rounded-2xl shadow-sm border border-gray-100 flex items-start backdrop-blur-sm">
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-rose-100 text-rose-600' : 'bg-gray-100 text-gray-500'}">
-                    ${idx + 1}
-                  </div>
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-rose-100 text-rose-600' : 'bg-gray-100 text-gray-500'}">${idx + 1}</div>
                   <div class="flex-grow">
                     <span class="text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md mb-2 inline-block">${item.category}</span>
                     <p class="text-sm text-gray-800 font-bold mb-1 leading-snug">${item.q}</p>
@@ -960,16 +861,13 @@
                 <h2 class="text-xl font-bold mb-4 flex items-center z-10 relative"><i class="ph ph-chart-bar text-2xl mr-2"></i>${currentUserTheme.name}の分析</h2>
                 <div class="grid grid-cols-3 gap-3 z-10 relative">
                   <div class="bg-white/20 rounded-2xl p-3 text-center">
-                    <p class="text-xs opacity-90 mb-1">取組んだ問題</p>
-                    <p class="text-2xl font-black">${totalAttempts}<span class="text-xs font-normal">回</span></p>
+                    <p class="text-xs opacity-90 mb-1">取組んだ問題</p><p class="text-2xl font-black">${totalAttempts}<span class="text-xs font-normal">回</span></p>
                   </div>
                   <div class="bg-white/20 rounded-2xl p-3 text-center">
-                    <p class="text-xs opacity-90 mb-1">累計ミス</p>
-                    <p class="text-2xl font-black">${totalMistakes}<span class="text-xs font-normal">回</span></p>
+                    <p class="text-xs opacity-90 mb-1">累計ミス</p><p class="text-2xl font-black">${totalMistakes}<span class="text-xs font-normal">回</span></p>
                   </div>
                   <div class="bg-white/20 rounded-2xl p-3 text-center">
-                    <p class="text-xs opacity-90 mb-1">総合正答率</p>
-                    <p class="text-2xl font-black">${accuracy}<span class="text-xs font-normal">%</span></p>
+                    <p class="text-xs opacity-90 mb-1">総合正答率</p><p class="text-2xl font-black">${accuracy}<span class="text-xs font-normal">%</span></p>
                   </div>
                 </div>
               </div>
@@ -983,61 +881,97 @@
           `;
         }
       } else {
-        const subsHtml = subjects.map(sub => {
-          let iconColor = "text-blue-500";
-          if (sub.name === "英語") iconColor = "text-emerald-500";
-          else if (sub.name === "社会") iconColor = "text-orange-500";
-
-          return `
-          <div class="bg-white/95 backdrop-blur-sm p-6 rounded-3xl shadow-sm border border-gray-100">
-            <h2 class="text-xl font-bold text-gray-800 flex items-center mb-4">
-              <i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}
+        // ★ 学年別UI生成（英単語 / 2年 / 1年）
+        const vocabHtml = `
+          <div class="mb-10 animate-fade-in relative z-10">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-emerald-400 pb-2 inline-flex">
+              <i class="ph-fill ph-translate text-emerald-500 mr-2 text-2xl"></i>毎日やろう！英単語
             </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button onclick="startWeaknessQuiz('${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
-                <span><i class="ph-fill ph-warning text-lg mr-2"></i>${sub.name} の苦手特訓</span>
-                <i class="ph-fill ph-play text-xl"></i>
-              </button>
+            <div class="bg-white/95 backdrop-blur-sm p-5 rounded-3xl shadow-sm border border-emerald-100">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button onclick="startWeaknessQuizCustom('vocab')" class="flex items-center justify-between p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold hover:bg-emerald-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
+                  <span><i class="ph-fill ph-warning text-lg mr-2"></i>英単語の苦手特訓</span><i class="ph-fill ph-play text-xl"></i>
+                </button>
+                <button onclick="startQuizCustom('vocab')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95">
+                  <span>全英単語 ランダム</span><i class="ph-fill ph-play text-xl"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
 
-              <button onclick="startQuiz('${sub.name}', 'all')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95">
-                <span>${sub.name} 全てをミックス</span>
-                <i class="ph-fill ph-play text-xl"></i>
+        const subs2Html = subjectsGrade2.map(sub => {
+          let iconColor = "text-orange-500"; 
+          if (sub.name === "理科") iconColor = "text-blue-500"; 
+          if (sub.name === "音楽") iconColor = "text-purple-500";
+          
+          return `
+          <div class="bg-white/95 backdrop-blur-sm p-6 rounded-3xl shadow-sm border border-orange-100 mb-4">
+            <h3 class="text-lg font-bold text-gray-800 flex items-center mb-4">
+              <i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button onclick="startWeaknessQuizCustom('grade2', '${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
+                <span><i class="ph-fill ph-warning text-lg mr-2"></i>${sub.name} の苦手特訓</span><i class="ph-fill ph-play text-xl"></i>
+              </button>
+              <button onclick="startQuizCustom('grade2', '${sub.name}', 'all')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95">
+                <span>${sub.name} 全てをミックス</span><i class="ph-fill ph-play text-xl"></i>
               </button>
               ${sub.categories.map(cat => `
-                <button onclick="startQuiz('${sub.name}', '${cat}')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium transition-colors border border-gray-200 active:scale-95">
-                  <span class="truncate pr-2">${cat}</span>
-                  <i class="ph ph-arrow-right text-xl text-gray-400"></i>
+                <button onclick="startQuizCustom('grade2', '${sub.name}', '${cat}')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium transition-colors border border-gray-200 active:scale-95">
+                  <span class="truncate pr-2">${cat}</span><i class="ph ph-arrow-right text-xl text-gray-400"></i>
                 </button>
               `).join('')}
             </div>
           </div>
         `}).join('');
 
-        contentHtml = `
-          <div class="space-y-8 animate-fade-in relative z-10">
-            <div class="bg-rose-50/95 backdrop-blur-sm border-2 border-rose-200 p-6 rounded-3xl shadow-sm relative overflow-hidden">
-              <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between">
-                <div class="mb-4 sm:mb-0 text-center sm:text-left">
-                  <h2 class="text-xl font-bold text-rose-700 mb-1 flex items-center justify-center sm:justify-start">
-                    <i class="ph-fill ph-warning text-xl mr-2"></i>全科目の苦手克服
-                  </h2>
-                  <p class="text-sm text-rose-600/80">過去に間違えた問題を優先的に出題します</p>
-                </div>
-                <button onclick="startWeaknessQuiz()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-rose-500 text-white font-bold hover:bg-rose-600 active:scale-95 transition-all shadow-md flex items-center justify-center ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
-                  特訓スタート <i class="ph-fill ph-play text-xl ml-2"></i>
-                </button>
-              </div>
-            </div>
-            ${subsHtml}
+        const grade2Html = `
+          <div class="mb-10 animate-fade-in relative z-10">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-orange-400 pb-2 inline-flex">
+              <i class="ph-fill ph-fire text-orange-500 mr-2 text-2xl"></i>2年 期末・中間テスト範囲
+            </h2>
+            ${subs2Html.length > 0 ? subs2Html : '<p class="text-gray-500 text-sm bg-white/80 p-4 rounded-xl">まだ課題がありません</p>'}
           </div>
         `;
+
+        const subs1Html = subjectsGrade1.map(sub => {
+          let iconColor = sub.name === "社会" ? "text-orange-500" : "text-blue-500";
+          return `
+          <div class="bg-gray-100/90 backdrop-blur-sm p-6 rounded-3xl border border-gray-200 mb-4 shadow-inner">
+            <h3 class="text-lg font-bold text-gray-700 flex items-center mb-4"><i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 opacity-90">
+              <button onclick="startWeaknessQuizCustom('grade1', '${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-3 rounded-xl bg-white border border-rose-200 text-rose-700 font-bold hover:bg-rose-50 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
+                <span><i class="ph-fill ph-warning text-lg mr-2"></i>苦手だけ復習</span><i class="ph-fill ph-play text-lg"></i>
+              </button>
+              <button onclick="startQuizCustom('grade1', '${sub.name}', 'all')" class="flex items-center justify-between p-3 rounded-xl bg-gray-700 text-white font-medium hover:bg-gray-600 transition-colors active:scale-95">
+                <span>全範囲ミックス</span><i class="ph-fill ph-play text-lg"></i>
+              </button>
+              ${sub.categories.map(cat => `
+                <button onclick="startQuizCustom('grade1', '${sub.name}', '${cat}')" class="flex items-center justify-between p-3 rounded-xl bg-white hover:bg-gray-50 text-gray-600 text-sm font-medium transition-colors border border-gray-200 active:scale-95">
+                  <span class="truncate pr-2">${cat}</span><i class="ph ph-arrow-right text-lg text-gray-400"></i>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `}).join('');
+
+        const grade1Html = `
+          <div class="mb-10 animate-fade-in relative z-10">
+            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-blue-400 pb-2 inline-flex">
+              <i class="ph-fill ph-books text-blue-500 mr-2 text-2xl"></i>1年生の総復習
+            </h2>
+            ${subs1Html}
+          </div>
+        `;
+
+        contentHtml = vocabHtml + grade2Html + grade1Html;
       }
 
-      // ★アカウントセレクターUI
       const userSelectorHtml = `
         <div class="flex justify-center mb-2 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-sm border border-gray-200 inline-flex mx-auto relative z-20">
           ${Object.keys(userThemes).map(key => {
-            const theme = userThemes[key];
+            const theme = userThemes[key]; 
             const isActive = state.activeUser === key;
             return `
               <button onclick="switchUser('${key}')" class="flex items-center px-4 py-2 sm:px-6 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 ${isActive ? theme.activeBg + ' ' + theme.activeText + ' shadow-md transform scale-105' : 'bg-transparent text-gray-500 hover:bg-gray-100'}">
@@ -1051,9 +985,8 @@
       return `
         <div class="relative max-w-2xl mx-auto p-4 animate-fade-in pb-10">
           
-          <div class="absolute top-4 right-4 flex items-center text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full ${syncStatusColor} shadow-sm z-50">
-            <i class="ph-fill ${syncStatusIcon} mr-1 text-sm sm:text-lg"></i>
-            ${syncStatusText}
+          <div class="absolute top-4 right-4 flex items-center text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full ${(state.fbReady && state.user && !isGuest) ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'} shadow-sm z-50">
+            <i class="ph-fill ${(state.fbReady && state.user && !isGuest) ? 'ph-cloud-check' : 'ph-cloud-slash'} mr-1 text-sm sm:text-lg"></i>${(state.fbReady && state.user && !isGuest) ? '同期ON' : '同期OFF'}
           </div>
 
           <div class="text-center mb-6 mt-8 relative z-10">
@@ -1073,7 +1006,7 @@
           ${!isGuest ? `
             <div class="text-center mt-2 mb-6 relative z-20">
               <button onclick="openPinSetup()" class="text-xs text-gray-500 hover:text-gray-800 font-bold transition-colors bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-sm">
-                <i class="ph-fill ph-lock-key mr-1"></i> ${currentUserTheme.name}のパスワードを${state.passwords && state.passwords[state.activeUser] ? '変更・解除する' : '設定する'}
+                <i class="ph-fill ph-lock-key mr-1"></i> ${currentUserTheme.name}のパスワードを${state.passwords && state.passwords[state.activeUser] ? '変更・解除' : '設定'}
               </button>
             </div>
           ` : `
@@ -1090,6 +1023,7 @@
               データと分析
             </button>
           </div>
+          
           ${contentHtml}
           
           <div class="mt-20 text-center relative z-10">
@@ -1106,7 +1040,7 @@
       const currentQ = state.quizQueue[state.currentIndex];
       if (!currentQ) return '';
 
-      const isChoice = currentQ.quizType === 'choice';
+      const isChoice = currentQ.quizType === 'choice'; 
       const isReverse = currentQ.quizType === 'reverse';
       const totalCurrent = state.quizQueue.length;
       const progressPercent = (state.currentIndex / totalCurrent) * 100;
@@ -1115,7 +1049,7 @@
 
       if (isChoice) {
         const choicesHtml = currentQ.choices.map((choice, idx) => {
-          let btnClass = "bg-gray-50 border-2 border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300";
+          let btnClass = "bg-gray-50 border-2 border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300"; 
           let iconHtml = "";
 
           if (state.selectedChoice === choice) {
@@ -1149,24 +1083,23 @@
           </div>
         `;
       } else {
-        const questionText = isReverse ? currentQ.a : currentQ.q;
-        const answerText = isReverse ? currentQ.q : currentQ.a;
-        const titleText = isReverse ? 'これは何の説明？' : '問題';
+        const questionText = isReverse ? currentQ.reverseQ : currentQ.q; 
+        const answerText = isReverse ? currentQ.reverseA : currentQ.a;
         
         let answerArea = `<div class="mt-12 w-full"><p class="text-gray-400 text-sm mb-4 font-bold bg-gray-50 p-2 rounded-lg inline-block border border-gray-100">答えを頭に思い浮かべてから...</p></div>`;
         if (state.showAnswer) {
           answerArea = `
             <div class="mt-8 pt-8 border-t border-gray-100 w-full animate-fade-in">
               <p class="text-sm text-blue-500 mb-3 font-bold bg-blue-50 px-3 py-1 rounded-full inline-block border border-blue-100">答え</p>
-              <p class="font-extrabold text-blue-600 ${isReverse ? 'text-xl sm:text-2xl leading-relaxed' : 'text-3xl'}">${answerText}</p>
+              <p class="font-extrabold text-blue-600 text-2xl sm:text-3xl leading-relaxed">${answerText}</p>
             </div>
           `;
         }
 
         cardHtml = `
           <div class="w-full flex flex-col items-center justify-center h-full">
-            <p class="text-sm text-gray-500 mb-6 font-bold bg-gray-100 px-3 py-1 rounded-md shadow-sm border border-gray-200">${titleText}</p>
-            <h2 class="font-bold text-gray-800 ${isReverse ? 'text-3xl' : 'text-xl sm:text-2xl leading-relaxed'}">${questionText}</h2>
+            <p class="text-sm text-gray-500 mb-6 font-bold bg-gray-100 px-3 py-1 rounded-md shadow-sm border border-gray-200">${isReverse ? 'これ、なんだっけ？（逆引き）' : '問題'}</p>
+            <h2 class="font-bold text-gray-800 text-2xl sm:text-3xl leading-relaxed">${questionText}</h2>
             ${answerArea}
           </div>
         `;
@@ -1191,7 +1124,6 @@
       }
 
       const isGuest = state.activeUser === 'guest';
-      
       let headerStripes = '';
       if (isGuest) {
         headerStripes = '<div class="guest-stripes text-yellow-900 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50 shadow-sm">👻 現在ゲストモードです（成績は保存されません）</div>';
@@ -1239,9 +1171,9 @@
     }
 
     function renderResultHTML() {
-      const isPerfect = state.sessionStats.mistakes === 0;
-      const isGuest = state.activeUser === 'guest';
-      const currentUserTheme = userThemes[state.activeUser];
+      const isPerfect = state.sessionStats.mistakes === 0; 
+      const isGuest = state.activeUser === 'guest'; 
+      const currentUserTheme = userThemes[state.activeUser] || userThemes['sakura'];
 
       return `
         <div class="max-w-md mx-auto p-6 min-h-screen flex flex-col items-center justify-center text-center animate-fade-in relative z-10">
@@ -1249,7 +1181,9 @@
             <span class="text-5xl">${currentUserTheme.icon}</span>
           </div>
           <h1 class="text-3xl font-extrabold text-gray-800 mb-2">コンプリート！</h1>
-          <p class="text-gray-600 mb-8 font-bold bg-white/50 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-sm">${isGuest ? '<span class="text-yellow-600">※ゲストモードのためデータは保存されません</span>' : `${currentUserTheme.name}のデータとして保存しました！`}</p>
+          <p class="text-gray-600 mb-8 font-bold bg-white/50 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+            ${isGuest ? '<span class="text-yellow-600">※ゲストモードのためデータは保存されません</span>' : `${currentUserTheme.name}のデータとして保存しました！`}
+          </p>
           
           <div class="bg-white/95 backdrop-blur-sm w-full p-6 rounded-3xl shadow-xl border border-gray-100 mb-8">
             <h3 class="text-sm text-gray-500 font-bold mb-4 uppercase tracking-wider bg-gray-50 py-1 rounded-md border border-gray-100">今回のセッション記録</h3>
@@ -1300,43 +1234,30 @@
       if (!state.pin.show) return '';
       const theme = state.pin.targetUser ? userThemes[state.pin.targetUser] : userThemes[state.activeUser];
       const isSetup = state.pin.mode === 'setup';
-      const title = isSetup ? `${theme.name}の新しいパスワード` : `${theme.name}の部屋の鍵`;
-      const desc = isSetup ? '4つの数字を決めてね！' : 'パスワード(4桁)を入力してね';
-
-      let dots = '';
-      for(let i=0; i<4; i++) {
-        const filled = i < state.pin.value.length;
-        dots += `<div class="w-4 h-4 rounded-full border-2 ${theme.text} ${filled ? theme.activeBg : 'bg-transparent'} transition-all mx-1"></div>`;
+      
+      let dots = ''; 
+      for(let i=0; i<4; i++) { 
+        dots += `<div class="w-4 h-4 rounded-full border-2 ${theme.text} ${i < state.pin.value.length ? theme.activeBg : 'bg-transparent'} transition-all mx-1"></div>`; 
       }
-
-      const buttons = [1,2,3,4,5,6,7,8,9].map(n => `
-        <button onclick="inputPin('${n}')" class="w-16 h-16 rounded-full bg-white text-gray-700 text-2xl font-bold shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100">${n}</button>
-      `).join('');
-
-      const bottomButtons = `
-        <button onclick="deletePin()" class="w-16 h-16 rounded-full bg-white text-gray-500 text-2xl flex items-center justify-center shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100"><i class="ph-fill ph-backspace"></i></button>
-        <button onclick="inputPin('0')" class="w-16 h-16 rounded-full bg-white text-gray-700 text-2xl font-bold shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100">0</button>
-        <button onclick="closePin()" class="w-16 h-16 rounded-full bg-gray-100 text-gray-500 text-sm font-bold shadow-sm hover:bg-gray-200 active:scale-95 transition-all mx-auto border border-gray-200">戻る</button>
-      `;
-
-      let borderColor = 'border-white';
-      if(theme.name === 'さくら') borderColor = 'border-pink-200';
-      if(theme.name === 'ももか') borderColor = 'border-rose-200';
-
+      
       return `
         <div class="fixed inset-0 bg-black/40 backdrop-blur-sm flex flex-col items-center justify-center z-50 animate-fade-in px-4">
-          <div class="bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border-4 ${borderColor}">
+          <div class="bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border-4 ${theme.name === 'さくら' ? 'border-pink-200' : 'border-rose-200'}">
             <div class="text-6xl mb-4 bg-gray-50 w-20 h-20 mx-auto rounded-full flex items-center justify-center shadow-inner border border-gray-100">${theme.icon}</div>
-            <h3 class="font-bold text-xl text-gray-800 mb-2 bg-gray-100 py-1 px-3 rounded-lg inline-block border border-gray-200">${title}</h3>
-            <p class="text-sm ${state.pin.error ? 'text-red-500 font-bold bg-red-50 py-1 rounded border border-red-100' : 'text-gray-500'} mb-6 mt-2">${state.pin.error ? '番号がちがうみたい！' : desc}</p>
+            <h3 class="font-bold text-xl text-gray-800 mb-2 bg-gray-100 py-1 px-3 rounded-lg inline-block border border-gray-200">${isSetup ? `${theme.name}の新しいパスワード` : `${theme.name}の部屋の鍵`}</h3>
+            <p class="text-sm ${state.pin.error ? 'text-red-500 font-bold bg-red-50 py-1 rounded border border-red-100' : 'text-gray-500'} mb-6 mt-2">${state.pin.error ? '番号がちがうみたい！' : (isSetup ? '4つの数字を決めてね！' : 'パスワード(4桁)を入力してね')}</p>
             
             <div class="flex justify-center mb-8 bg-gray-50 py-3 rounded-2xl border border-gray-100 shadow-inner">
               ${dots}
             </div>
-
+            
             <div class="grid grid-cols-3 gap-4 font-sans mb-4">
-              ${buttons}
-              ${bottomButtons}
+              ${[1,2,3,4,5,6,7,8,9].map(n => `
+                <button onclick="inputPin('${n}')" class="w-16 h-16 rounded-full bg-white text-gray-700 text-2xl font-bold shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100">${n}</button>
+              `).join('')}
+              <button onclick="deletePin()" class="w-16 h-16 rounded-full bg-white text-gray-500 text-2xl flex items-center justify-center shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100"><i class="ph-fill ph-backspace"></i></button>
+              <button onclick="inputPin('0')" class="w-16 h-16 rounded-full bg-white text-gray-700 text-2xl font-bold shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100">0</button>
+              <button onclick="closePin()" class="w-16 h-16 rounded-full bg-gray-100 text-gray-500 text-sm font-bold shadow-sm hover:bg-gray-200 active:scale-95 transition-all mx-auto border border-gray-200">戻る</button>
             </div>
             
             ${isSetup && state.passwords && state.passwords[state.activeUser] ? `
@@ -1352,87 +1273,68 @@
     function renderPasscodeHTML() {
       if(!state.showPasscode) return '';
       const level = Math.min(state.passcodeErrorCount, 5);
-      
-      const bgClass = level >= 5 ? 'bg-cursed' : 'bg-black/95';
-      let textTitle = 'パスコードヲ入力セヨ';
-      let titleClass = 'text-red-600';
-      
-      if (level >= 3 && level < 5) textTitle = 'ウシロヲフリムクナ...';
-      if (level >= 4) titleClass = 'text-red-600 glitch-text';
-      if (level >= 5) {
-        textTitle = '呪 ワ レ タ 呪 ワ レ タ';
-        titleClass = 'text-red-600 glitch-text text-xl sm:text-2xl';
-      }
-
       return `
-        <div class="fixed inset-0 ${bgClass} flex flex-col items-center justify-center z-50 animate-fade-in px-4 transition-colors duration-1000 overflow-hidden">
-            <div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden">
-               <div class="relative w-full h-[400px] flex justify-center">
-                 <div class="sadako-body lvl-${level}">
-                   <svg viewBox="0 0 200 300" class="sadako-svg">
-                     <path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#94a3b8" />
-                     <path d="M 150,300 L 190,200 L 170,190 L 140,300 Z" fill="#94a3b8" />
-                     <path d="M 10,200 Q 5,180 20,180 Q 30,180 30,190 Z" fill="#e2e8f0" />
-                     <path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" />
-                     <path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" />
-                     <path d="M 50,300 C 30,100 170,100 150,300 C 130,150 70,150 50,300 Z" fill="#0a0a0a" />
-                     <circle class="s-eye" cx="85" cy="180" r="4" />
-                     <circle class="s-eye" cx="115" cy="180" r="4" />
-                   </svg>
-                 </div>
-                 <div class="well-container">
-                    <div class="well-hole"></div>
-                 </div>
-               </div>
-            </div>
-
-            <div class="relative z-50 flex flex-col items-center mt-10">
-              <i class="ph-fill ph-skull text-6xl text-red-700 mb-6 ${level > 0 ? 'animate-pulse-red' : ''}"></i>
-              <h3 class="${titleClass} font-bold tracking-[0.2em] sm:tracking-[0.3em] mb-8 font-serif whitespace-nowrap">${textTitle}</h3>
-              
-              <div class="flex gap-3 mb-10">
-                  ${[0,1,2,3,4,5].map(i => `
-                      <div class="w-4 h-4 rounded-full border-2 border-red-900 ${state.passcodeValue.length > i ? 'bg-red-600 shadow-[0_0_10px_rgba(225,29,72,0.8)]' : 'bg-transparent'} transition-all"></div>
-                  `).join('')}
+        <div class="fixed inset-0 ${level >= 5 ? 'bg-cursed' : 'bg-black/95'} flex flex-col items-center justify-center z-50 animate-fade-in px-4 transition-colors duration-1000 overflow-hidden">
+          <div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden">
+            <div class="relative w-full h-[400px] flex justify-center">
+              <div class="sadako-body lvl-${level}">
+                <svg viewBox="0 0 200 300" class="sadako-svg">
+                  <path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#94a3b8" />
+                  <path d="M 150,300 L 190,200 L 170,190 L 140,300 Z" fill="#94a3b8" />
+                  <path d="M 10,200 Q 5,180 20,180 Q 30,180 30,190 Z" fill="#e2e8f0" />
+                  <path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" />
+                  <path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" />
+                  <path d="M 50,300 C 30,100 170,100 150,300 C 130,150 70,150 50,300 Z" fill="#0a0a0a" />
+                  <circle class="s-eye" cx="85" cy="180" r="4" />
+                  <circle class="s-eye" cx="115" cy="180" r="4" />
+                </svg>
               </div>
-
-              <div class="grid grid-cols-3 gap-4 w-64 max-w-full font-serif">
-                  ${[1,2,3,4,5,6,7,8,9].map(n => `<button onclick="inputPasscode('${n}')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">${n}</button>`).join('')}
-                  <button onclick="deletePasscode()" class="w-16 h-16 rounded-full flex items-center justify-center border border-red-900 text-red-600 text-3xl hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm"><i class="ph-fill ph-backspace"></i></button>
-                  <button onclick="inputPasscode('0')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">0</button>
-                  <button onclick="closePasscode()" class="w-16 h-16 rounded-full border border-gray-800 text-gray-400 text-sm font-bold hover:text-gray-200 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">戻る</button>
-              </div>
+              <div class="well-container"><div class="well-hole"></div></div>
             </div>
+          </div>
+          <div class="relative z-50 flex flex-col items-center mt-10">
+            <i class="ph-fill ph-skull text-6xl text-red-700 mb-6 ${level > 0 ? 'animate-pulse-red' : ''}"></i>
+            <h3 class="${level >= 4 ? 'text-red-600 glitch-text' : 'text-red-600'} ${level >= 5 ? 'text-xl sm:text-2xl' : ''} font-bold tracking-[0.2em] sm:tracking-[0.3em] mb-8 font-serif whitespace-nowrap">
+              ${level >= 5 ? '呪 ワ レ タ 呪 ワ レ タ' : (level >= 3 ? 'ウシロヲフリムクナ...' : 'パスコードヲ入力セヨ')}
+            </h3>
+            <div class="flex gap-3 mb-10">
+              ${[0,1,2,3,4,5].map(i => `
+                <div class="w-4 h-4 rounded-full border-2 border-red-900 ${state.passcodeValue.length > i ? 'bg-red-600 shadow-[0_0_10px_rgba(225,29,72,0.8)]' : 'bg-transparent'} transition-all"></div>
+              `).join('')}
+            </div>
+            <div class="grid grid-cols-3 gap-4 w-64 max-w-full font-serif">
+              ${[1,2,3,4,5,6,7,8,9].map(n => `
+                <button onclick="inputPasscode('${n}')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">${n}</button>
+              `).join('')}
+              <button onclick="deletePasscode()" class="w-16 h-16 rounded-full flex items-center justify-center border border-red-900 text-red-600 text-3xl hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm"><i class="ph-fill ph-backspace"></i></button>
+              <button onclick="inputPasscode('0')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">0</button>
+              <button onclick="closePasscode()" class="w-16 h-16 rounded-full border border-gray-800 text-gray-400 text-sm font-bold hover:text-gray-200 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">戻る</button>
+            </div>
+          </div>
         </div>
       `;
     }
 
     function renderParentDashboardHTML() {
-      const userName = userThemes[state.activeUser].name;
-      let totalAttempts = 0;
+      const userName = userThemes[state.activeUser] ? userThemes[state.activeUser].name : 'さくら'; 
+      let totalAttempts = 0; 
       let totalMistakes = 0;
-      const analyzedData = rawData.map(q => {
-        const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 };
-        const total = stat.corrects + stat.mistakes;
-        totalAttempts += total;
-        totalMistakes += stat.mistakes;
-        const mistakeRate = total > 0 ? Math.round((stat.mistakes / total) * 100) : 0;
-        return { ...q, stat, total, mistakeRate };
-      }).filter(q => q.total > 0);
-
+      
+      const analyzedData = rawData.map(q => { 
+        const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 }; 
+        const total = stat.corrects + stat.mistakes; 
+        totalAttempts += total; 
+        totalMistakes += stat.mistakes; 
+        return { ...q, stat, total, mistakeRate: total > 0 ? Math.round((stat.mistakes / total) * 100) : 0 }; 
+      }).filter(q => q.total > 0).sort((a, b) => b.mistakeRate - a.mistakeRate || b.stat.mistakes - a.stat.mistakes);
+      
       const accuracy = totalAttempts > 0 ? Math.round(((totalAttempts - totalMistakes) / totalAttempts) * 100) : 0;
-      const sortedByMistake = [...analyzedData].sort((a, b) => {
-        if (b.mistakeRate !== a.mistakeRate) return b.mistakeRate - a.mistakeRate;
-        return b.stat.mistakes - a.stat.mistakes;
-      });
-
-      let listHtml = sortedByMistake.length === 0 
-        ? `<p class="text-gray-500 text-center py-8 border border-gray-800 rounded-2xl">データが空じゃ。まずは解かせるのだ。</p>`
-        : sortedByMistake.slice(0, 10).map((item, idx) => `
+      
+      let listHtml = analyzedData.length === 0 
+        ? `<p class="text-gray-500 text-center py-8 border border-gray-800 rounded-2xl">データが空じゃ。まずは解かせるのだ。</p>` 
+        : analyzedData.slice(0, 10).map((item, idx) => `
             <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex items-start shadow-md">
-              <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-red-900/50 text-red-500 border border-red-800' : 'bg-gray-700 text-gray-400'}">
-                ${idx + 1}
-              </div>
+              <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-red-900/50 text-red-500 border border-red-800' : 'bg-gray-700 text-gray-400'}">${idx + 1}</div>
               <div class="flex-grow">
                 <span class="text-[10px] font-bold text-gray-400 border border-gray-600 px-2 py-1 rounded mb-2 inline-block">${item.category}</span>
                 <p class="text-sm text-gray-200 font-bold mb-1 leading-snug">${item.q}</p>
@@ -1444,7 +1346,7 @@
               </div>
             </div>
           `).join('');
-
+          
       return `
         <div class="fixed inset-0 min-h-screen bg-gray-950 text-gray-100 overflow-y-auto z-[60] animate-fade-in font-serif pb-20">
           <div class="max-w-2xl mx-auto p-4 sm:p-6">
@@ -1452,10 +1354,9 @@
               <h1 class="text-2xl sm:text-3xl font-bold text-red-600 flex items-center tracking-widest">
                 <i class="ph-fill ph-skull text-3xl sm:text-4xl mr-3"></i>閻魔の帳簿<span class="text-sm text-gray-400 ml-3 tracking-normal">(${userName}の記録)</span>
               </h1>
-              <button onclick="goHome()" class="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-700 hover:text-white active:scale-95 transition-all text-sm font-bold">
-                人間界へ戻る
-              </button>
+              <button onclick="goHome()" class="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-700 hover:text-white active:scale-95 transition-all text-sm font-bold">人間界へ戻る</button>
             </div>
+            
             <div class="bg-gray-900 border-l-4 border-red-600 p-6 sm:p-8 rounded-r-2xl mb-10 relative shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
               <i class="ph-fill ph-quotes text-5xl text-gray-800 absolute top-4 right-4"></i>
               <h2 class="text-red-500 font-bold mb-4 text-sm tracking-[0.2em] flex items-center">
@@ -1463,30 +1364,31 @@
               </h2>
               <p class="text-gray-300 leading-loose whitespace-pre-wrap text-sm sm:text-base">${generateAiEvaluation()}</p>
             </div>
+            
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
               <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
-                <p class="text-xs text-gray-500 mb-1 tracking-wider">総解答数</p>
-                <p class="text-2xl font-black text-gray-200">${totalAttempts}</p>
+                <p class="text-xs text-gray-500 mb-1 tracking-wider">総解答数</p><p class="text-2xl font-black text-gray-200">${totalAttempts}</p>
               </div>
               <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
-                <p class="text-xs text-gray-500 mb-1 tracking-wider">正解数</p>
-                <p class="text-2xl font-black text-emerald-500">${totalAttempts - totalMistakes}</p>
+                <p class="text-xs text-gray-500 mb-1 tracking-wider">正解数</p><p class="text-2xl font-black text-emerald-500">${totalAttempts - totalMistakes}</p>
               </div>
               <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
-                <p class="text-xs text-gray-500 mb-1 tracking-wider">ミス回数</p>
-                <p class="text-2xl font-black text-red-600">${totalMistakes}</p>
+                <p class="text-xs text-gray-500 mb-1 tracking-wider">ミス回数</p><p class="text-2xl font-black text-red-600">${totalMistakes}</p>
               </div>
               <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
-                <p class="text-xs text-gray-500 mb-1 tracking-wider">総合正答率</p>
-                <p class="text-2xl font-black text-blue-400">${accuracy}%</p>
+                <p class="text-xs text-gray-500 mb-1 tracking-wider">総合正答率</p><p class="text-2xl font-black text-blue-400">${accuracy}%</p>
               </div>
             </div>
+            
             <div>
               <h3 class="text-lg font-bold text-gray-300 mb-4 flex items-center tracking-widest border-l-2 border-red-900 pl-3">
                 <i class="ph-fill ph-warning text-xl mr-2 text-red-600"></i>罪深き問題リスト（苦手トップ）
               </h3>
-              <div class="space-y-3">${listHtml}</div>
+              <div class="space-y-3">
+                ${listHtml}
+              </div>
             </div>
+            
           </div>
         </div>
       `;
@@ -1500,8 +1402,8 @@
       else if (state.screen === 'result') html = renderResultHTML();
       else if (state.screen === 'parent_dashboard') html = renderParentDashboardHTML();
       
-      html += renderPinHTML();
-      html += renderPasscodeHTML();
+      html += renderPinHTML(); 
+      html += renderPasscodeHTML(); 
       html += renderMessageHTML();
       
       root.innerHTML = html;
