@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>【最強】最強！暗記完璧最強アプリ(最強)</title>
-  <!-- バージョン: v2.4 (安定動作・エラー完全修正・期末テスト対応版) -->
+  <!-- バージョン: v2.6 (期末テストフル対応・全科目追加・賢いダミー・安定版) -->
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -63,20 +63,63 @@
 
   <script>
     // ==========================================
-    // 📚 v2.4 データ (期末テスト本気対応 ＋ 賢いダミー搭載)
+    // 📚 v2.6 データ (期末テスト全科目追加 ＋ 賢いダミー搭載)
     // ==========================================
     let rawData = [
       // =====================================
-      // 🔥 2年生（地理：地域調査のしかた・地図）
+      // 🔥 2年生の新規課題（理科：酸化と還元）
+      // =====================================
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "物質が酸素と結びつく化学変化を何という？", a: "酸化", dummies: ["還元", "燃焼", "分解"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化によってできた物質を何という？", a: "酸化物", dummies: ["硫化物", "塩化物", "純物質"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "銅を加熱してできる、黒色の物質の化学式は？", a: "CuO", dummies: ["Cu", "CO2", "MgO"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "マグネシウムが酸化してできる、白色の物質は？", a: "酸化マグネシウム", dummies: ["酸化銅", "酸化鉄", "炭酸マグネシウム"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "激しく熱や光を出しながら起こる酸化を何という？", a: "燃焼", dummies: ["還元", "発熱反応", "爆発"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化物から酸素をとり除く化学変化を何という？", a: "還元", dummies: ["酸化", "分解", "化合"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化銅を炭素と混ぜて加熱したとき、酸化銅は何という物質になるか？", a: "銅", dummies: ["炭素", "二酸化炭素", "酸化鉄"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化銅と炭素の混合物を加熱したときに発生する気体は？", a: "二酸化炭素", dummies: ["酸素", "水素", "窒素"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学変化のときに熱が発生してまわりの温度が上がる反応は？", a: "発熱反応", dummies: ["吸熱反応", "燃焼", "還元"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学カイロなどで利用されている、鉄が酸素と結びつく反応は発熱反応か、吸熱反応か？", a: "発熱反応", dummies: ["吸熱反応", "還元反応", "分解反応"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学変化のときに熱を吸収してまわりの温度が下がる反応は？", a: "吸熱反応", dummies: ["発熱反応", "酸化反応", "化合"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学変化のときに出入りする熱のことを何という？", a: "反応熱", dummies: ["潜熱", "比熱", "摩擦熱"] },
+
+      // =====================================
+      // 🔥 2年生の新規課題（技術：エネルギー変換）
+      // =====================================
+      { grade: 2, subject: "技術", category: "エネルギー", q: "電気エネルギーを光や熱、運動といった目的に応じて他のエネルギーに変えることを何という？", a: "エネルギー変換", dummies: ["エネルギー保存の法則", "発電", "熱伝導"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "製品において、もととなるエネルギーに対して利用されるエネルギーの割合を何という？", a: "変換効率", dummies: ["発電効率", "消費電力", "エネルギーミックス"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "自然界に存在する石炭、石油、太陽光などのエネルギーを何という？", a: "一次エネルギー", dummies: ["二次エネルギー", "未利用エネルギー", "再生可能エネルギー"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "一次エネルギーを使いやすいように電気やガソリンなどに変換したものを何という？", a: "二次エネルギー", dummies: ["一次エネルギー", "再生可能エネルギー", "化石燃料"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "石炭、石油、天然ガスなどの資源をまとめて何という？", a: "化石燃料", dummies: ["バイオマス", "再生可能エネルギー", "鉱産資源"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "太陽光、水力、風力など、比較的短時間で再生し枯渇しないエネルギーは？", a: "再生可能エネルギー", dummies: ["化石燃料", "一次エネルギー", "枯渇性エネルギー"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "LED照明は、電気エネルギーを主に何エネルギーに変換しているか？", a: "光エネルギー", dummies: ["熱エネルギー", "運動エネルギー", "音エネルギー"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "IHヒータは、電気エネルギーを主に何エネルギーに変換しているか？", a: "熱エネルギー", dummies: ["光エネルギー", "運動エネルギー", "化学エネルギー"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "扇風機は、電気エネルギーを主に何エネルギーに変換しているか？", a: "運動エネルギー", dummies: ["熱エネルギー", "光エネルギー", "位置エネルギー"] },
+
+      // =====================================
+      // 🔥 2年生の新規課題（地理：日本の地形と海）
+      // =====================================
+      { grade: 2, subject: "社会", category: "日本の地形", q: "川が山地から平野に出たところにできる、砂や小石が扇状に堆積した地形は？", a: "扇状地", dummies: ["三角州", "台地", "カルデラ"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "川が海に注ぐ河口部にできる、細かい砂や泥が堆積した地形は？", a: "三角州", dummies: ["扇状地", "台地", "リアス海岸"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "平野の周辺にある、一段高くて平らな地形は？", a: "台地", dummies: ["扇状地", "三角州", "盆地"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "山地が海に沈み込んでできた、海岸線が複雑に入り組んだ海岸地形は？", a: "リアス海岸", dummies: ["砂浜海岸", "サンゴ礁", "フィヨルド"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "リアス海岸で盛んに行われている、波が穏やかな入り江を利用した漁業の形態は？", a: "養殖", dummies: ["遠洋漁業", "沖合漁業", "定置網漁"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "日本の近海で、暖流と寒流がぶつかり、良い漁場となっている場所を何というか？", a: "潮目（潮境）", dummies: ["大陸棚", "海溝", "サンゴ礁"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "日本の太平洋側を北上する暖流（日本海流）の別名は？", a: "黒潮", dummies: ["親潮", "対馬海流", "リマン海流"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "日本の太平洋側を南下する寒流（千島海流）の別名は？", a: "親潮", dummies: ["黒潮", "対馬海流", "リマン海流"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "地球の表面をおおう岩石の層がぶつかり合い、地震や火山活動が活発な地帯を何という？", a: "変動帯", dummies: ["造山帯", "安定陸塊", "楯状地"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "太平洋を取り囲むように連なる、地震や火山が多い造山帯は？", a: "環太平洋造山帯", dummies: ["アルプス・ヒマラヤ造山帯", "大西洋中央海嶺", "フォッサマグナ"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "本州のほぼ中央を南北に走る、大きな溝状の地形（大地溝帯）を何という？", a: "フォッサマグナ", dummies: ["日本アルプス", "中央構造線", "リアス海岸"] },
+      { grade: 2, subject: "社会", category: "日本の地形", q: "飛驒山脈、木曽山脈、赤石山脈の総称は？", a: "日本アルプス", dummies: ["奥羽山脈", "中国山地", "四国山地"] },
+
+      // =====================================
+      // 🔥 前回の追加分（地理：地域調査のしかた・地図）
       // =====================================
       { grade: 2, subject: "社会", category: "地域調査と地図", q: "地域の調査で、統計資料を分析したりして使用する国土地理院発行の地図は？", a: "地形図", dummies: ["分布図", "気候グラフ", "海図"] },
       { grade: 2, subject: "社会", category: "地域調査と地図", q: "調査テーマに対する「仮の答え」を何というか？", a: "仮説", dummies: ["結論", "推測", "分析"] },
-      { grade: 2, subject: "社会", category: "地域調査と地図", q: "現地で直接様子を観察したり聞き取りをする調査方法を何というか？", a: "野外調査(フィールドワーク)", dummies: ["文献調査", "実験", "統計調査"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "現地で直接様子を観察したり聞き取りをする調査方法を何というか？", a: "野外調査", dummies: ["文献調査", "実験", "統計調査"] },
       { grade: 2, subject: "社会", category: "地域調査と地図", q: "調査で使った資料の名称や情報源のことを何というか？", a: "出典", dummies: ["仮説", "索引", "目次"] },
       { grade: 2, subject: "社会", category: "地域調査と地図", q: "野外調査の際に、前もって作成しておくと役立つものは？", a: "ルートマップ", dummies: ["ハザードマップ", "鳥瞰図", "地形図"] },
-      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地形図を発行している国の機関は？", a: "国土地理院", dummies: ["気象庁", "文部科学省", "環境省"] },
-      { grade: 2, subject: "社会", category: "地域調査と地図", q: "特に指定がない場合、地図はどの方角を上にして作られているか？", a: "北", dummies: ["南", "東", "西"] },
-      { grade: 2, subject: "社会", category: "地域調査と地図", q: "インターネット上の電子国土基本図が閲覧できるサイトは？", a: "地理院地図", dummies: ["Googleマップ", "ストリートビュー", "ハザードマップ"] },
+      { grade: 2, subject: "社会", category: "地域調査と地図", q: "地形図などを発行している国の機関は？", a: "国土地理院", dummies: ["気象庁", "文部科学省", "環境省"] },
       { grade: 2, subject: "社会", category: "地域調査と地図", q: "地形図などで、地表の同じ高さの地点を結んだ線を何というか？", a: "等高線", dummies: ["等圧線", "等温線", "経線"] },
       { grade: 2, subject: "社会", category: "地域調査と地図", q: "等高線の間隔が「広い」ほど、傾斜はどうなるか？", a: "緩やかになる", dummies: ["急になる", "変わらない", "垂直になる"] },
       { grade: 2, subject: "社会", category: "地域調査と地図", q: "等高線の間隔が「狭い」ほど、傾斜はどうなるか？", a: "急になる", dummies: ["緩やかになる", "変わらない", "水平になる"] },
@@ -91,7 +134,7 @@
       { grade: 2, subject: "社会", category: "地域調査と地図", q: "丸にVが乗っているような地図記号が表すものは？", a: "果樹園", dummies: ["畑", "広葉樹林", "茶畑"] },
 
       // =====================================
-      // 🔥 2年生（地理：オセアニア州）
+      // 🔥 前回の追加分（地理：オセアニア州）
       // =====================================
       { grade: 2, subject: "社会", category: "オセアニア州", q: "オセアニア州は、ニュージーランド、太平洋の島々と何大陸からなるか？", a: "オーストラリア大陸", dummies: ["ユーラシア大陸", "アフリカ大陸", "北アメリカ大陸"] },
       { grade: 2, subject: "社会", category: "オセアニア州", q: "ニュージーランドで盛んな、火山や温泉を生かした発電方法は？", a: "地熱発電", dummies: ["火力発電", "水力発電", "風力発電"] },
@@ -102,73 +145,50 @@
       { grade: 2, subject: "社会", category: "オセアニア州", q: "現在のオーストラリアのように、異なる文化をお互いに尊重し合う社会を何というか？", a: "多文化社会", dummies: ["単一民族社会", "グローバル社会", "階級社会"] },
       { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアの先住民を何というか？", a: "アボリジニ", dummies: ["マオリ", "インディオ", "イヌイット"] },
       { grade: 2, subject: "社会", category: "オセアニア州", q: "ニュージーランドの先住民を何というか？", a: "マオリ", dummies: ["アボリジニ", "インカ", "アイヌ"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアの重要な輸出品である、鉄鉱石や石炭などを何資源というか？", a: "鉱産資源", dummies: ["水産資源", "森林資源", "農業資源"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "アジア太平洋の国や地域が参加する「アジア太平洋経済協力」の略称は？", a: "APEC", dummies: ["EU", "ASEAN", "OPEC"] },
 
       // =====================================
-      // 🔥 2年生（理科：周期表）
+      // 🔥 前回の追加分（理科：周期表）
       // =====================================
       { grade: 2, subject: "理科", category: "周期表", q: "原子を性質が似たものが縦に並ぶように整理した表を何という？", a: "周期表", dummies: ["溶解度曲線", "質量パーセント濃度", "示相化石"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「H」が表す原子は？", a: "水素", dummies: ["ヘリウム", "酸素", "窒素"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「He」が表す原子は？", a: "ヘリウム", dummies: ["水素", "ネオン", "アルゴン"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Li」が表す原子は？", a: "リチウム", dummies: ["ベリリウム", "ホウ素", "ナトリウム"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Be」が表す原子は？", a: "ベリリウム", dummies: ["リチウム", "ホウ素", "マグネシウム"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「B」が表す原子は？", a: "ホウ素", dummies: ["炭素", "窒素", "アルミニウム"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「C」が表す原子は？", a: "炭素", dummies: ["カルシウム", "銅", "塩素"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「N」が表す原子は？", a: "窒素", dummies: ["酸素", "炭素", "リン"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「O」が表す原子は？", a: "酸素", dummies: ["水素", "炭素", "硫黄"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「F」が表す原子は？", a: "フッ素", dummies: ["塩素", "ヨウ素", "鉄"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Ne」が表す原子は？", a: "ネオン", dummies: ["アルゴン", "ヘリウム", "窒素"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Na」が表す原子は？", a: "ナトリウム", dummies: ["窒素", "ネオン", "カリウム"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Mg」が表す原子は？", a: "マグネシウム", dummies: ["マンガン", "カルシウム", "モリブデン"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Al」が表す原子は？", a: "アルミニウム", dummies: ["アルゴン", "金", "銀"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Si」が表す原子は？", a: "ケイ素", dummies: ["炭素", "リン", "硫黄"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「P」が表す原子は？", a: "リン", dummies: ["カリウム", "硫黄", "鉛"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「S」が表す原子は？", a: "硫黄", dummies: ["リン", "ケイ素", "塩素"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Cl」が表す原子は？", a: "塩素", dummies: ["炭素", "カルシウム", "銅"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Ar」が表す原子は？", a: "アルゴン", dummies: ["アルミニウム", "ネオン", "金"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「K」が表す原子は？", a: "カリウム", dummies: ["カルシウム", "リン", "クリプトン"] },
       { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Ca」が表す原子は？", a: "カルシウム", dummies: ["炭素", "カリウム", "銅"] },
 
       // =====================================
-      // 🔥 2年生（歴史：戦国〜江戸幕府）
+      // 🔥 前回の追加分（歴史：戦国〜江戸幕府）
       // =====================================
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1573年、足利義昭を京都から追放し滅亡させた幕府は？", a: "室町幕府", dummies: ["鎌倉幕府", "江戸幕府", "平氏政権"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1575年、織田信長が鉄砲を使って武田軍を破った戦いは？", a: "長篠の戦い", dummies: ["関ヶ原の戦い", "桶狭間の戦い", "応仁の乱"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "織田信長が築き、関所の廃止（楽市・楽座）などを行った城は？", a: "安土城", dummies: ["大阪城", "江戸城", "姫路城"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1582年、織田信長が家臣の明智光秀に攻撃され自害した出来事は？", a: "本能寺の変", dummies: ["大化の改新", "壬申の乱", "桜田門外の変"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1590年、北条氏を滅ぼし、東北の大名も従って全国を統一した人物は？", a: "豊臣秀吉", dummies: ["織田信長", "徳川家康", "明智光秀"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1582年、織田信長が明智光秀に攻撃され自害した出来事は？", a: "本能寺の変", dummies: ["大化の改新", "壬申の乱", "桜田門外の変"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1590年、北条氏を滅ぼし、全国を統一した人物は？", a: "豊臣秀吉", dummies: ["織田信長", "徳川家康", "明智光秀"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "田畑の広さや収穫高を調べて検地帳を作成した豊臣秀吉の政策は？", a: "太閤検地", dummies: ["刀狩", "兵農分離", "楽市・楽座"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "一揆を防ぐため、百姓から武器を取り上げた豊臣秀吉の政策は？", a: "刀狩", dummies: ["太閤検地", "兵農分離", "武家諸法度"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "刀狩と太閤検地によって、武士と百姓の身分の区別が明確になったことを何という？", a: "兵農分離", dummies: ["士農工商", "四民平等", "廃藩置県"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "百姓から武器を取り上げた豊臣秀吉の政策は？", a: "刀狩", dummies: ["太閤検地", "兵農分離", "武家諸法度"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "宣教師を追放し、キリスト教を禁止した豊臣秀吉の命令は？", a: "バテレン追放令", dummies: ["宗門改", "絵踏", "禁教令"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "明の征服を目指し、豊臣秀吉が2度にわたって出兵した先は？", a: "朝鮮", dummies: ["琉球", "蝦夷地", "台湾"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "豊臣秀吉が朝鮮に出兵した、1592年と1597年の2つの戦いを合わせて何という？", a: "文禄・慶長の役", dummies: ["壬申の乱", "応仁の乱", "島原・天草一揆"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "大名や豪商らによる壮大で豪華な文化（姫路城や狩野永徳など）を何文化という？", a: "桃山文化", dummies: ["南蛮文化", "国風文化", "天平文化"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "質素さを重んじる「わび茶」を完成させた人物は？", a: "千利休", dummies: ["雪舟", "狩野永徳", "近松門左衛門"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "質素さを重んじる「わび茶」を完成させた人物は？", a: "千利休", dummies: ["雪舟", "近松門左衛門", "松尾芭蕉"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "出雲の阿国が始めた、現在の歌舞伎のルーツとなる踊りは？", a: "かぶき踊り", dummies: ["人形浄瑠璃", "能", "狂言"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "三味線の演奏に合わせて行われる、庶民に人気だった演劇は？", a: "人形浄瑠璃", dummies: ["かぶき踊り", "能", "狂言"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "ヨーロッパから伝わった天文学や医学などの文化を何という？", a: "南蛮文化", dummies: ["桃山文化", "飛鳥文化", "白鳳文化"] },
-      
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1600年、徳川家康が勝利し天下の主導権を握った戦いは？", a: "関ヶ原の戦い", dummies: ["長篠の戦い", "大坂の陣", "島原の乱"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "幕府の政治を取りまとめる、大老に次ぐ常置の最高役職は？", a: "老中", dummies: ["若年寄", "奉行", "京都所司代"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸幕府が直接支配する、全国の約4分の1を占める領地を何という？", a: "幕領(直轄地)", dummies: ["藩", "天領", "荘園"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "徳川一門の大名（尾張・紀伊・水戸の御三家など）を何という？", a: "親藩", dummies: ["譜代大名", "外様大名", "旗本"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "関ヶ原の戦い以前からの徳川氏の家臣である大名を何という？", a: "譜代大名", dummies: ["外様大名", "親藩", "旗本"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "関ヶ原の戦い以降に徳川氏に従った大名を何という？", a: "外様大名", dummies: ["親藩", "譜代大名", "御家人"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "幕府の政治を取りまとめる、常置の最高役職は？", a: "老中", dummies: ["若年寄", "大老", "奉行"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸幕府が直接支配する領地を何という？", a: "幕領(直轄地)", dummies: ["藩", "天領", "荘園"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸幕府が大名に対する法律として定めたものは？", a: "武家諸法度", dummies: ["御成敗式目", "公事方御定書", "十七条の憲法"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "朝廷や公家を統制するために幕府が定めた法律は？", a: "禁中並公家諸法度", dummies: ["武家諸法度", "御成敗式目", "建武以来追加"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "3代将軍徳川家光が定めた、大名が1年ごとに江戸と領地を行き来する制度は？", a: "参勤交代", dummies: ["武家諸法度", "宗門改", "絵踏"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "許可の朱印状をもった船が行う貿易を何という？", a: "朱印船貿易", dummies: ["南蛮貿易", "日宋貿易", "勘合貿易"] },
+      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "3代将軍家光が定めた、大名が1年ごとに江戸と領地を行き来する制度は？", a: "参勤交代", dummies: ["武家諸法度", "宗門改", "絵踏"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1637年に起こった、重い年貢とキリシタン弾圧に対する一揆は？", a: "島原・天草一揆", dummies: ["加賀の一向一揆", "山城の国一揆", "米騒動"] },
       { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸時代、幕府がオランダや清と貿易を行った長崎の人工の島は？", a: "出島", dummies: ["種子島", "対馬", "佐渡島"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "オランダ商館長が江戸幕府に提出した、海外の情報をまとめた書物は？", a: "オランダ風説書", dummies: ["解体新書", "東方見聞録", "魏志倭人伝"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "将軍の代替わりごとに朝鮮から江戸幕府に送られた使節は？", a: "朝鮮通信使", dummies: ["遣唐使", "遣隋使", "慶賀使"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1609年に琉球王国を征服した藩は？", a: "薩摩藩", dummies: ["松前藩", "長州藩", "土佐藩"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "アイヌ民族との不平等な交易に対し、戦いを起こしたアイヌの指導者は？", a: "シャクシャイン", dummies: ["アテルイ", "コシャマイン", "阿弖流為"] },
 
       // =====================================
-      // 🔥 2年生（音楽：夏の思い出）
+      // 🔥 前回の追加分（音楽：夏の思い出）
       // =====================================
       { grade: 2, subject: "音楽", category: "夏の思い出", q: "「夏の思い出」の作詞者は誰？", a: "江間章子", dummies: ["中田喜直", "滝廉太郎", "山田耕筰"] },
       { grade: 2, subject: "音楽", category: "夏の思い出", q: "「夏の思い出」の作曲者は誰？", a: "中田喜直", dummies: ["江間章子", "滝廉太郎", "山田耕筰"] },
@@ -187,30 +207,20 @@
       { grade: 1, subject: "理科", category: "物質のすがた", q: "ガスバーナーで、炎の大きさを調節するねじ", a: "ガス調節ねじ" },
       { grade: 1, subject: "理科", category: "物質のすがた", q: "ガスバーナーで、炎を青くするために調節するねじ", a: "空気調節ねじ" },
       { grade: 1, subject: "理科", category: "物質のすがた", q: "物質が固体、液体、気体と状態を変えること", a: "状態変化" },
-      { grade: 1, subject: "理科", category: "光・音・力", q: "光が鏡などの面にあたって、はね返る現象", a: "反射" },
-      { grade: 1, subject: "理科", category: "光・音・力", q: "音源の振動の振れ幅。大きいほど音は大きくなる。", a: "振幅" },
-      { grade: 1, subject: "理科", category: "植物・動物", q: "おしべの先端にある、花粉が入っているふくろ", a: "やく" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "受粉後、子房は成長して何になるか", a: "果実" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "受粉後、胚珠は成長して何になるか", a: "種子" },
       { grade: 1, subject: "理科", category: "大地の変化", q: "地球表面をおおう、厚さ数10〜約100kmの岩石の板", a: "プレート" },
       { grade: 1, subject: "理科", category: "地震", q: "地震の最初にくる小さなゆれ", a: "初期微動" },
-      { grade: 1, subject: "理科", category: "地震", q: "初期微動を伝える速い波", a: "P波" },
+
       { grade: 1, subject: "社会", category: "歴史(古代)", q: "キリストが生まれたとされる年を基準とした年代の表し方", a: "西暦" },
-      { grade: 1, subject: "社会", category: "歴史(古代)", q: "約700万年前にアフリカに現れた最古の人類", a: "猿人" },
       { grade: 1, subject: "社会", category: "歴史(古代)", q: "石を打ち砕いてつくった石器", a: "打製石器" },
       { grade: 1, subject: "社会", category: "歴史(古代)", q: "石を磨いてつくった石器", a: "磨製石器" },
       { grade: 1, subject: "社会", category: "歴史(古代)", q: "邪馬台国の女王で、中国の魏に使いを送った人物", a: "卑弥呼" },
-      { grade: 1, subject: "社会", category: "歴史(古代)", q: "聖徳太子が建てたといわれる、現存する世界最古の木造建築物", a: "法隆寺" },
       { grade: 1, subject: "社会", category: "歴史(古代)", q: "710年に唐の長安をモデルにしてつくられた都", a: "平城京" },
       { grade: 1, subject: "社会", category: "歴史(古代)", q: "794年、桓武天皇が現在の京都府に移した都", a: "平安京" },
-      { grade: 1, subject: "社会", category: "歴史(古代)", q: "紫式部がかな文字で書いた、世界最古の長編小説", a: "源氏物語" },
-      { grade: 1, subject: "社会", category: "歴史(古代)", q: "1549年、キリスト教を日本に伝えたイエズス会の宣教師", a: "フランシスコ・ザビエル" },
       { grade: 1, subject: "社会", category: "地理(世界)", q: "地球表面の海と陸の面積の割合は、およそ何対何？", a: "7：3" },
-      { grade: 1, subject: "社会", category: "地理(世界)", q: "大洋のなかで最も広い海洋", a: "太平洋" },
-      { grade: 1, subject: "社会", category: "地理(世界)", q: "海に面しておらず、周りがすべてほかの国と陸続きの国", a: "内陸国" },
       { grade: 1, subject: "社会", category: "地理(世界)", q: "赤道を0度とし、南北に90度ずつ表したもの", a: "緯度" },
-      { grade: 1, subject: "社会", category: "地理(世界)", q: "イギリスのロンドンを通る本初子午線を0度とし、東西に180度ずつ表したもの", a: "経度" },
-      { grade: 1, subject: "社会", category: "地理(世界)", q: "日本の標準時子午線は、東経何度の経線か", a: "東経135度" }
+      { grade: 1, subject: "社会", category: "地理(世界)", q: "イギリスのロンドンを通る本初子午線を0度とし、東西に180度ずつ表したもの", a: "経度" }
     ];
 
     // ==========================================
@@ -230,43 +240,25 @@
       "好き": "like", "愛する": "love", "欲しい": "want", "必要とする": "need", "使う": "use",
       "作る": "make", "取る、乗る": "take", "置く": "put", "得る、着く": "get", "与える": "give",
       
-      // 🔥 今回追加（2年 中間・期末テスト用 Unit1）
-      "金の、貴重な": "golden",
-      "休日、休暇": "holiday",
-      "シンガポール": "Singapore",
-      "飛行、飛行便": "flight",
-      "到着する、着く": "arrive",
-      "空港": "airport",
-      "すぐ、まもなく、早く": "soon",
-      "～でしょう、～するつもりだ(意志)": "will",
-      "わくわくした": "excited",
-      "シーフード": "seafood",
-      "予約": "reservation",
-      "メートル": "meter(s)",
-      "背が高い、高さが～ある": "tall",
-      "重さがある": "weigh(s)",
-      "トン": "ton(s)",
-      "見つけた（findの過去形）": "found",
-      "見つける": "find",
-      "言語、言葉": "language(s)",
-      "ドル": "dollar(s)",
-      "例": "example",
-      "連絡し合う、意思の疎通を図る": "communicate",
-      "マレー語": "Malay",
-      "タミル語": "Tamil",
-      "絵、絵画": "painting(s)",
-      "壁": "wall(s)",
-      "驚いた": "surprised",
-      "地域、区域": "area",
-      "インド": "India",
-      "モスク": "mosque",
-      "文化": "culture(s)",
-      "チャイナタウン": "Chinatown",
-      "名探偵コナン": "Detective Conan",
-      "ヒンズー教の": "Hindu",
-      "リトル・インディア": "Little India",
-      "アラブ・ストリート": "Arab Street",
-      "タマネギ型の": "onion-shaped"
+      // Unit 1
+      "金の、貴重な": "golden", "休日、休暇": "holiday", "シンガポール": "Singapore",
+      "飛行、飛行便": "flight", "到着する、着く": "arrive", "空港": "airport", "すぐ、まもなく、早く": "soon",
+      "～でしょう、～するつもりだ": "will", "わくわくした": "excited", "シーフード": "seafood",
+      "予約": "reservation", "メートル": "meter(s)", "背が高い": "tall", "重さがある": "weigh(s)",
+      "トン": "ton(s)", "見つけた(過去形)": "found", "見つける": "find", "言語": "language(s)",
+      "ドル": "dollar(s)", "例": "example", "連絡し合う": "communicate", "マレー語": "Malay",
+      "タミル語": "Tamil", "絵、絵画": "painting(s)", "壁": "wall(s)", "驚いた": "surprised",
+      "地域、区域": "area", "インド": "India", "モスク": "mosque", "文化": "culture(s)", "チャイナタウン": "Chinatown",
+      "ヒンズー教の": "Hindu", "タマネギ型の": "onion-shaped",
+
+      // 🔥 今回追加（2年 Unit 2 Part 1）
+      "特に": "especially",
+      "命令、注文、注文する": "order",
+      "トッピング": "topping",
+      "いろいろな": "various",
+      "味、風味": "flavor",
+      "しょうゆ": "soy sauce",
+      "塩": "salt"
     };
 
     const engPhrases = {
@@ -284,18 +276,20 @@
       "私を〜と呼んでください。": "Call me ~.",
       "〜したい（一般動詞）": "want to ~",
 
-      // 🔥 今回追加（2年 期末テスト用）
+      // Unit 1 & 2
       "例えば": "for example",
       "私はあなたに何枚かの写真を見せます": "I will show you some pictures.",
       "私たちは私たちのイヌをポチと呼びます": "We call our dog Pochi.",
-      "ジュンは私に彼のギターを見せた": "Jun showed me his guitar."
+      "ジュンは私に彼のギターを見せた": "Jun showed me his guitar.",
+      // 🔥 今回追加
+      "…など": "and so on"
     };
 
     Object.keys(engVocab).forEach(k => {
-      rawData.push({ grade: 0, subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocab[k] });
+      rawData.push({ grade: 0, subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocab[k], dummies: [] });
     });
     Object.keys(engPhrases).forEach(k => {
-      rawData.push({ grade: 0, subject: "英語", category: "熟語・文法", q: `「${k}」を英語で言うと？`, a: engPhrases[k] });
+      rawData.push({ grade: 0, subject: "英語", category: "熟語・文法", q: `「${k}」を英語で言うと？`, a: engPhrases[k], dummies: [] });
     });
 
     // ID付与と重複排除
@@ -328,23 +322,9 @@
     // アプリの状態管理
     // ==========================================
     const state = {
-      screen: 'home', 
-      activeTab: 'study', 
-      activeUser: 'sakura', 
-      user: null, 
-      userStats: {}, 
-      passwords: {},
-      quizQueue: [], 
-      currentIndex: 0, 
-      showAnswer: false, 
-      selectedChoice: null, 
-      choiceResult: null, 
-      sessionStats: { totalInitial: 0, mistakes: 0 },
-      isDataLoaded: false, 
-      fbReady: false, 
-      showPasscode: false, 
-      passcodeValue: '', 
-      passcodeErrorCount: 0,
+      screen: 'home', activeTab: 'study', activeUser: 'sakura', user: null, userStats: {}, passwords: {},
+      quizQueue: [], currentIndex: 0, showAnswer: false, selectedChoice: null, choiceResult: null, sessionStats: { totalInitial: 0, mistakes: 0 },
+      isDataLoaded: false, fbReady: false, showPasscode: false, passcodeValue: '', passcodeErrorCount: 0,
       pin: { show: false, mode: 'auth', targetUser: null, value: '', error: false },
       message: { show: false, text: '', type: 'info', onConfirm: null }
     };
@@ -390,42 +370,48 @@
     
     const initApp = async () => {
       try {
-        let firebaseConfig = { apiKey: "AIzaSyCHGs5PHyfvW57SCJJi8GiDQ_ydH8M-5Vs", authDomain: "sakura-app-d3d10.firebaseapp.com", projectId: "sakura-app-d3d10", storageBucket: "sakura-app-d3d10.firebasestorage.app", messagingSenderId: "244016922212", appId: "1:244016922212:web:a1f1775a6a6aba2de8a971" };
+        let firebaseConfig = null;
         if (typeof __firebase_config !== 'undefined' && __firebase_config) {
           firebaseConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
         }
 
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        auth = firebase.auth(); 
-        db = firebase.firestore();
+        if (firebaseConfig && !firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+          auth = firebase.auth(); 
+          db = firebase.firestore();
 
-        try {
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await auth.signInWithCustomToken(__initial_auth_token);
-          } else {
-            await auth.signInAnonymously();
-          }
-        } catch(e) { console.warn("Auth restriction. Fallback to Local mode.", e); }
+          try {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+              await auth.signInWithCustomToken(__initial_auth_token);
+            } else {
+              await auth.signInAnonymously();
+            }
+          } catch(e) { console.warn("Auth restriction. Fallback to Local mode."); }
 
-        auth.onAuthStateChanged(user => {
-          if (user) {
-            state.user = user; 
-            state.fbReady = true;
-            try { 
-              db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').onSnapshot(doc => { 
-                state.passwords = doc.exists ? doc.data() || {} : {}; 
-              }); 
-            } catch(e) {}
-            loadStatsForCurrentUser(); 
-            startParticles();
-          } else { 
-            state.isDataLoaded = true; 
-            render(); 
-          }
-        });
+          auth.onAuthStateChanged(user => {
+            if (user) {
+              state.user = user; 
+              state.fbReady = true;
+              try { 
+                db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').onSnapshot(
+                  doc => { state.passwords = doc.exists ? doc.data() || {} : {}; },
+                  error => { console.warn("Passwords snapshot error:", error); }
+                ); 
+              } catch(e) { console.warn(e); }
+              loadStatsForCurrentUser(); 
+              startParticles();
+            } else { 
+              state.isDataLoaded = true; render(); startParticles();
+            }
+          });
+        } else {
+          state.isDataLoaded = true; 
+          render(); 
+          startParticles();
+        }
       } catch(e) { 
-        state.isDataLoaded = true; 
-        render(); 
+        console.warn("Firebase Init Error:", e);
+        state.isDataLoaded = true; render(); startParticles();
       }
     };
 
@@ -435,9 +421,7 @@
       state.isDataLoaded = false;
 
       if (state.activeUser === 'guest') { 
-        state.isDataLoaded = true; 
-        render(); 
-        return; 
+        state.isDataLoaded = true; render(); return; 
       }
 
       if (state.fbReady && state.user) {
@@ -450,16 +434,14 @@
              state.isDataLoaded = true; 
              render();
            }, error => { 
-             state.isDataLoaded = true; 
-             render(); 
+             console.warn("Stats snapshot error:", error);
+             state.isDataLoaded = true; render(); 
            });
         } catch(e) { 
-          state.isDataLoaded = true; 
-          render(); 
+          state.isDataLoaded = true; render(); 
         }
       } else { 
-        state.isDataLoaded = true; 
-        render(); 
+        state.isDataLoaded = true; render(); 
       }
     }
     initApp();
@@ -469,17 +451,13 @@
     // ==========================================
     function generateChoices(currentQuestion) {
       try {
-        // 1. 専用のダミー（dummies）があればそれを使う
         if (currentQuestion.dummies && currentQuestion.dummies.length >= 3) {
           const dums = currentQuestion.dummies.slice(0,3);
           return [currentQuestion.a, ...dums].sort(() => 0.5 - Math.random());
         }
-        
-        // 2. なければ「同じカテゴリ」からダミーを選ぶ
         let sameCategoryData = rawData.filter(d => d.subject === currentQuestion.subject && d.category === currentQuestion.category && d.a !== currentQuestion.a);
         let others = [...new Set(sameCategoryData.map(d => d.a))];
 
-        // 3. 足りなければ「同じ教科」から補充
         if (others.length < 3) {
            const sameSubjectData = rawData.filter(d => d.subject === currentQuestion.subject && d.a !== currentQuestion.a);
            const moreOthers = [...new Set(sameSubjectData.map(d => d.a))];
@@ -508,10 +486,7 @@
     }
 
     window.startWeaknessQuizCustom = function(filterType, subjectValue = null) {
-      if (state.activeUser === 'guest') { 
-        showMessage("ゲストモードでは苦手特訓は使えません。"); 
-        return; 
-      }
+      if (state.activeUser === 'guest') { showMessage("ゲストモードでは苦手特訓は使えません。"); return; }
       let targetQuestions = rawData.filter(q => {
         if (filterType === 'vocab' && q.subject !== '英語') return false;
         if (filterType === 'grade2' && (q.grade !== 2 || q.subject !== subjectValue)) return false;
@@ -530,10 +505,7 @@
         return rateB - rateA;
       });
 
-      if (targetQuestions.length === 0) { 
-        showMessage("すばらしい！この範囲の極端に苦手な問題はありません。"); 
-        return; 
-      }
+      if (targetQuestions.length === 0) { showMessage("すばらしい！この範囲の極端に苦手な問題はありません。"); return; }
       prepareQuiz(targetQuestions.slice(0, 20));
     }
 
@@ -554,11 +526,9 @@
         try {
           if (q.subject === '英語') {
             if (q.category === '英単語') { 
-              reverseQ = `「${q.a}」の意味は？`; 
-              reverseA = reverseA.replace('」を意味する英単語は？', '').replace('「', ''); 
+              reverseQ = `「${q.a}」の意味は？`; reverseA = reverseA.replace('」を意味する英単語は？', '').replace('「', ''); 
             } else if (q.category === '熟語・文法') { 
-              reverseQ = `「${q.a}」の意味は？`; 
-              reverseA = reverseA.replace('」を英語で言うと？', '').replace('「', ''); 
+              reverseQ = `「${q.a}」の意味は？`; reverseA = reverseA.replace('」を英語で言うと？', '').replace('「', ''); 
             }
           } else { 
             reverseQ = `「${q.a}」とは何のこと？（どういう意味？）`; 
@@ -568,94 +538,46 @@
         return { ...q, queueId: Math.random().toString(36).substr(2, 9), quizType: type, choices, isRetry: false, reverseQ, reverseA };
       }).sort(() => 0.5 - Math.random());
 
-      state.quizQueue = prepared; 
-      state.currentIndex = 0; 
-      state.showAnswer = false; 
-      state.selectedChoice = null; 
-      state.choiceResult = null;
-      state.sessionStats = { totalInitial: prepared.length, mistakes: 0 }; 
-      state.screen = 'quiz'; 
-      render();
+      state.quizQueue = prepared; state.currentIndex = 0; state.showAnswer = false; state.selectedChoice = null; state.choiceResult = null;
+      state.sessionStats = { totalInitial: prepared.length, mistakes: 0 }; state.screen = 'quiz'; render();
     }
 
     // ==========================================
     // UI イベント制御
     // ==========================================
-    window.showMessage = function(text, type='info', onConfirm=null) { 
-      state.message = { show: true, text, type, onConfirm }; 
-      render(); 
-    }
-    window.closeMessage = function() { 
-      state.message.show = false; 
-      render(); 
-    }
-    window.confirmMessage = function() { 
-      if(state.message.onConfirm) state.message.onConfirm(); 
-      closeMessage(); 
-    }
+    window.showMessage = function(text, type='info', onConfirm=null) { state.message = { show: true, text, type, onConfirm }; render(); }
+    window.closeMessage = function() { state.message.show = false; render(); }
+    window.confirmMessage = function() { if(state.message.onConfirm) state.message.onConfirm(); closeMessage(); }
     
     window.switchUser = function(user) {
       if (state.activeUser === user) return;
       if (state.passwords && state.passwords[user] && user !== 'guest') { 
-        state.pin = { show: true, mode: 'auth', targetUser: user, value: '', error: false }; 
-        render(); 
-        return; 
+        state.pin = { show: true, mode: 'auth', targetUser: user, value: '', error: false }; render(); return; 
       }
       executeUserSwitch(user);
     }
-    function executeUserSwitch(user) { 
-      state.activeUser = user; 
-      state.activeTab = 'study'; 
-      state.pin.show = false; 
-      loadStatsForCurrentUser(); 
-      startParticles(); 
-      render(); 
-    }
+    function executeUserSwitch(user) { state.activeUser = user; state.activeTab = 'study'; state.pin.show = false; loadStatsForCurrentUser(); startParticles(); render(); }
 
-    window.openPinSetup = function() { 
-      state.pin = { show: true, mode: 'setup', targetUser: state.activeUser, value: '', error: false }; 
-      render(); 
-    }
+    window.openPinSetup = function() { state.pin = { show: true, mode: 'setup', targetUser: state.activeUser, value: '', error: false }; render(); }
     window.removePin = function() { 
       showMessage(`${userThemes[state.activeUser].name}のパスワードを解除しますか？`, 'confirm', () => { 
-        db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: null }, { merge: true }); 
-        state.pin.show = false; 
-        showMessage("解除しました。"); 
+        db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: null }, { merge: true }).catch(e => console.warn(e)); 
+        state.pin.show = false; showMessage("解除しました。"); 
       }); 
     }
-    window.inputPin = function(num) { 
-      if (state.pin.value.length < 4) { 
-        state.pin.value += num; 
-        state.pin.error = false; 
-        render(); 
-        if (state.pin.value.length === 4) setTimeout(checkPin, 200); 
-      } 
-    }
-    window.deletePin = function() { 
-      state.pin.value = state.pin.value.slice(0, -1); 
-      state.pin.error = false; 
-      render(); 
-    }
-    window.closePin = function() { 
-      state.pin.show = false; 
-      render(); 
-    }
+    window.inputPin = function(num) { if (state.pin.value.length < 4) { state.pin.value += num; state.pin.error = false; render(); if (state.pin.value.length === 4) setTimeout(checkPin, 200); } }
+    window.deletePin = function() { state.pin.value = state.pin.value.slice(0, -1); state.pin.error = false; render(); }
+    window.closePin = function() { state.pin.show = false; render(); }
 
     function checkPin() {
       const { mode, targetUser, value } = state.pin; 
       const isMaster = (value === '1151');
       if (mode === 'auth') {
-        if (value === state.passwords[targetUser] || isMaster) { 
-          executeUserSwitch(targetUser); 
-        } else { 
-          state.pin.error = true; 
-          state.pin.value = ''; 
-          render(); 
-        }
+        if (value === state.passwords[targetUser] || isMaster) { executeUserSwitch(targetUser); } 
+        else { state.pin.error = true; state.pin.value = ''; render(); }
       } else if (mode === 'setup') {
-        db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: value }, { merge: true });
-        state.pin.show = false; 
-        showMessage("パスワードを設定しました！");
+        db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: value }, { merge: true }).catch(e => console.warn(e));
+        state.pin.show = false; showMessage("パスワードを設定しました！");
       }
     }
 
@@ -668,129 +590,55 @@
       const currentQ = state.quizQueue[state.currentIndex];
       if (state.activeUser !== 'guest') {
         const currentStat = state.userStats[currentQ.id] || { corrects: 0, mistakes: 0 };
-        const newData = { 
-          corrects: isCorrect ? currentStat.corrects + 1 : currentStat.corrects, 
-          mistakes: !isCorrect ? currentStat.mistakes + 1 : currentStat.mistakes, 
-          lastAttempt: new Date().toISOString() 
-        };
+        const newData = { corrects: isCorrect ? currentStat.corrects + 1 : currentStat.corrects, mistakes: !isCorrect ? currentStat.mistakes + 1 : currentStat.mistakes, lastAttempt: new Date().toISOString() };
         state.userStats[currentQ.id] = newData; 
         if (state.user && state.fbReady) { 
-          try { 
-            const collectionName = state.activeUser === 'sakura' ? 'shared_stats' : 'shared_stats_momoka'; 
-            db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName).doc(currentQ.id).set(newData, { merge: true }).catch(() => {}); 
-          } catch(e) {} 
+          try { const collectionName = state.activeUser === 'sakura' ? 'shared_stats' : 'shared_stats_momoka'; db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName).doc(currentQ.id).set(newData, { merge: true }).catch(() => {}); } catch(e) {} 
         }
       }
-      if (!isCorrect) { 
-        state.quizQueue.push({ ...currentQ, queueId: Math.random().toString(36).substr(2, 9), isRetry: true }); 
-        state.sessionStats.mistakes++; 
-      }
-      if (state.currentIndex + 1 < state.quizQueue.length || !isCorrect) { 
-        state.currentIndex++; 
-        state.showAnswer = false; 
-        state.selectedChoice = null; 
-        state.choiceResult = null; 
-      } else { 
-        state.screen = 'result'; 
-      }
+      if (!isCorrect) { state.quizQueue.push({ ...currentQ, queueId: Math.random().toString(36).substr(2, 9), isRetry: true }); state.sessionStats.mistakes++; }
+      if (state.currentIndex + 1 < state.quizQueue.length || !isCorrect) { state.currentIndex++; state.showAnswer = false; state.selectedChoice = null; state.choiceResult = null; } 
+      else { state.screen = 'result'; }
       render();
     }
 
     window.handleChoiceClick = function(idx) {
       if (state.selectedChoice !== null) return;
-      const currentQ = state.quizQueue[state.currentIndex]; 
-      const choice = currentQ.choices[idx]; 
-      const isCorrect = choice === currentQ.a;
-      state.selectedChoice = choice; 
-      state.choiceResult = isCorrect ? 'correct' : 'wrong'; 
-      render(); 
-      setTimeout(() => { handleAnswer(isCorrect); }, 1200);
+      const currentQ = state.quizQueue[state.currentIndex]; const choice = currentQ.choices[idx]; const isCorrect = choice === currentQ.a;
+      state.selectedChoice = choice; state.choiceResult = isCorrect ? 'correct' : 'wrong'; render(); setTimeout(() => { handleAnswer(isCorrect); }, 1200);
     }
     
     // 👻 貞子関連
-    window.openPasscode = function() { 
-      if (state.activeUser === 'guest') { showMessage("ゲストモードでは評価データはありません。"); return; } 
-      state.showPasscode = true; 
-      state.passcodeValue = ''; 
-      state.passcodeErrorCount = 0; 
-      render(); 
-    }
-    window.closePasscode = function() { 
-      state.showPasscode = false; 
-      state.passcodeValue = ''; 
-      render(); 
-    }
+    window.openPasscode = function() { if (state.activeUser === 'guest') { showMessage("ゲストモードでは評価データはありません。"); return; } state.showPasscode = true; state.passcodeValue = ''; state.passcodeErrorCount = 0; render(); }
+    window.closePasscode = function() { state.showPasscode = false; state.passcodeValue = ''; render(); }
     window.inputPasscode = function(val) {
-      if (state.passcodeValue.length < 6) state.passcodeValue += val; 
-      render();
-      if (state.passcodeValue.length === 6) { 
-        setTimeout(() => { 
-          if (state.passcodeValue === '115115') { 
-            state.showPasscode = false; 
-            state.passcodeErrorCount = 0; 
-            state.screen = 'parent_dashboard'; 
-          } else { 
-            state.passcodeErrorCount++; 
-            state.passcodeValue = ''; 
-          } 
-          render(); 
-        }, 500); 
-      }
+      if (state.passcodeValue.length < 6) state.passcodeValue += val; render();
+      if (state.passcodeValue.length === 6) { setTimeout(() => { if (state.passcodeValue === '115115') { state.showPasscode = false; state.passcodeErrorCount = 0; state.screen = 'parent_dashboard'; } else { state.passcodeErrorCount++; state.passcodeValue = ''; } render(); }, 500); }
     }
-    window.deletePasscode = function() { 
-      state.passcodeValue = state.passcodeValue.slice(0, -1); 
-      render(); 
-    }
+    window.deletePasscode = function() { state.passcodeValue = state.passcodeValue.slice(0, -1); render(); }
 
     function generateAiEvaluation() {
       let totalAttempts = 0; let totalMistakes = 0; let categoryStats = {};
       rawData.forEach(q => {
         if(!categoryStats[q.category]) categoryStats[q.category] = { attempts: 0, mistakes: 0, qs: [] };
         const stat = state.userStats[q.id];
-        if (stat) { 
-          const attempts = stat.corrects + stat.mistakes; 
-          if (attempts > 0) { 
-            totalAttempts += attempts; 
-            totalMistakes += stat.mistakes; 
-            categoryStats[q.category].attempts += attempts; 
-            categoryStats[q.category].mistakes += stat.mistakes; 
-            categoryStats[q.category].qs.push({ q: q.q, mistakes: stat.mistakes }); 
-          } 
-        }
+        if (stat) { const attempts = stat.corrects + stat.mistakes; if (attempts > 0) { totalAttempts += attempts; totalMistakes += stat.mistakes; categoryStats[q.category].attempts += attempts; categoryStats[q.category].mistakes += stat.mistakes; categoryStats[q.category].qs.push({ q: q.q, mistakes: stat.mistakes }); } }
       });
       const theme = userThemes[state.activeUser] || userThemes['sakura'];
       const userName = theme.name;
-      
       if (totalAttempts === 0) return `なんじゃ、まだ一度もアプリを開いておらぬではないか！\n怠惰は最大の罪なり。まずは${userName}にアプリを開かせ、一問でも解かせるのじゃ！`;
-      
       const accuracy = totalAttempts > 0 ? ((totalAttempts - totalMistakes) / totalAttempts) * 100 : 0;
       let evalText = `ふむ。我の帳簿によると、${userName}のこれまでの総解答数は【${totalAttempts}回】、正答率は【${Math.round(accuracy)}％】じゃな。\n\n`;
-      
       if (accuracy >= 90) evalText += "見事な精進ぶりじゃ！地道な努力がしっかりと実を結んでおる。\nしかし、悪魔は油断した隙に忍び寄るもの。慢心せず、さらなる高みを目指させよ！\n";
       else if (accuracy >= 60) evalText += "まずまずの出来じゃな。努力の跡は見られるぞ。\nだが、まだ知識が定着しておらぬ部分がちらほら見受けられる。反復こそが記憶の定着への近道じゃ！\n";
       else evalText += "むむっ……これは少々苦戦しておるようじゃな。\n基礎がグラついておるかもしれんぞ。焦らず、一歩ずつ確実に理解させるのじゃ！\n";
-      
-      let worstCategory = null; 
-      let maxMistakeRate = -1;
-      for (let cat in categoryStats) { 
-        if (categoryStats[cat].attempts > 1) { 
-          const rate = categoryStats[cat].mistakes / categoryStats[cat].attempts; 
-          if (rate > maxMistakeRate) { 
-            maxMistakeRate = rate; 
-            worstCategory = cat; 
-          } 
-        } 
-      }
-      
+      let worstCategory = null; let maxMistakeRate = -1;
+      for (let cat in categoryStats) { if (categoryStats[cat].attempts > 1) { const rate = categoryStats[cat].mistakes / categoryStats[cat].attempts; if (rate > maxMistakeRate) { maxMistakeRate = rate; worstCategory = cat; } } }
       if (worstCategory && maxMistakeRate > 0) {
         evalText += `\nとくに、【${worstCategory}】の分野に深い闇（弱点）を感じるぞ……。`;
         const worstQs = categoryStats[worstCategory].qs.sort((a,b) => b.mistakes - a.mistakes);
-        if(worstQs.length > 0 && worstQs[0].mistakes > 0) { 
-          evalText += `\nたとえば「${worstQs[0].q.substring(0, 15)}...」といった問題を何度も間違えておるようじゃ。\nこの辺りを重点的に復習させるのが点数アップへの道標じゃ！`; 
-        }
-      } else { 
-        evalText += `\n今のところ、極端に苦手な深淵は見当たらぬ。この調子で満遍なく学習を続けるがよい！`; 
-      }
+        if(worstQs.length > 0 && worstQs[0].mistakes > 0) { evalText += `\nたとえば「${worstQs[0].q.substring(0, 15)}...」といった問題を何度も間違えておるようじゃ。\nこの辺りを重点的に復習させるのが点数アップへの道標じゃ！`; }
+      } else { evalText += `\n今のところ、極端に苦手な深淵は見当たらぬ。この調子で満遍なく学習を続けるがよい！`; }
       return evalText;
     }
 
@@ -802,99 +650,53 @@
       const currentUserTheme = userThemes[state.activeUser] || userThemes['sakura'];
 
       if (!state.isDataLoaded) {
-        return `
-          <div class="flex flex-col items-center justify-center py-20 text-gray-500 animate-fade-in relative z-10">
-            <div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
-            ${currentUserTheme.icon} ${currentUserTheme.name}のデータを準備中...
-          </div>
-        `;
+        return `<div class="flex flex-col items-center justify-center py-20 text-gray-500 animate-fade-in relative z-10"><div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>${currentUserTheme.icon} ${currentUserTheme.name}のデータを準備中...</div>`;
       }
 
       const syncStatusColor = (state.fbReady && state.user && !isGuest) ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500';
       const syncStatusIcon = (state.fbReady && state.user && !isGuest) ? 'ph-cloud-check' : 'ph-cloud-slash';
-      const syncStatusText = (state.fbReady && state.user && !isGuest) ? 'クラウド同期ON' : '同期OFF(ローカル保存)';
+      const syncStatusText = (state.fbReady && state.user && !isGuest) ? 'クラウド同期ON' : '同期OFF';
 
       let contentHtml = '';
       if (state.activeTab === 'analytics') {
         if (isGuest) {
-          contentHtml = `
-            <div class="animate-fade-in bg-white/90 p-8 rounded-3xl shadow-sm border border-gray-100 text-center relative z-10 backdrop-blur-sm mt-4">
-              <i class="ph-fill ph-ghost text-5xl text-gray-300 mb-4"></i>
-              <p class="text-gray-500 font-bold">ゲストモードではデータは分析されません。</p>
-              <p class="text-sm text-gray-400 mt-2">上部のアカウントを選択してください。</p>
-            </div>
-          `;
+          contentHtml = `<div class="animate-fade-in bg-white/90 p-8 rounded-3xl shadow-sm border border-gray-100 text-center relative z-10 backdrop-blur-sm mt-4"><i class="ph-fill ph-ghost text-5xl text-gray-300 mb-4"></i><p class="text-gray-500 font-bold">ゲストモードではデータは分析されません。</p><p class="text-sm text-gray-400 mt-2">上部のアカウントを選択してください。</p></div>`;
         } else {
-          let totalAttempts = 0; 
-          let totalMistakes = 0;
-          
+          let totalAttempts = 0; let totalMistakes = 0;
           const analyzedData = rawData.map(q => {
             const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 };
             const total = stat.corrects + stat.mistakes; 
-            totalAttempts += total; 
-            totalMistakes += stat.mistakes;
+            totalAttempts += total; totalMistakes += stat.mistakes;
             return { ...q, stat, total, mistakeRate: total > 0 ? Math.round((stat.mistakes / total) * 100) : 0 };
           }).filter(q => q.total > 0).sort((a, b) => b.mistakeRate - a.mistakeRate || b.stat.mistakes - a.stat.mistakes);
 
           const accuracy = totalAttempts > 0 ? Math.round(((totalAttempts - totalMistakes) / totalAttempts) * 100) : 0;
-          
           let listHtml = analyzedData.length === 0 
             ? `<p class="text-gray-500 text-center py-8 bg-white/90 rounded-3xl border border-gray-100 shadow-sm mt-2 backdrop-blur-sm">まだデータがありません。<br>問題を解くとここに分析が表示されます。</p>`
-            : analyzedData.slice(0, 10).map((item, idx) => `
-                <div class="bg-white/95 p-4 rounded-2xl shadow-sm border border-gray-100 flex items-start backdrop-blur-sm">
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-rose-100 text-rose-600' : 'bg-gray-100 text-gray-500'}">${idx + 1}</div>
-                  <div class="flex-grow">
-                    <span class="text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md mb-2 inline-block">${item.category}</span>
-                    <p class="text-sm text-gray-800 font-bold mb-1 leading-snug">${item.q}</p>
-                    <p class="text-xs text-rose-500 font-medium">答え: ${item.a}</p>
-                  </div>
-                  <div class="shrink-0 text-right ml-2">
-                    <p class="text-rose-600 font-bold text-lg">${item.mistakeRate}%</p>
-                    <p class="text-[10px] text-gray-400">ミス率</p>
-                  </div>
-                </div>
-              `).join('');
+            : analyzedData.slice(0, 10).map((item, idx) => `<div class="bg-white/95 p-4 rounded-2xl shadow-sm border border-gray-100 flex items-start backdrop-blur-sm"><div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-rose-100 text-rose-600' : 'bg-gray-100 text-gray-500'}">${idx + 1}</div><div class="flex-grow"><span class="text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md mb-2 inline-block">${item.category}</span><p class="text-sm text-gray-800 font-bold mb-1 leading-snug">${item.q}</p><p class="text-xs text-rose-500 font-medium">答え: ${item.a}</p></div><div class="shrink-0 text-right ml-2"><p class="text-rose-600 font-bold text-lg">${item.mistakeRate}%</p><p class="text-[10px] text-gray-400">ミス率</p></div></div>`).join('');
 
           contentHtml = `
             <div class="space-y-6 animate-fade-in relative z-10">
               <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-6 text-white shadow-md relative overflow-hidden">
                 <h2 class="text-xl font-bold mb-4 flex items-center z-10 relative"><i class="ph ph-chart-bar text-2xl mr-2"></i>${currentUserTheme.name}の分析</h2>
                 <div class="grid grid-cols-3 gap-3 z-10 relative">
-                  <div class="bg-white/20 rounded-2xl p-3 text-center">
-                    <p class="text-xs opacity-90 mb-1">取組んだ問題</p><p class="text-2xl font-black">${totalAttempts}<span class="text-xs font-normal">回</span></p>
-                  </div>
-                  <div class="bg-white/20 rounded-2xl p-3 text-center">
-                    <p class="text-xs opacity-90 mb-1">累計ミス</p><p class="text-2xl font-black">${totalMistakes}<span class="text-xs font-normal">回</span></p>
-                  </div>
-                  <div class="bg-white/20 rounded-2xl p-3 text-center">
-                    <p class="text-xs opacity-90 mb-1">総合正答率</p><p class="text-2xl font-black">${accuracy}<span class="text-xs font-normal">%</span></p>
-                  </div>
+                  <div class="bg-white/20 rounded-2xl p-3 text-center"><p class="text-xs opacity-90 mb-1">取組んだ問題</p><p class="text-2xl font-black">${totalAttempts}<span class="text-xs font-normal">回</span></p></div>
+                  <div class="bg-white/20 rounded-2xl p-3 text-center"><p class="text-xs opacity-90 mb-1">累計ミス</p><p class="text-2xl font-black">${totalMistakes}<span class="text-xs font-normal">回</span></p></div>
+                  <div class="bg-white/20 rounded-2xl p-3 text-center"><p class="text-xs opacity-90 mb-1">総合正答率</p><p class="text-2xl font-black">${accuracy}<span class="text-xs font-normal">%</span></p></div>
                 </div>
               </div>
-              <div>
-                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center bg-white/80 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm inline-flex">
-                  <i class="ph-fill ph-warning text-xl mr-2 text-rose-500"></i>要注意！苦手な問題トップ
-                </h3>
-                <div class="space-y-3">${listHtml}</div>
-              </div>
+              <div><h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center bg-white/80 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm inline-flex"><i class="ph-fill ph-warning text-xl mr-2 text-rose-500"></i>要注意！苦手な問題トップ</h3><div class="space-y-3">${listHtml}</div></div>
             </div>
           `;
         }
       } else {
-        // ★ 学年別UI生成（英単語 / 2年 / 1年）
         const vocabHtml = `
           <div class="mb-10 animate-fade-in relative z-10">
-            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-emerald-400 pb-2 inline-flex">
-              <i class="ph-fill ph-translate text-emerald-500 mr-2 text-2xl"></i>毎日やろう！英単語
-            </h2>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-emerald-400 pb-2 inline-flex"><i class="ph-fill ph-translate text-emerald-500 mr-2 text-2xl"></i>毎日やろう！英単語</h2>
             <div class="bg-white/95 backdrop-blur-sm p-5 rounded-3xl shadow-sm border border-emerald-100">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button onclick="startWeaknessQuizCustom('vocab')" class="flex items-center justify-between p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold hover:bg-emerald-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
-                  <span><i class="ph-fill ph-warning text-lg mr-2"></i>英単語の苦手特訓</span><i class="ph-fill ph-play text-xl"></i>
-                </button>
-                <button onclick="startQuizCustom('vocab')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95">
-                  <span>全英単語 ランダム</span><i class="ph-fill ph-play text-xl"></i>
-                </button>
+                <button onclick="startWeaknessQuizCustom('vocab')" class="flex items-center justify-between p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold hover:bg-emerald-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}"><span><i class="ph-fill ph-warning text-lg mr-2"></i>英単語の苦手特訓</span><i class="ph-fill ph-play text-xl"></i></button>
+                <button onclick="startQuizCustom('vocab')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95"><span>全英単語 ランダム</span><i class="ph-fill ph-play text-xl"></i></button>
               </div>
             </div>
           </div>
@@ -903,34 +705,23 @@
         const subs2Html = subjectsGrade2.map(sub => {
           let iconColor = "text-orange-500"; 
           if (sub.name === "理科") iconColor = "text-blue-500"; 
+          if (sub.name === "技術") iconColor = "text-emerald-500";
           if (sub.name === "音楽") iconColor = "text-purple-500";
           
           return `
           <div class="bg-white/95 backdrop-blur-sm p-6 rounded-3xl shadow-sm border border-orange-100 mb-4">
-            <h3 class="text-lg font-bold text-gray-800 flex items-center mb-4">
-              <i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}
-            </h3>
+            <h3 class="text-lg font-bold text-gray-800 flex items-center mb-4"><i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button onclick="startWeaknessQuizCustom('grade2', '${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
-                <span><i class="ph-fill ph-warning text-lg mr-2"></i>${sub.name} の苦手特訓</span><i class="ph-fill ph-play text-xl"></i>
-              </button>
-              <button onclick="startQuizCustom('grade2', '${sub.name}', 'all')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95">
-                <span>${sub.name} 全てをミックス</span><i class="ph-fill ph-play text-xl"></i>
-              </button>
-              ${sub.categories.map(cat => `
-                <button onclick="startQuizCustom('grade2', '${sub.name}', '${cat}')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium transition-colors border border-gray-200 active:scale-95">
-                  <span class="truncate pr-2">${cat}</span><i class="ph ph-arrow-right text-xl text-gray-400"></i>
-                </button>
-              `).join('')}
+              <button onclick="startWeaknessQuizCustom('grade2', '${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}"><span><i class="ph-fill ph-warning text-lg mr-2"></i>${sub.name} の苦手特訓</span><i class="ph-fill ph-play text-xl"></i></button>
+              <button onclick="startQuizCustom('grade2', '${sub.name}', 'all')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95"><span>${sub.name} 全てをミックス</span><i class="ph-fill ph-play text-xl"></i></button>
+              ${sub.categories.map(cat => `<button onclick="startQuizCustom('grade2', '${sub.name}', '${cat}')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium transition-colors border border-gray-200 active:scale-95"><span class="truncate pr-2">${cat}</span><i class="ph ph-arrow-right text-xl text-gray-400"></i></button>`).join('')}
             </div>
           </div>
         `}).join('');
 
         const grade2Html = `
           <div class="mb-10 animate-fade-in relative z-10">
-            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-orange-400 pb-2 inline-flex">
-              <i class="ph-fill ph-fire text-orange-500 mr-2 text-2xl"></i>2年 期末・中間テスト範囲
-            </h2>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-orange-400 pb-2 inline-flex"><i class="ph-fill ph-fire text-orange-500 mr-2 text-2xl"></i>2年 期末・中間テスト範囲</h2>
             ${subs2Html.length > 0 ? subs2Html : '<p class="text-gray-500 text-sm bg-white/80 p-4 rounded-xl">まだ課題がありません</p>'}
           </div>
         `;
@@ -941,26 +732,16 @@
           <div class="bg-gray-100/90 backdrop-blur-sm p-6 rounded-3xl border border-gray-200 mb-4 shadow-inner">
             <h3 class="text-lg font-bold text-gray-700 flex items-center mb-4"><i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}</h3>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 opacity-90">
-              <button onclick="startWeaknessQuizCustom('grade1', '${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-3 rounded-xl bg-white border border-rose-200 text-rose-700 font-bold hover:bg-rose-50 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">
-                <span><i class="ph-fill ph-warning text-lg mr-2"></i>苦手だけ復習</span><i class="ph-fill ph-play text-lg"></i>
-              </button>
-              <button onclick="startQuizCustom('grade1', '${sub.name}', 'all')" class="flex items-center justify-between p-3 rounded-xl bg-gray-700 text-white font-medium hover:bg-gray-600 transition-colors active:scale-95">
-                <span>全範囲ミックス</span><i class="ph-fill ph-play text-lg"></i>
-              </button>
-              ${sub.categories.map(cat => `
-                <button onclick="startQuizCustom('grade1', '${sub.name}', '${cat}')" class="flex items-center justify-between p-3 rounded-xl bg-white hover:bg-gray-50 text-gray-600 text-sm font-medium transition-colors border border-gray-200 active:scale-95">
-                  <span class="truncate pr-2">${cat}</span><i class="ph ph-arrow-right text-lg text-gray-400"></i>
-                </button>
-              `).join('')}
+              <button onclick="startWeaknessQuizCustom('grade1', '${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-3 rounded-xl bg-white border border-rose-200 text-rose-700 font-bold hover:bg-rose-50 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}"><span><i class="ph-fill ph-warning text-lg mr-2"></i>苦手だけ復習</span><i class="ph-fill ph-play text-lg"></i></button>
+              <button onclick="startQuizCustom('grade1', '${sub.name}', 'all')" class="flex items-center justify-between p-3 rounded-xl bg-gray-700 text-white font-medium hover:bg-gray-600 transition-colors active:scale-95"><span>全範囲ミックス</span><i class="ph-fill ph-play text-lg"></i></button>
+              ${sub.categories.map(cat => `<button onclick="startQuizCustom('grade1', '${sub.name}', '${cat}')" class="flex items-center justify-between p-3 rounded-xl bg-white hover:bg-gray-50 text-gray-600 text-sm font-medium transition-colors border border-gray-200 active:scale-95"><span class="truncate pr-2">${cat}</span><i class="ph ph-arrow-right text-lg text-gray-400"></i></button>`).join('')}
             </div>
           </div>
         `}).join('');
 
         const grade1Html = `
           <div class="mb-10 animate-fade-in relative z-10">
-            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-blue-400 pb-2 inline-flex">
-              <i class="ph-fill ph-books text-blue-500 mr-2 text-2xl"></i>1年生の総復習
-            </h2>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-blue-400 pb-2 inline-flex"><i class="ph-fill ph-books text-blue-500 mr-2 text-2xl"></i>1年生の総復習</h2>
             ${subs1Html}
           </div>
         `;
@@ -971,66 +752,40 @@
       const userSelectorHtml = `
         <div class="flex justify-center mb-2 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-sm border border-gray-200 inline-flex mx-auto relative z-20">
           ${Object.keys(userThemes).map(key => {
-            const theme = userThemes[key]; 
-            const isActive = state.activeUser === key;
-            return `
-              <button onclick="switchUser('${key}')" class="flex items-center px-4 py-2 sm:px-6 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 ${isActive ? theme.activeBg + ' ' + theme.activeText + ' shadow-md transform scale-105' : 'bg-transparent text-gray-500 hover:bg-gray-100'}">
-                <span class="mr-1 sm:mr-2 text-lg sm:text-xl">${theme.icon}</span> ${theme.name}
-              </button>
-            `;
+            const theme = userThemes[key]; const isActive = state.activeUser === key;
+            return `<button onclick="switchUser('${key}')" class="flex items-center px-4 py-2 sm:px-6 sm:py-3 rounded-full font-bold text-sm sm:text-base transition-all duration-300 ${isActive ? theme.activeBg + ' ' + theme.activeText + ' shadow-md transform scale-105' : 'bg-transparent text-gray-500 hover:bg-gray-100'}"><span class="mr-1 sm:mr-2 text-lg sm:text-xl">${theme.icon}</span> ${theme.name}</button>`;
           }).join('')}
         </div>
       `;
 
       return `
         <div class="relative max-w-2xl mx-auto p-4 animate-fade-in pb-10">
-          
           <div class="absolute top-4 right-4 flex items-center text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full ${(state.fbReady && state.user && !isGuest) ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'} shadow-sm z-50">
             <i class="ph-fill ${(state.fbReady && state.user && !isGuest) ? 'ph-cloud-check' : 'ph-cloud-slash'} mr-1 text-sm sm:text-lg"></i>${(state.fbReady && state.user && !isGuest) ? '同期ON' : '同期OFF'}
           </div>
-
+          
           <div class="text-center mb-6 mt-8 relative z-10">
-            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 shadow-inner ${currentUserTheme.bg} bg-opacity-90 backdrop-blur-sm border border-white">
-              <span class="text-5xl">${currentUserTheme.icon}</span>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight leading-tight">
-              【最強】最強！<br>暗記完璧最強アプリ(最強)
-            </h1>
+            <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 shadow-inner ${currentUserTheme.bg} bg-opacity-90 backdrop-blur-sm border border-white"><span class="text-5xl">${currentUserTheme.icon}</span></div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight leading-tight">【最強】最強！<br>暗記完璧最強アプリ(最強)</h1>
             <p class="text-gray-500 mt-3 font-medium">データ駆動で100点を狙う</p>
           </div>
           
-          <div class="text-center relative z-20">
-            ${userSelectorHtml}
-          </div>
-
+          <div class="text-center relative z-20">${userSelectorHtml}</div>
+          
           ${!isGuest ? `
             <div class="text-center mt-2 mb-6 relative z-20">
-              <button onclick="openPinSetup()" class="text-xs text-gray-500 hover:text-gray-800 font-bold transition-colors bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-sm">
-                <i class="ph-fill ph-lock-key mr-1"></i> ${currentUserTheme.name}のパスワードを${state.passwords && state.passwords[state.activeUser] ? '変更・解除' : '設定'}
-              </button>
+              <button onclick="openPinSetup()" class="text-xs text-gray-500 hover:text-gray-800 font-bold transition-colors bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-sm"><i class="ph-fill ph-lock-key mr-1"></i> ${currentUserTheme.name}のパスワードを${state.passwords && state.passwords[state.activeUser] ? '変更・解除' : '設定'}</button>
             </div>
-          ` : `
-            <div class="guest-stripes text-yellow-900 text-xs sm:text-sm font-bold text-center py-2 rounded-xl mb-6 shadow-sm mt-4 relative z-10">
-              <i class="ph-fill ph-info text-lg mr-1 align-middle"></i>現在ゲストモードです。データは保存されません。
-            </div>
-          `}
-
-          <div class="flex bg-gray-200/80 backdrop-blur-sm p-1 rounded-xl mb-8 relative z-10 shadow-inner">
-            <button onclick="switchTab('study')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all ${state.activeTab === 'study' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}">
-              学習する
-            </button>
-            <button onclick="switchTab('analytics')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all ${state.activeTab === 'analytics' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-500 hover:text-gray-700'}">
-              データと分析
-            </button>
-          </div>
+          ` : `<div class="guest-stripes text-yellow-900 text-xs sm:text-sm font-bold text-center py-2 rounded-xl mb-6 shadow-sm mt-4 relative z-10"><i class="ph-fill ph-info text-lg mr-1 align-middle"></i>現在ゲストモードです。データは保存されません。</div>`}
           
+          <div class="flex bg-gray-200/80 backdrop-blur-sm p-1 rounded-xl mb-8 relative z-10 shadow-inner">
+            <button onclick="switchTab('study')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all ${state.activeTab === 'study' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-500 hover:text-gray-700'}">学習する</button>
+            <button onclick="switchTab('analytics')" class="flex-1 py-3 text-sm font-bold rounded-lg transition-all ${state.activeTab === 'analytics' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-500 hover:text-gray-700'}">データと分析</button>
+          </div>
           ${contentHtml}
           
           <div class="mt-20 text-center relative z-10">
-            <button onclick="openPasscode()" class="inline-flex flex-col items-center justify-center text-gray-400 hover:text-red-800 transition-all opacity-30 hover:opacity-100 group bg-white/50 p-4 rounded-full backdrop-blur-sm border border-gray-200 shadow-sm">
-              <i class="ph-fill ph-skull text-3xl mb-1 group-hover:animate-pulse-red"></i>
-              <span class="text-[10px] font-bold tracking-widest">深淵は見ている</span>
-            </button>
+            <button onclick="openPasscode()" class="inline-flex flex-col items-center justify-center text-gray-400 hover:text-red-800 transition-all opacity-30 hover:opacity-100 group bg-white/50 p-4 rounded-full backdrop-blur-sm border border-gray-200 shadow-sm"><i class="ph-fill ph-skull text-3xl mb-1 group-hover:animate-pulse-red"></i><span class="text-[10px] font-bold tracking-widest">深淵は見ている</span></button>
           </div>
         </div>
       `;
@@ -1039,232 +794,103 @@
     function renderQuizHTML() {
       const currentQ = state.quizQueue[state.currentIndex];
       if (!currentQ) return '';
-
-      const isChoice = currentQ.quizType === 'choice'; 
-      const isReverse = currentQ.quizType === 'reverse';
-      const totalCurrent = state.quizQueue.length;
-      const progressPercent = (state.currentIndex / totalCurrent) * 100;
-
+      const isChoice = currentQ.quizType === 'choice'; const isReverse = currentQ.quizType === 'reverse';
+      const progressPercent = (state.currentIndex / state.quizQueue.length) * 100;
       let cardHtml = '';
 
       if (isChoice) {
         const choicesHtml = currentQ.choices.map((choice, idx) => {
-          let btnClass = "bg-gray-50 border-2 border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300"; 
-          let iconHtml = "";
-
+          let btnClass = "bg-gray-50 border-2 border-gray-200 text-gray-700 hover:bg-blue-50 hover:border-blue-300"; let iconHtml = "";
           if (state.selectedChoice === choice) {
-            if (state.choiceResult === 'correct') {
-              btnClass = "bg-emerald-50 border-emerald-500 text-emerald-700";
-              iconHtml = `<i class="ph-fill ph-check-circle text-2xl shrink-0 ml-2 text-emerald-500"></i>`;
-            } else {
-              btnClass = "bg-rose-50 border-rose-500 text-rose-700";
-              iconHtml = `<i class="ph-fill ph-x-circle text-2xl shrink-0 ml-2 text-rose-500"></i>`;
-            }
-          } else if (state.selectedChoice && choice === currentQ.a) {
-            btnClass = "bg-emerald-50 border-emerald-500 text-emerald-700 opacity-50";
-          } else if (state.selectedChoice) {
-            btnClass = "bg-gray-50 border-2 border-gray-200 text-gray-400 opacity-50";
-          }
-
-          return `
-            <button ${state.selectedChoice !== null ? 'disabled' : ''} onclick="handleChoiceClick(${idx})"
-              class="p-4 rounded-2xl font-bold text-lg sm:text-xl transition-all duration-200 ${btnClass} flex items-center justify-between active:scale-95 disabled:cursor-default disabled:active:scale-100"
-            >
-              <span class="text-left">${choice}</span>
-              ${iconHtml}
-            </button>
-          `;
+            if (state.choiceResult === 'correct') { btnClass = "bg-emerald-50 border-emerald-500 text-emerald-700"; iconHtml = `<i class="ph-fill ph-check-circle text-2xl shrink-0 ml-2 text-emerald-500"></i>`; } 
+            else { btnClass = "bg-rose-50 border-rose-500 text-rose-700"; iconHtml = `<i class="ph-fill ph-x-circle text-2xl shrink-0 ml-2 text-rose-500"></i>`; }
+          } else if (state.selectedChoice && choice === currentQ.a) { btnClass = "bg-emerald-50 border-emerald-500 text-emerald-700 opacity-50"; } 
+          else if (state.selectedChoice) { btnClass = "bg-gray-50 border-2 border-gray-200 text-gray-400 opacity-50"; }
+          return `<button ${state.selectedChoice !== null ? 'disabled' : ''} onclick="handleChoiceClick(${idx})" class="p-4 rounded-2xl font-bold text-lg sm:text-xl transition-all duration-200 ${btnClass} flex items-center justify-between active:scale-95 disabled:cursor-default disabled:active:scale-100"><span class="text-left">${choice}</span>${iconHtml}</button>`;
         }).join('');
-
-        cardHtml = `
-          <div class="w-full flex flex-col items-center justify-center h-full pt-4">
-            <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-8 leading-relaxed">${currentQ.q}</h2>
-            <div class="grid grid-cols-1 gap-3 w-full">${choicesHtml}</div>
-          </div>
-        `;
+        cardHtml = `<div class="w-full flex flex-col items-center justify-center h-full pt-4"><h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-8 leading-relaxed">${currentQ.q}</h2><div class="grid grid-cols-1 gap-3 w-full">${choicesHtml}</div></div>`;
       } else {
-        const questionText = isReverse ? currentQ.reverseQ : currentQ.q; 
-        const answerText = isReverse ? currentQ.reverseA : currentQ.a;
-        
+        const questionText = isReverse ? currentQ.reverseQ : currentQ.q; const answerText = isReverse ? currentQ.reverseA : currentQ.a;
         let answerArea = `<div class="mt-12 w-full"><p class="text-gray-400 text-sm mb-4 font-bold bg-gray-50 p-2 rounded-lg inline-block border border-gray-100">答えを頭に思い浮かべてから...</p></div>`;
-        if (state.showAnswer) {
-          answerArea = `
-            <div class="mt-8 pt-8 border-t border-gray-100 w-full animate-fade-in">
-              <p class="text-sm text-blue-500 mb-3 font-bold bg-blue-50 px-3 py-1 rounded-full inline-block border border-blue-100">答え</p>
-              <p class="font-extrabold text-blue-600 text-2xl sm:text-3xl leading-relaxed">${answerText}</p>
-            </div>
-          `;
-        }
-
-        cardHtml = `
-          <div class="w-full flex flex-col items-center justify-center h-full">
-            <p class="text-sm text-gray-500 mb-6 font-bold bg-gray-100 px-3 py-1 rounded-md shadow-sm border border-gray-200">${isReverse ? 'これ、なんだっけ？（逆引き）' : '問題'}</p>
-            <h2 class="font-bold text-gray-800 text-2xl sm:text-3xl leading-relaxed">${questionText}</h2>
-            ${answerArea}
-          </div>
-        `;
+        if (state.showAnswer) { answerArea = `<div class="mt-8 pt-8 border-t border-gray-100 w-full animate-fade-in"><p class="text-sm text-blue-500 mb-3 font-bold bg-blue-50 px-3 py-1 rounded-full inline-block border border-blue-100">答え</p><p class="font-extrabold text-blue-600 text-2xl sm:text-3xl leading-relaxed">${answerText}</p></div>`; }
+        cardHtml = `<div class="w-full flex flex-col items-center justify-center h-full"><p class="text-sm text-gray-500 mb-6 font-bold bg-gray-100 px-3 py-1 rounded-md shadow-sm border border-gray-200">${isReverse ? 'これ、なんだっけ？（逆引き）' : '問題'}</p><h2 class="font-bold text-gray-800 text-2xl sm:text-3xl leading-relaxed">${questionText}</h2>${answerArea}</div>`;
       }
 
       let footerHtml = '';
       if (!isChoice) {
-        if (!state.showAnswer) {
-          footerHtml = `<button onclick="showAnswer()" class="w-full bg-gray-800 text-white font-bold text-lg p-5 rounded-2xl shadow-md hover:bg-gray-700 active:scale-95 transition-all">答えを見る</button>`;
-        } else {
-          footerHtml = `
-            <div class="flex gap-4 animate-fade-in h-full">
-              <button onclick="handleAnswer(false)" class="flex-1 bg-rose-100 text-rose-600 border-2 border-rose-200 font-bold text-lg p-4 rounded-2xl hover:bg-rose-200 active:scale-95 transition-all flex flex-col items-center justify-center shadow-sm">
-                <i class="ph-fill ph-x text-2xl mb-1"></i><span class="text-sm">間違えた</span>
-              </button>
-              <button onclick="handleAnswer(true)" class="flex-1 bg-emerald-500 text-white font-bold text-lg p-4 rounded-2xl shadow-md hover:bg-emerald-600 active:scale-95 transition-all flex flex-col items-center justify-center">
-                <i class="ph-fill ph-check text-2xl mb-1"></i><span class="text-sm">覚えた！</span>
-              </button>
-            </div>
-          `;
-        }
+        if (!state.showAnswer) { footerHtml = `<button onclick="showAnswer()" class="w-full bg-gray-800 text-white font-bold text-lg p-5 rounded-2xl shadow-md hover:bg-gray-700 active:scale-95 transition-all">答えを見る</button>`; } 
+        else { footerHtml = `<div class="flex gap-4 animate-fade-in h-full"><button onclick="handleAnswer(false)" class="flex-1 bg-rose-100 text-rose-600 border-2 border-rose-200 font-bold text-lg p-4 rounded-2xl hover:bg-rose-200 active:scale-95 transition-all flex flex-col items-center justify-center shadow-sm"><i class="ph-fill ph-x text-2xl mb-1"></i><span class="text-sm">間違えた</span></button><button onclick="handleAnswer(true)" class="flex-1 bg-emerald-500 text-white font-bold text-lg p-4 rounded-2xl shadow-md hover:bg-emerald-600 active:scale-95 transition-all flex flex-col items-center justify-center"><i class="ph-fill ph-check text-2xl mb-1"></i><span class="text-sm">覚えた！</span></button></div>`; }
       }
 
       const isGuest = state.activeUser === 'guest';
       let headerStripes = '';
-      if (isGuest) {
-        headerStripes = '<div class="guest-stripes text-yellow-900 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50 shadow-sm">👻 現在ゲストモードです（成績は保存されません）</div>';
-      } else if (state.activeUser === 'momoka') {
-        headerStripes = '<div class="momoka-stripes text-rose-800 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50 shadow-sm border-b border-rose-200">🌺 ももかちゃんのアカウントで学習中</div>';
-      } else {
-        headerStripes = '<div class="sakura-stripes text-pink-800 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50 shadow-sm border-b border-pink-200">🌸 さくらちゃんのアカウントで学習中</div>';
-      }
+      if (isGuest) { headerStripes = '<div class="guest-stripes text-yellow-900 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50 shadow-sm">👻 現在ゲストモードです（成績は保存されません）</div>'; } 
+      else if (state.activeUser === 'momoka') { headerStripes = '<div class="momoka-stripes text-rose-800 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50 shadow-sm border-b border-rose-200">🌺 ももかちゃんのアカウントで学習中</div>'; } 
+      else { headerStripes = '<div class="sakura-stripes text-pink-800 text-xs font-bold text-center py-1 absolute top-0 left-0 w-full z-50 shadow-sm border-b border-pink-200">🌸 さくらちゃんのアカウントで学習中</div>'; }
 
       return `
         <div class="max-w-xl mx-auto p-4 min-h-screen flex flex-col pt-6 pb-8 animate-fade-in relative z-10">
           ${headerStripes}
           <div class="mb-6 mt-4">
             <div class="flex justify-between items-end mb-3">
-              <button onclick="handleInterrupt()" class="flex items-center justify-center p-2 rounded-xl bg-white/90 backdrop-blur-sm border border-gray-200 text-gray-500 hover:bg-white hover:text-gray-800 transition-colors shadow-sm">
-                <i class="ph-fill ph-house text-lg mr-1"></i><span class="text-xs font-bold">中断</span>
-              </button>
+              <button onclick="handleInterrupt()" class="flex items-center justify-center p-2 rounded-xl bg-white/90 backdrop-blur-sm border border-gray-200 text-gray-500 hover:bg-white hover:text-gray-800 transition-colors shadow-sm"><i class="ph-fill ph-house text-lg mr-1"></i><span class="text-xs font-bold">中断</span></button>
               <div class="text-right">
-                <div class="text-gray-600 text-xs font-bold flex items-center justify-end mb-1 bg-white/70 backdrop-blur-sm px-2 py-1 rounded-md border border-gray-200 shadow-sm">
-                  <i class="ph-fill ph-stack text-sm mr-1"></i>
-                  ${currentQ.category} ${currentQ.isRetry ? '<span class="ml-1 text-rose-500 font-bold">(復習)</span>' : ''}
-                </div>
-                <span class="text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-sm font-bold shadow-sm border border-blue-200">
-                  ${state.currentIndex + 1} / ${totalCurrent}
-                </span>
+                <div class="text-gray-600 text-xs font-bold flex items-center justify-end mb-1 bg-white/70 backdrop-blur-sm px-2 py-1 rounded-md border border-gray-200 shadow-sm"><i class="ph-fill ph-stack text-sm mr-1"></i>${currentQ.category} ${currentQ.isRetry ? '<span class="ml-1 text-rose-500 font-bold">(復習)</span>' : ''}</div>
+                <span class="text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-sm font-bold shadow-sm border border-blue-200">${state.currentIndex + 1} / ${state.quizQueue.length}</span>
               </div>
             </div>
-            <div class="h-3 w-full bg-white/60 backdrop-blur rounded-full overflow-hidden border border-gray-200 shadow-inner">
-              <div class="h-full bg-blue-500 transition-all duration-300 ease-out shadow-sm" style="width: ${progressPercent}%"></div>
-            </div>
+            <div class="h-3 w-full bg-white/60 backdrop-blur rounded-full overflow-hidden border border-gray-200 shadow-inner"><div class="h-full bg-blue-500 transition-all duration-300 ease-out shadow-sm" style="width: ${progressPercent}%"></div></div>
           </div>
           <div class="flex-grow flex flex-col">
             <div class="bg-white/95 backdrop-blur-md p-6 sm:p-10 rounded-3xl shadow-xl border border-gray-100 flex-grow flex flex-col items-center justify-center text-center relative overflow-hidden">
-              <div class="absolute top-4 left-4 bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-md font-bold uppercase tracking-wider border border-gray-200 shadow-sm">
-                ${isChoice ? '4択問題' : isReverse ? '逆引き' : '通常'}
-              </div>
+              <div class="absolute top-4 left-4 bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded-md font-bold uppercase tracking-wider border border-gray-200 shadow-sm">${isChoice ? '4択問題' : isReverse ? '逆引き' : '通常'}</div>
               ${cardHtml}
             </div>
           </div>
-          <div class="mt-6 mb-4 h-20">
-            ${footerHtml}
-          </div>
+          <div class="mt-6 mb-4 h-20">${footerHtml}</div>
         </div>
       `;
     }
 
     function renderResultHTML() {
-      const isPerfect = state.sessionStats.mistakes === 0; 
-      const isGuest = state.activeUser === 'guest'; 
-      const currentUserTheme = userThemes[state.activeUser] || userThemes['sakura'];
-
+      const isPerfect = state.sessionStats.mistakes === 0; const isGuest = state.activeUser === 'guest'; const currentUserTheme = userThemes[state.activeUser] || userThemes['sakura'];
       return `
         <div class="max-w-md mx-auto p-6 min-h-screen flex flex-col items-center justify-center text-center animate-fade-in relative z-10">
-          <div class="w-24 h-24 ${currentUserTheme.bg} rounded-full flex items-center justify-center mb-6 shadow-inner mt-8 bg-opacity-90 backdrop-blur border border-white">
-            <span class="text-5xl">${currentUserTheme.icon}</span>
-          </div>
+          <div class="w-24 h-24 ${currentUserTheme.bg} rounded-full flex items-center justify-center mb-6 shadow-inner mt-8 bg-opacity-90 backdrop-blur border border-white"><span class="text-5xl">${currentUserTheme.icon}</span></div>
           <h1 class="text-3xl font-extrabold text-gray-800 mb-2">コンプリート！</h1>
-          <p class="text-gray-600 mb-8 font-bold bg-white/50 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-sm">
-            ${isGuest ? '<span class="text-yellow-600">※ゲストモードのためデータは保存されません</span>' : `${currentUserTheme.name}のデータとして保存しました！`}
-          </p>
-          
+          <p class="text-gray-600 mb-8 font-bold bg-white/50 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-sm">${isGuest ? '<span class="text-yellow-600">※ゲストモードのためデータは保存されません</span>' : `${currentUserTheme.name}のデータとして保存しました！`}</p>
           <div class="bg-white/95 backdrop-blur-sm w-full p-6 rounded-3xl shadow-xl border border-gray-100 mb-8">
             <h3 class="text-sm text-gray-500 font-bold mb-4 uppercase tracking-wider bg-gray-50 py-1 rounded-md border border-gray-100">今回のセッション記録</h3>
             <div class="flex justify-around">
-              <div class="text-center">
-                <p class="text-3xl font-black text-gray-800">${state.sessionStats.totalInitial}</p>
-                <p class="text-xs text-gray-500 mt-1 font-bold">出題数</p>
-              </div>
-              <div class="w-px bg-gray-200"></div>
-              <div class="text-center">
-                <p class="text-3xl font-black text-rose-500">${state.sessionStats.mistakes}</p>
-                <p class="text-xs text-gray-500 mt-1 font-bold">やり直し回数</p>
-              </div>
+              <div class="text-center"><p class="text-3xl font-black text-gray-800">${state.sessionStats.totalInitial}</p><p class="text-xs text-gray-500 mt-1 font-bold">出題数</p></div><div class="w-px bg-gray-200"></div>
+              <div class="text-center"><p class="text-3xl font-black text-rose-500">${state.sessionStats.mistakes}</p><p class="text-xs text-gray-500 mt-1 font-bold">やり直し回数</p></div>
             </div>
-            ${isPerfect ? `
-              <div class="mt-6 bg-emerald-50 text-emerald-700 p-3 rounded-xl text-sm font-bold flex items-center justify-center border border-emerald-200 shadow-sm">
-                <i class="ph-fill ph-check-circle text-xl mr-2"></i>一発クリア！完璧です！
-              </div>
-            ` : ''}
+            ${isPerfect ? `<div class="mt-6 bg-emerald-50 text-emerald-700 p-3 rounded-xl text-sm font-bold flex items-center justify-center border border-emerald-200 shadow-sm"><i class="ph-fill ph-check-circle text-xl mr-2"></i>一発クリア！完璧です！</div>` : ''}
           </div>
-          <button onclick="goHome()" class="flex items-center justify-center w-full bg-gray-800 text-white font-bold text-lg p-5 rounded-2xl shadow-xl hover:bg-gray-700 active:scale-95 transition-all">
-            <i class="ph ph-arrow-counter-clockwise text-xl mr-2"></i>ホームに戻る
-          </button>
+          <button onclick="goHome()" class="flex items-center justify-center w-full bg-gray-800 text-white font-bold text-lg p-5 rounded-2xl shadow-xl hover:bg-gray-700 active:scale-95 transition-all"><i class="ph ph-arrow-counter-clockwise text-xl mr-2"></i>ホームに戻る</button>
         </div>
       `;
     }
 
     function renderMessageHTML() {
       if (!state.message.show) return '';
-      return `
-        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] animate-fade-in p-4">
-          <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border-4 border-white">
-            <p class="text-gray-800 font-bold mb-6 text-base sm:text-lg whitespace-pre-wrap leading-relaxed">${state.message.text}</p>
-            <div class="flex justify-center gap-4">
-              ${state.message.type === 'confirm' ? `
-                <button onclick="closeMessage()" class="flex-1 px-4 py-3 rounded-2xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-colors active:scale-95 border border-gray-200">やめる</button>
-                <button onclick="confirmMessage()" class="flex-1 px-4 py-3 rounded-2xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors active:scale-95 shadow-md">はい</button>
-              ` : `
-                <button onclick="closeMessage()" class="w-full px-8 py-3 rounded-2xl bg-blue-500 text-white font-bold hover:bg-blue-600 transition-colors shadow-md active:scale-95">OK</button>
-              `}
-            </div>
-          </div>
-        </div>
-      `;
+      return `<div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] animate-fade-in p-4"><div class="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border-4 border-white"><p class="text-gray-800 font-bold mb-6 text-base sm:text-lg whitespace-pre-wrap leading-relaxed">${state.message.text}</p><div class="flex justify-center gap-4">${state.message.type === 'confirm' ? `<button onclick="closeMessage()" class="flex-1 px-4 py-3 rounded-2xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-colors active:scale-95 border border-gray-200">やめる</button><button onclick="confirmMessage()" class="flex-1 px-4 py-3 rounded-2xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors active:scale-95 shadow-md">はい</button>` : `<button onclick="closeMessage()" class="w-full px-8 py-3 rounded-2xl bg-blue-500 text-white font-bold hover:bg-blue-600 transition-colors shadow-md active:scale-95">OK</button>`}</div></div></div>`;
     }
 
     function renderPinHTML() {
       if (!state.pin.show) return '';
       const theme = state.pin.targetUser ? userThemes[state.pin.targetUser] : userThemes[state.activeUser];
       const isSetup = state.pin.mode === 'setup';
-      
-      let dots = ''; 
-      for(let i=0; i<4; i++) { 
-        dots += `<div class="w-4 h-4 rounded-full border-2 ${theme.text} ${i < state.pin.value.length ? theme.activeBg : 'bg-transparent'} transition-all mx-1"></div>`; 
-      }
-      
+      let dots = ''; for(let i=0; i<4; i++) { dots += `<div class="w-4 h-4 rounded-full border-2 ${theme.text} ${i < state.pin.value.length ? theme.activeBg : 'bg-transparent'} transition-all mx-1"></div>`; }
       return `
         <div class="fixed inset-0 bg-black/40 backdrop-blur-sm flex flex-col items-center justify-center z-50 animate-fade-in px-4">
           <div class="bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border-4 ${theme.name === 'さくら' ? 'border-pink-200' : 'border-rose-200'}">
             <div class="text-6xl mb-4 bg-gray-50 w-20 h-20 mx-auto rounded-full flex items-center justify-center shadow-inner border border-gray-100">${theme.icon}</div>
             <h3 class="font-bold text-xl text-gray-800 mb-2 bg-gray-100 py-1 px-3 rounded-lg inline-block border border-gray-200">${isSetup ? `${theme.name}の新しいパスワード` : `${theme.name}の部屋の鍵`}</h3>
             <p class="text-sm ${state.pin.error ? 'text-red-500 font-bold bg-red-50 py-1 rounded border border-red-100' : 'text-gray-500'} mb-6 mt-2">${state.pin.error ? '番号がちがうみたい！' : (isSetup ? '4つの数字を決めてね！' : 'パスワード(4桁)を入力してね')}</p>
-            
-            <div class="flex justify-center mb-8 bg-gray-50 py-3 rounded-2xl border border-gray-100 shadow-inner">
-              ${dots}
-            </div>
-            
-            <div class="grid grid-cols-3 gap-4 font-sans mb-4">
-              ${[1,2,3,4,5,6,7,8,9].map(n => `
-                <button onclick="inputPin('${n}')" class="w-16 h-16 rounded-full bg-white text-gray-700 text-2xl font-bold shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100">${n}</button>
-              `).join('')}
-              <button onclick="deletePin()" class="w-16 h-16 rounded-full bg-white text-gray-500 text-2xl flex items-center justify-center shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100"><i class="ph-fill ph-backspace"></i></button>
-              <button onclick="inputPin('0')" class="w-16 h-16 rounded-full bg-white text-gray-700 text-2xl font-bold shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100">0</button>
-              <button onclick="closePin()" class="w-16 h-16 rounded-full bg-gray-100 text-gray-500 text-sm font-bold shadow-sm hover:bg-gray-200 active:scale-95 transition-all mx-auto border border-gray-200">戻る</button>
-            </div>
-            
-            ${isSetup && state.passwords && state.passwords[state.activeUser] ? `
-              <button onclick="removePin()" class="text-xs sm:text-sm text-red-500 hover:text-red-700 font-bold mt-4 py-2 px-4 rounded-xl border border-red-200 hover:bg-red-50 transition-colors flex items-center justify-center mx-auto w-full shadow-sm bg-white">
-                <i class="ph-fill ph-trash text-lg mr-1"></i>パスワードを解除する
-              </button>
-            ` : ''}
+            <div class="flex justify-center mb-8 bg-gray-50 py-3 rounded-2xl border border-gray-100 shadow-inner">${dots}</div>
+            <div class="grid grid-cols-3 gap-4 font-sans mb-4">${[1,2,3,4,5,6,7,8,9].map(n => `<button onclick="inputPin('${n}')" class="w-16 h-16 rounded-full bg-white text-gray-700 text-2xl font-bold shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100">${n}</button>`).join('')}<button onclick="deletePin()" class="w-16 h-16 rounded-full bg-white text-gray-500 text-2xl flex items-center justify-center shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100"><i class="ph-fill ph-backspace"></i></button><button onclick="inputPin('0')" class="w-16 h-16 rounded-full bg-white text-gray-700 text-2xl font-bold shadow-md hover:bg-gray-50 active:scale-95 transition-all mx-auto border border-gray-100">0</button><button onclick="closePin()" class="w-16 h-16 rounded-full bg-gray-100 text-gray-500 text-sm font-bold shadow-sm hover:bg-gray-200 active:scale-95 transition-all mx-auto border border-gray-200">戻る</button></div>
+            ${isSetup && state.passwords && state.passwords[state.activeUser] ? `<button onclick="removePin()" class="text-xs sm:text-sm text-red-500 hover:text-red-700 font-bold mt-4 py-2 px-4 rounded-xl border border-red-200 hover:bg-red-50 transition-colors flex items-center justify-center mx-auto w-full shadow-sm bg-white"><i class="ph-fill ph-trash text-lg mr-1"></i>パスワードを解除する</button>` : ''}
           </div>
         </div>
       `;
@@ -1273,125 +899,15 @@
     function renderPasscodeHTML() {
       if(!state.showPasscode) return '';
       const level = Math.min(state.passcodeErrorCount, 5);
-      return `
-        <div class="fixed inset-0 ${level >= 5 ? 'bg-cursed' : 'bg-black/95'} flex flex-col items-center justify-center z-50 animate-fade-in px-4 transition-colors duration-1000 overflow-hidden">
-          <div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden">
-            <div class="relative w-full h-[400px] flex justify-center">
-              <div class="sadako-body lvl-${level}">
-                <svg viewBox="0 0 200 300" class="sadako-svg">
-                  <path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#94a3b8" />
-                  <path d="M 150,300 L 190,200 L 170,190 L 140,300 Z" fill="#94a3b8" />
-                  <path d="M 10,200 Q 5,180 20,180 Q 30,180 30,190 Z" fill="#e2e8f0" />
-                  <path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" />
-                  <path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" />
-                  <path d="M 50,300 C 30,100 170,100 150,300 C 130,150 70,150 50,300 Z" fill="#0a0a0a" />
-                  <circle class="s-eye" cx="85" cy="180" r="4" />
-                  <circle class="s-eye" cx="115" cy="180" r="4" />
-                </svg>
-              </div>
-              <div class="well-container"><div class="well-hole"></div></div>
-            </div>
-          </div>
-          <div class="relative z-50 flex flex-col items-center mt-10">
-            <i class="ph-fill ph-skull text-6xl text-red-700 mb-6 ${level > 0 ? 'animate-pulse-red' : ''}"></i>
-            <h3 class="${level >= 4 ? 'text-red-600 glitch-text' : 'text-red-600'} ${level >= 5 ? 'text-xl sm:text-2xl' : ''} font-bold tracking-[0.2em] sm:tracking-[0.3em] mb-8 font-serif whitespace-nowrap">
-              ${level >= 5 ? '呪 ワ レ タ 呪 ワ レ タ' : (level >= 3 ? 'ウシロヲフリムクナ...' : 'パスコードヲ入力セヨ')}
-            </h3>
-            <div class="flex gap-3 mb-10">
-              ${[0,1,2,3,4,5].map(i => `
-                <div class="w-4 h-4 rounded-full border-2 border-red-900 ${state.passcodeValue.length > i ? 'bg-red-600 shadow-[0_0_10px_rgba(225,29,72,0.8)]' : 'bg-transparent'} transition-all"></div>
-              `).join('')}
-            </div>
-            <div class="grid grid-cols-3 gap-4 w-64 max-w-full font-serif">
-              ${[1,2,3,4,5,6,7,8,9].map(n => `
-                <button onclick="inputPasscode('${n}')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">${n}</button>
-              `).join('')}
-              <button onclick="deletePasscode()" class="w-16 h-16 rounded-full flex items-center justify-center border border-red-900 text-red-600 text-3xl hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm"><i class="ph-fill ph-backspace"></i></button>
-              <button onclick="inputPasscode('0')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">0</button>
-              <button onclick="closePasscode()" class="w-16 h-16 rounded-full border border-gray-800 text-gray-400 text-sm font-bold hover:text-gray-200 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">戻る</button>
-            </div>
-          </div>
-        </div>
-      `;
+      return `<div class="fixed inset-0 ${level >= 5 ? 'bg-cursed' : 'bg-black/95'} flex flex-col items-center justify-center z-50 animate-fade-in px-4 transition-colors duration-1000 overflow-hidden"><div class="absolute inset-0 pointer-events-none z-0 flex flex-col justify-end items-center overflow-hidden"><div class="relative w-full h-[400px] flex justify-center"><div class="sadako-body lvl-${level}"><svg viewBox="0 0 200 300" class="sadako-svg"><path d="M 50,300 L 10,200 L 30,190 L 60,300 Z" fill="#94a3b8" /><path d="M 150,300 L 190,200 L 170,190 L 140,300 Z" fill="#94a3b8" /><path d="M 10,200 Q 5,180 20,180 Q 30,180 30,190 Z" fill="#e2e8f0" /><path d="M 190,200 Q 195,180 180,180 Q 170,180 170,190 Z" fill="#e2e8f0" /><path d="M 60,300 C 60,150 140,150 140,300 Z" fill="#e2e8f0" /><path d="M 50,300 C 30,100 170,100 150,300 C 130,150 70,150 50,300 Z" fill="#0a0a0a" /><circle class="s-eye" cx="85" cy="180" r="4" /><circle class="s-eye" cx="115" cy="180" r="4" /></svg></div><div class="well-container"><div class="well-hole"></div></div></div></div><div class="relative z-50 flex flex-col items-center mt-10"><i class="ph-fill ph-skull text-6xl text-red-700 mb-6 ${level > 0 ? 'animate-pulse-red' : ''}"></i><h3 class="${level >= 4 ? 'text-red-600 glitch-text' : 'text-red-600'} ${level >= 5 ? 'text-xl sm:text-2xl' : ''} font-bold tracking-[0.2em] sm:tracking-[0.3em] mb-8 font-serif whitespace-nowrap">${level >= 5 ? '呪 ワ レ タ 呪 ワ レ タ' : (level >= 3 ? 'ウシロヲフリムクナ...' : 'パスコードヲ入力セヨ')}</h3><div class="flex gap-3 mb-10">${[0,1,2,3,4,5].map(i => `<div class="w-4 h-4 rounded-full border-2 border-red-900 ${state.passcodeValue.length > i ? 'bg-red-600 shadow-[0_0_10px_rgba(225,29,72,0.8)]' : 'bg-transparent'} transition-all"></div>`).join('')}</div><div class="grid grid-cols-3 gap-4 w-64 max-w-full font-serif">${[1,2,3,4,5,6,7,8,9].map(n => `<button onclick="inputPasscode('${n}')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">${n}</button>`).join('')}<button onclick="deletePasscode()" class="w-16 h-16 rounded-full flex items-center justify-center border border-red-900 text-red-600 text-3xl hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm"><i class="ph-fill ph-backspace"></i></button><button onclick="inputPasscode('0')" class="w-16 h-16 rounded-full border border-red-900 text-red-500 text-2xl font-bold hover:bg-red-900/60 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">0</button><button onclick="closePasscode()" class="w-16 h-16 rounded-full border border-gray-800 text-gray-400 text-sm font-bold hover:text-gray-200 active:scale-95 transition-all mx-auto shadow-[0_0_15px_rgba(0,0,0,0.8)] bg-black/60 backdrop-blur-sm">戻る</button></div></div></div>`;
     }
 
     function renderParentDashboardHTML() {
-      const userName = userThemes[state.activeUser] ? userThemes[state.activeUser].name : 'さくら'; 
-      let totalAttempts = 0; 
-      let totalMistakes = 0;
-      
-      const analyzedData = rawData.map(q => { 
-        const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 }; 
-        const total = stat.corrects + stat.mistakes; 
-        totalAttempts += total; 
-        totalMistakes += stat.mistakes; 
-        return { ...q, stat, total, mistakeRate: total > 0 ? Math.round((stat.mistakes / total) * 100) : 0 }; 
-      }).filter(q => q.total > 0).sort((a, b) => b.mistakeRate - a.mistakeRate || b.stat.mistakes - a.stat.mistakes);
-      
+      const userName = userThemes[state.activeUser] ? userThemes[state.activeUser].name : 'さくら'; let totalAttempts = 0; let totalMistakes = 0;
+      const analyzedData = rawData.map(q => { const stat = state.userStats[q.id] || { corrects: 0, mistakes: 0 }; const total = stat.corrects + stat.mistakes; totalAttempts += total; totalMistakes += stat.mistakes; return { ...q, stat, total, mistakeRate: total > 0 ? Math.round((stat.mistakes / total) * 100) : 0 }; }).filter(q => q.total > 0).sort((a, b) => b.mistakeRate - a.mistakeRate || b.stat.mistakes - a.stat.mistakes);
       const accuracy = totalAttempts > 0 ? Math.round(((totalAttempts - totalMistakes) / totalAttempts) * 100) : 0;
-      
-      let listHtml = analyzedData.length === 0 
-        ? `<p class="text-gray-500 text-center py-8 border border-gray-800 rounded-2xl">データが空じゃ。まずは解かせるのだ。</p>` 
-        : analyzedData.slice(0, 10).map((item, idx) => `
-            <div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex items-start shadow-md">
-              <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-red-900/50 text-red-500 border border-red-800' : 'bg-gray-700 text-gray-400'}">${idx + 1}</div>
-              <div class="flex-grow">
-                <span class="text-[10px] font-bold text-gray-400 border border-gray-600 px-2 py-1 rounded mb-2 inline-block">${item.category}</span>
-                <p class="text-sm text-gray-200 font-bold mb-1 leading-snug">${item.q}</p>
-                <p class="text-xs text-red-400 font-medium">答: ${item.a}</p>
-              </div>
-              <div class="shrink-0 text-right ml-2">
-                <p class="text-red-500 font-bold text-lg">${item.mistakeRate}%</p>
-                <p class="text-[10px] text-gray-500">ミス率</p>
-              </div>
-            </div>
-          `).join('');
-          
-      return `
-        <div class="fixed inset-0 min-h-screen bg-gray-950 text-gray-100 overflow-y-auto z-[60] animate-fade-in font-serif pb-20">
-          <div class="max-w-2xl mx-auto p-4 sm:p-6">
-            <div class="flex justify-between items-center mb-8 border-b border-red-900 pb-4 pt-4">
-              <h1 class="text-2xl sm:text-3xl font-bold text-red-600 flex items-center tracking-widest">
-                <i class="ph-fill ph-skull text-3xl sm:text-4xl mr-3"></i>閻魔の帳簿<span class="text-sm text-gray-400 ml-3 tracking-normal">(${userName}の記録)</span>
-              </h1>
-              <button onclick="goHome()" class="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-700 hover:text-white active:scale-95 transition-all text-sm font-bold">人間界へ戻る</button>
-            </div>
-            
-            <div class="bg-gray-900 border-l-4 border-red-600 p-6 sm:p-8 rounded-r-2xl mb-10 relative shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-              <i class="ph-fill ph-quotes text-5xl text-gray-800 absolute top-4 right-4"></i>
-              <h2 class="text-red-500 font-bold mb-4 text-sm tracking-[0.2em] flex items-center">
-                <i class="ph-fill ph-scroll text-lg mr-2"></i>大王の裁き（AI評価）
-              </h2>
-              <p class="text-gray-300 leading-loose whitespace-pre-wrap text-sm sm:text-base">${generateAiEvaluation()}</p>
-            </div>
-            
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-              <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
-                <p class="text-xs text-gray-500 mb-1 tracking-wider">総解答数</p><p class="text-2xl font-black text-gray-200">${totalAttempts}</p>
-              </div>
-              <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
-                <p class="text-xs text-gray-500 mb-1 tracking-wider">正解数</p><p class="text-2xl font-black text-emerald-500">${totalAttempts - totalMistakes}</p>
-              </div>
-              <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
-                <p class="text-xs text-gray-500 mb-1 tracking-wider">ミス回数</p><p class="text-2xl font-black text-red-600">${totalMistakes}</p>
-              </div>
-              <div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner">
-                <p class="text-xs text-gray-500 mb-1 tracking-wider">総合正答率</p><p class="text-2xl font-black text-blue-400">${accuracy}%</p>
-              </div>
-            </div>
-            
-            <div>
-              <h3 class="text-lg font-bold text-gray-300 mb-4 flex items-center tracking-widest border-l-2 border-red-900 pl-3">
-                <i class="ph-fill ph-warning text-xl mr-2 text-red-600"></i>罪深き問題リスト（苦手トップ）
-              </h3>
-              <div class="space-y-3">
-                ${listHtml}
-              </div>
-            </div>
-            
-          </div>
-        </div>
-      `;
+      let listHtml = analyzedData.length === 0 ? `<p class="text-gray-500 text-center py-8 border border-gray-800 rounded-2xl">データが空じゃ。まずは解かせるのだ。</p>` : analyzedData.slice(0, 10).map((item, idx) => `<div class="bg-gray-800 p-4 rounded-xl border border-gray-700 flex items-start shadow-md"><div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-red-900/50 text-red-500 border border-red-800' : 'bg-gray-700 text-gray-400'}">${idx + 1}</div><div class="flex-grow"><span class="text-[10px] font-bold text-gray-400 border border-gray-600 px-2 py-1 rounded mb-2 inline-block">${item.category}</span><p class="text-sm text-gray-200 font-bold mb-1 leading-snug">${item.q}</p><p class="text-xs text-red-400 font-medium">答: ${item.a}</p></div><div class="shrink-0 text-right ml-2"><p class="text-red-500 font-bold text-lg">${item.mistakeRate}%</p><p class="text-[10px] text-gray-500">ミス率</p></div></div>`).join('');
+      return `<div class="fixed inset-0 min-h-screen bg-gray-950 text-gray-100 overflow-y-auto z-[60] animate-fade-in font-serif pb-20"><div class="max-w-2xl mx-auto p-4 sm:p-6"><div class="flex justify-between items-center mb-8 border-b border-red-900 pb-4 pt-4"><h1 class="text-2xl sm:text-3xl font-bold text-red-600 flex items-center tracking-widest"><i class="ph-fill ph-skull text-3xl sm:text-4xl mr-3"></i>閻魔の帳簿<span class="text-sm text-gray-400 ml-3 tracking-normal">(${userName}の記録)</span></h1><button onclick="goHome()" class="px-4 py-2 bg-gray-800 border border-gray-700 text-gray-400 rounded-lg hover:bg-gray-700 hover:text-white active:scale-95 transition-all text-sm font-bold">人間界へ戻る</button></div><div class="bg-gray-900 border-l-4 border-red-600 p-6 sm:p-8 rounded-r-2xl mb-10 relative shadow-[0_4px_20px_rgba(0,0,0,0.5)]"><i class="ph-fill ph-quotes text-5xl text-gray-800 absolute top-4 right-4"></i><h2 class="text-red-500 font-bold mb-4 text-sm tracking-[0.2em] flex items-center"><i class="ph-fill ph-scroll text-lg mr-2"></i>大王の裁き（AI評価）</h2><p class="text-gray-300 leading-loose whitespace-pre-wrap text-sm sm:text-base">${generateAiEvaluation()}</p></div><div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10"><div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner"><p class="text-xs text-gray-500 mb-1 tracking-wider">総解答数</p><p class="text-2xl font-black text-gray-200">${totalAttempts}</p></div><div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner"><p class="text-xs text-gray-500 mb-1 tracking-wider">正解数</p><p class="text-2xl font-black text-emerald-500">${totalAttempts - totalMistakes}</p></div><div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner"><p class="text-xs text-gray-500 mb-1 tracking-wider">ミス回数</p><p class="text-2xl font-black text-red-600">${totalMistakes}</p></div><div class="bg-gray-900 p-4 rounded-xl border border-gray-800 text-center shadow-inner"><p class="text-xs text-gray-500 mb-1 tracking-wider">総合正答率</p><p class="text-2xl font-black text-blue-400">${accuracy}%</p></div></div><div><h3 class="text-lg font-bold text-gray-300 mb-4 flex items-center tracking-widest border-l-2 border-red-900 pl-3"><i class="ph-fill ph-warning text-xl mr-2 text-red-600"></i>罪深き問題リスト（苦手トップ）</h3><div class="space-y-3">${listHtml}</div></div></div></div>`;
     }
 
     function render() {
@@ -1402,10 +918,7 @@
       else if (state.screen === 'result') html = renderResultHTML();
       else if (state.screen === 'parent_dashboard') html = renderParentDashboardHTML();
       
-      html += renderPinHTML(); 
-      html += renderPasscodeHTML(); 
-      html += renderMessageHTML();
-      
+      html += renderPinHTML(); html += renderPasscodeHTML(); html += renderMessageHTML();
       root.innerHTML = html;
     }
 
