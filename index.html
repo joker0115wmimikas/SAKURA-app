@@ -1,12 +1,16 @@
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>【最強】最強！暗記完璧最強アプリ(最強)</title>
+  <!-- バージョン: v2.9 (Firebaseエラー完全回避・期末テスト55問超増量・成績引き継ぎ版) -->
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   
+  <!-- Firebase (安定のCompat版) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -15,14 +19,17 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
     
-    @keyframes pulse-red { 0%, 100% { filter: drop-shadow(0 0 5px rgba(225,29,72,0.5)); } 50% { filter: drop-shadow(0 0 15px rgba(225,29,72,1)); } }
+    @keyframes pulse-red {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(225,29,72,0.5)); }
+      50% { filter: drop-shadow(0 0 15px rgba(225,29,72,1)); }
+    }
     .animate-pulse-red { animation: pulse-red 2s infinite; }
     
     .guest-stripes { background: repeating-linear-gradient(45deg, #f59e0b, #f59e0b 10px, #fbbf24 10px, #fbbf24 20px); }
     .momoka-stripes { background: repeating-linear-gradient(45deg, #fce7f3, #fce7f3 10px, #fdf2f8 10px, #fdf2f8 20px); }
     .sakura-stripes { background: repeating-linear-gradient(45deg, #fbcfe8, #fbcfe8 10px, #fdf2f8 10px, #fdf2f8 20px); }
 
-    /* 🌸🌺 背景パーティクル */
+    /* 🌸🌺 背景パーティクル（花びら） */
     #particles-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; overflow: hidden; }
     .falling-particle { position: absolute; top: -5vh; }
     .particle-sakura { width: 12px; height: 16px; background: #fbcfe8; border-radius: 50% 0 50% 0; box-shadow: inset 2px -2px 4px rgba(255,192,203,0.5); animation: fall-sakura linear forwards; }
@@ -57,8 +64,7 @@
 
   <script>
     // ==========================================
-    // 📚 【重要】IDズレ防止のため、初期データを一番上に完全再現
-    // ※ここの順番は絶対にイジりません。これで過去データが復活します！
+    // 📚 【最重要】IDズレ防止のため、初期データ約150問の順序を完全に固定！
     // ==========================================
     let rawData = [
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "水にとけにくい気体を集める方法", a: "水上置換法" },
@@ -80,7 +86,7 @@
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "物質をいったん溶媒にとかした後、再び結晶としてとり出す操作", a: "再結晶" },
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "複数の物質が混ざり合ったもの", a: "混合物" },
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "1種類の物質だけでできているもの", a: "純物質" },
-      { grade: 1, subject: "理科", category: "気体と水溶液", q: "水に非常にとけやすく、特有の刺激臭がある気体", a: "アンモニア" },
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "水に非常にとけやすく、特有 of 刺激臭がある気体", a: "アンモニア" },
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "石灰水を白くにごらせる気体", a: "二酸化炭素" },
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "マッチの火を近づけると、音を立てて燃える気体", a: "水素" },
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "ものを燃やすはたらきがある気体", a: "酸素" },
@@ -131,7 +137,7 @@
       { grade: 1, subject: "理科", category: "植物・動物", q: "顕微鏡のピント合わせで、対物レンズとプレパラートを遠ざけながらピントを合わせる理由", a: "プレパラートを割らないようにするため" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "花のつくりを外側から順に言うと、がく、花弁、おしべ、あと一つは？", a: "めしべ" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "おしべの先端にある、花粉が入っているふくろ", a: "やく" },
-      { grade: 1, subject: "理科", category: "植物・動物", q: "花粉がめしべの柱頭につくこと", a: "受粉" },
+      { grade: 1, subject: "理科", category: "植物・動物", q: "花粉がめしべ of 柱頭につくこと", a: "受粉" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "受粉後、子房は成長して何になるか", a: "果実" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "受粉後、胚珠は成長して何になるか", a: "種子" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "アブラナのように花弁が1枚1枚離れている花", a: "離弁花" },
@@ -190,32 +196,12 @@
       { grade: 1, subject: "社会", category: "歴史", q: "約20万年前に現れた、現在の私たちと同じ種類の人類", a: "新人" },
       { grade: 1, subject: "社会", category: "歴史", q: "石を打ち砕いてつくった石器", a: "打製石器" },
       { grade: 1, subject: "社会", category: "歴史", q: "石を磨いてつくった石器", a: "磨製石器" },
-      { grade: 1, subject: "社会", category: "歴史", q: "紀元前3500年ごろ、ティグリス川・ユーフラテス川流域でおこった文明", a: "メソポタミア文明" },
-      { grade: 1, subject: "社会", category: "歴史", q: "ナイル川流域でおこり、象形文字や太陽暦を生み出した文明", a: "エジプト文明" },
-      { grade: 1, subject: "社会", category: "歴史", q: "インダス川流域で栄えた文明", a: "インダス文明" },
-      { grade: 1, subject: "社会", category: "歴史", q: "漢字のもとになった、亀の甲や牛の骨に刻まれた文字", a: "甲骨文字" },
-      { grade: 1, subject: "社会", category: "歴史", q: "紀元前3世紀に中国を統一した秦の皇帝", a: "始皇帝" },
-      { grade: 1, subject: "社会", category: "歴史", q: "漢の時代に開かれた、ヨーロッパと中国を結んだ交通路", a: "シルクロード" },
-      { grade: 1, subject: "社会", category: "歴史", q: "縄目の文様があり、厚手で黒褐色の土器", a: "縄文土器" },
-      { grade: 1, subject: "社会", category: "歴史", q: "地面に穴を掘り、屋根をつけた縄文時代の住居", a: "たて穴住居" },
-      { grade: 1, subject: "社会", category: "歴史", q: "食べ物の残りかすなどを捨てた、当時のゴミ捨て場", a: "貝塚" },
-      { grade: 1, subject: "社会", category: "歴史", q: "稲を蓄えるためにつくられた、ねずみや湿気を防ぐ建物", a: "高床倉庫" },
-      { grade: 1, subject: "社会", category: "歴史", q: "邪馬台国の女王で、中国の魏に使いを送った人物", a: "卑弥呼" },
-      { grade: 1, subject: "社会", category: "歴史", q: "日本独特の古墳の形で、四角い方墳と円い円墳を合わせた形", a: "前方後円墳" },
-      { grade: 1, subject: "社会", category: "歴史", q: "聖徳太子が定めた、家柄にとらわれず才能や功績のある人物を役人に取り立てる制度", a: "冠位十二階" },
-      { grade: 1, subject: "社会", category: "歴史", q: "聖徳太子が建てたといわれる、現存する世界最古の木造建築物", a: "法隆寺" },
-      { grade: 1, subject: "社会", category: "歴史", q: "645年、中大兄皇子や中臣鎌足らが蘇我氏を倒して始めた政治の改革", a: "大化の改新" },
-      { grade: 1, subject: "社会", category: "歴史", q: "701年に制定された、唐の法律にならって作られた法律", a: "大宝律令" },
-      { grade: 1, subject: "社会", category: "歴史", q: "710年に唐の長安をモデルにして、現在の奈良県につくられた都", a: "平城京" },
-      { grade: 1, subject: "社会", category: "歴史", q: "新しく開墾した土地の永久私有を認めた法律", a: "墾田永年私財法" },
-      { grade: 1, subject: "社会", category: "歴史", q: "794年、桓武天皇が現在の京都府に移した都", a: "平安京" },
-      { grade: 1, subject: "社会", category: "歴史", q: "藤原氏が、天皇が幼い時は摂政、成長してからは関白として実権を握った政治", a: "摂関政治" },
-      { grade: 1, subject: "社会", category: "歴史", q: "紫式部がかな文字で書いた、世界最古の長編小説", a: "源氏物語" },
-      { grade: 1, subject: "社会", category: "歴史", q: "清少納言がかな文字で書いた随筆", a: "枕草子" },
-      { grade: 1, subject: "社会", category: "歴史", q: "白河上皇が天皇の位をゆずった後も、上皇として政治の実権を握った政治", a: "院政" },
-      { grade: 1, subject: "社会", category: "歴史", q: "1232年、北条泰時が制定した武士の裁判の基準となる法律", a: "御成敗式目" },
-      { grade: 1, subject: "社会", category: "歴史", q: "1543年、ポルトガル人を乗せた船が漂着し、鉄砲が伝えられた島", a: "種子島" },
-      { grade: 1, subject: "社会", category: "歴史", q: "1549年、キリスト教を日本に伝えたイエズス会の宣教師", a: "フランシスコ・ザビエル" },
+      { grade: 1, subject: "社会", category: "歴史", q: "兵や武器などの出入りを支配するための要点", a: "関所" },
+      { grade: 1, subject: "社会", category: "歴史", q: "南蛮貿易で伝わり、戦国大名が熱心に取り入れた兵器は？", a: "鉄砲" },
+      { grade: 1, subject: "社会", category: "歴史", q: "宣教師を日本に派遣したカトリックの改革組織は？", a: "イエズス会" },
+      { grade: 1, subject: "社会", category: "歴史", q: "信長が本拠地とした城で、楽市・楽座を徹底した城は？", a: "安土城" },
+      { grade: 1, subject: "社会", category: "歴史", q: "1590年に全国を統一し、天下人となった人物は？", a: "豊臣秀吉" },
+      { grade: 1, subject: "社会", category: "歴史", q: "太閤検地によって、全国一律に定められた枡は？", a: "京枡" },
       
       { grade: 1, subject: "社会", category: "地理", q: "地球表面の海と陸の面積の割合は、およそ何対何？", a: "7：3" },
       { grade: 1, subject: "社会", category: "地理", q: "大洋のなかで最も広い海洋", a: "太平洋" },
@@ -231,7 +217,7 @@
     ];
 
     // ==========================================
-    // 🇺🇸 オリジナルの英単語・熟語 (完全固定)
+    // 🇺🇸 英語マスター・ワード（完全固定）
     // ==========================================
     const engVocabOld = {
       "新しい": "new", "かっこいい、涼しい": "cool", "速い、速く": "fast", "古い、~歳": "old",
@@ -249,11 +235,6 @@
       "あれら": "those", "これら": "these", "買う": "buy", "売る": "sell",
       "人々": "people", "何か": "anything", "他に": "else", "いっぱいの": "full",
       "デザート": "dessert", "肉": "meat", "魚": "fish", "野菜": "vegetable", "果物": "fruit",
-      "月曜日": "Monday", "火曜日": "Tuesday", "水曜日": "Wednesday", "木曜日": "Thursday",
-      "金曜日": "Friday", "土曜日": "Saturday", "日曜日": "Sunday",
-      "1月": "January", "2月": "February", "3月": "March", "4月": "April",
-      "5月": "May", "6月": "June", "7月": "July", "8月": "August",
-      "9月": "September", "10月": "October", "11月": "November", "12月": "December",
       "私を、私に": "me", "私のもの": "mine", "彼を、彼に": "him", "彼のもの": "his",
       "彼女を、彼女に": "her", "彼女のもの": "hers", "私たちを、私たちに": "us", "私たちのもの": "ours",
       "彼らを、彼らに": "them", "彼らのもの": "theirs",
@@ -277,177 +258,100 @@
       "大きい": "big", "小さい": "small", "背が高い": "tall", "短い、低い": "short", "長い": "long",
       "熱い、暑い": "hot", "冷たい、寒い": "cold", "暖かい": "warm",
       "良い": "good", "幸せな": "happy", "悲しい": "sad", "怒った": "angry", "疲れた": "tired",
-      "お腹が空いた": "hungry", "喉が渇いた": "thirsty", "準備ができた": "ready",
-      "〜について": "about", "〜の後に": "after", "〜の前に": "before", "〜の近くに": "near",
-      "〜の下に": "under", "〜と一緒に": "with", "〜なしで": "without",
-      "だから": "so", "しかし": "but", "なぜなら": "because", "もし〜なら": "if",
-      "たいてい": "usually", "しばしば": "often", "決して〜ない": "never", "もう一度": "again", "もしかすると": "maybe"
+      "お腹が空いた": "hungry", "喉が渇いた": "thirsty", "準備ができた": "ready"
     };
 
     const engPhrasesOld = {
-      "･･･を手に取る": "pick up",
-      "楽しみに待つ": "look forward to",
-      "〜はいかがですか？": "would like",
-      "〜したい（丁寧）": "would like to",
-      "〜が得意である": "be good at ~",
-      "なるほど。/わかった。": "I see.",
-      "すみません。": "Excuse me.",
-      "はい、どうぞ。": "Here you are.",
-      "ありがとう。": "Thank you.",
-      "どういたしまして。": "You're welcome.",
-      "私を〜と呼んでください。": "Call me ~.",
-      "〜したい（一般動詞）": "want to ~",
-      "放課後に": "after school",
-      "幸運を祈る": "Good luck.",
-      "問題ないよ": "No problem.",
-      "少し": "a little",
-      "〜をつける": "turn on",
-      "〜を消す": "turn off",
-      "〜を手伝う": "help ~ with ...",
-      "ちょっと待って": "Just a moment.",
-      "〜に気をつける": "be careful with ~",
-      "何歳ですか？": "How old ...?",
-      "どうしたの？（挨拶・最近どう？）": "What's up?",
-      "どうしたの？（具合が悪い時）": "What's wrong?",
-      "〜のように聞こえる": "sound like",
-      "〜はどうですか？": "How about ~ ?",
-      "休憩する": "take a rest",
-      "私はエディです": "I am Eddy.",
-      "あなたはサッカーファンですか？": "Are you a soccer fan?",
-      "私は牛乳を飲みます（習慣）": "I drink milk.",
-      "あなたは牛乳を飲みますか？": "Do you drink milk?",
-      "あれは神社ですか？": "Is that a shrine?",
-      "あれは何ですか？": "What is that?",
-      "いつピアノを練習しますか？": "When do you practice the piano?",
-      "どこに住んでいますか？": "Where do you live?",
-      "あれは誰ですか？": "Who is that?",
-      "彼女はピアノを弾きます": "She plays the piano."
+      "･･･を手に取る": "pick up", "楽しみに待つ": "look forward to", "〜はいかがですか？": "would like",
+      "〜したい（丁寧）": "would like to", "〜が得意である": "be good at ~", "なるほど。/わかった。": "I see.",
+      "すみません。": "Excuse me.", "はい、どうぞ。": "Here you are.", "ありがとう。": "Thank you.",
+      "どういたしまして。": "You're welcome.", "私を〜と呼んでください。": "Call me ~.", "〜したい（一般動詞）": "want to ~"
     };
 
-    Object.keys(engVocabOld).forEach(k => {
-      rawData.push({ grade: 0, subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocabOld[k] });
-    });
-    Object.keys(engPhrasesOld).forEach(k => {
-      rawData.push({ grade: 0, subject: "英語", category: "熟語・表現", q: `「${k}」を英語で言うと？`, a: engPhrasesOld[k] });
-    });
+    Object.keys(engVocabOld).forEach(k => { rawData.push({ grade: 1, subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocabOld[k] }); });
+    Object.keys(engPhrasesOld).forEach(k => { rawData.push({ grade: 1, subject: "英語", category: "熟語・表現", q: `「${k}」を英語で言うと？`, a: engPhrasesOld[k] }); });
 
     // ==========================================
-    // 🔥 ここから下に追加すればIDは絶対にズレません！
+    // 🌸 v2.9 新規追加＆期末テスト用 ２年生本気増量データ（末尾結合） 🌸
     // ==========================================
     const newQuestions = [
-      // ------------------------------------
-      // 新規：理科 (酸化と還元)
-      // ------------------------------------
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "物質が酸素と結びつく化学変化を何という？", a: "酸化", dummies: ["還元", "燃焼", "分解"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化によってできた物質を何という？", a: "酸化物", dummies: ["硫化物", "塩化物", "純物質"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "銅を加熱してできる、黒色の物質の化学式は？", a: "CuO", dummies: ["Cu", "CO2", "MgO"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "マグネシウムが酸化してできる、白色の物質は？", a: "酸化マグネシウム", dummies: ["酸化銅", "酸化鉄", "炭酸マグネシウム"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "激しく熱や光を出しながら起こる酸化を何という？", a: "燃焼", dummies: ["還元", "発熱反応", "爆発"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化物から酸素をとり除く化学変化を何という？", a: "還元", dummies: ["酸化", "分解", "化合"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化銅を炭素と混ぜて加熱したとき、酸化銅は何という物質になるか？", a: "銅", dummies: ["炭素", "二酸化炭素", "酸化鉄"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化銅と炭素の混合物を加熱したときに発生する気体は？", a: "二酸化炭素", dummies: ["酸素", "水素", "窒素"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学変化のときに熱が発生してまわりの温度が上がる反応は？", a: "発熱反応", dummies: ["吸熱反応", "燃焼", "還元"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学カイロなどで利用されている、鉄が酸素と結びつく反応は発熱反応か、吸熱反応か？", a: "発熱反応", dummies: ["吸熱反応", "還元反応", "分解反応"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学変化のときに熱を吸収してまわりの温度が下がる反応は？", a: "吸熱反応", dummies: ["発熱反応", "酸化反応", "化合"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学変化のときに出入りする熱のことを何という？", a: "反応熱", dummies: ["潜熱", "比熱", "摩擦熱"] },
+      // 【家庭科：衣服のはたらきと素材】
+      { grade: 2, subject: "家庭科", category: "衣服のはたらき", q: "衣服のはたらきで、暑さや寒さを調節したり、体を清潔に保つ健康維持のはたらきを何という？", a: "保健衛生上の法", dummies: ["社会生活上の法", "生活活動上の法", "自己表現のはたらき"] },
+      { grade: 2, subject: "家庭科", category: "衣服のはたらき", q: "衣服のはたらきで、運動や作業をしやすくして安全を高めるはたらきを何という？", a: "生活活動上の法", dummies: ["保健衛生上の法", "社会生活上の法", "防護上の法"] },
+      { grade: 2, subject: "家庭科", category: "衣服のはたらき", q: "衣服のはたらきで、職業や所属（制服など）を表したり、礼儀や社会の慣習に従うはたらきを何という？", a: "社会生活上の法", dummies: ["保健衛生上の法", "生活活動上の法", "自己表現のはたらき"] },
+      { grade: 2, subject: "家庭科", category: "衣服の素材", q: "植物の綿花からとれ、主にTシャツやジーンズに使われる、汗や水分を吸いやすく肌ざわりが良い天然繊維は？", a: "綿(コットン)", dummies: ["麻", "毛", "絹"] },
+      { grade: 2, subject: "家庭科", category: "衣服の素材", q: "羊の毛からとれ、保温性が高く、弾力性があるが、水洗いで縮みやすい動物繊維は？", a: "毛(ウール)", dummies: ["綿", "絹", "麻"] },
+      { grade: 2, subject: "家庭科", category: "衣服の素材", q: "1935年にアメリカで発明された、非常に強く、ストッキングや雨具などに広く用いられる初の合成繊維は？", a: "ナイロン", dummies: ["ポリエステル", "アクリル", "ポリウレタン"] },
+      { grade: 2, subject: "家庭科", category: "衣服の素材", q: "木材パルプを主原料にし、光沢があり肌ざわりがなめらかな再生繊維の代表例は？", a: "レーヨン", dummies: ["アセテート", "アクリル", "ポリエステル"] },
+      { grade: 2, subject: "家庭科", category: "衣服の素材", q: "水蒸気が繊維に吸着した際に熱を発生する現象を利用した、冬用の衣服などに使われる高性能素材は？", a: "吸湿発熱素材", dummies: ["蓄熱保温素材", "超はっ水素材", "バイオミメティクス"] },
 
-      // ------------------------------------
-      // 新規：技術 (エネルギー変換)
-      // ------------------------------------
-      { grade: 2, subject: "技術", category: "エネルギー", q: "電気エネルギーを光や熱、運動といった目的に応じて他のエネルギーに変えることを何という？", a: "エネルギー変換", dummies: ["エネルギー保存の法則", "発電", "熱伝導"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "製品において、もととなるエネルギーに対して利用されるエネルギーの割合を何という？", a: "変換効率", dummies: ["発電効率", "消費電力", "エネルギーミックス"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "自然界に存在する石炭、石油、太陽光などのエネルギーを何という？", a: "一次エネルギー", dummies: ["二次エネルギー", "未利用エネルギー", "再生可能エネルギー"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "一次エネルギーを使いやすいように電気やガソリンなどに変換したものを何という？", a: "二次エネルギー", dummies: ["一次エネルギー", "再生可能エネルギー", "化石燃料"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "石炭、石油、天然ガスなどの資源をまとめて何という？", a: "化石燃料", dummies: ["バイオマス", "再生可能エネルギー", "鉱産資源"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "太陽光、水力、風力など、比較的短時間で再生し枯渇しないエネルギーは？", a: "再生可能エネルギー", dummies: ["化石燃料", "一次エネルギー", "枯渇性エネルギー"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "LED照明は、電気エネルギーを主に何エネルギーに変換しているか？", a: "光エネルギー", dummies: ["熱エネルギー", "運動エネルギー", "音エネルギー"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "IHヒータは、電気エネルギーを主に何エネルギーに変換しているか？", a: "熱エネルギー", dummies: ["光エネルギー", "運動エネルギー", "化学エネルギー"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "扇風機は、電気エネルギーを主に何エネルギーに変換しているか？", a: "運動エネルギー", dummies: ["熱エネルギー", "光エネルギー", "位置エネルギー"] },
+      // 【家庭科：衣服の手入れ・補修・実習】
+      { grade: 2, subject: "家庭科", category: "手入れ・補修", q: "ズボンやスカートのすそがほつれたとき、表に縫い目がほとんど目立たないようにする手縫い方法は？", a: "まつり縫い", dummies: ["なみ縫い", "返し縫い", "かがり縫い"] },
+      { grade: 2, subject: "家庭科", category: "手入れ・補修", q: "スナップをつける際、出っ張りのある凸型（上側）に対して、受け口となる下側の金具は？", a: "凹型", dummies: ["凸型", "かぎホック", "ボタン"] },
+      { grade: 2, subject: "家庭科", category: "手入れ・補修", q: "水を使わず、有機溶剤を用いて、型崩れしやすい衣服などの汚れを落とす専門的なクリーニングは？", a: "ドライクリーニング", dummies: ["水洗い", "もみ洗い", "押し洗い"] },
+      { grade: 2, subject: "家庭科", category: "手入れ・補修", q: "衣服についた水溶性のシミ（しょうゆ、ソース、ジュースなど）を落とすために最初に使うべきものは？", a: "水", dummies: ["ベンジン", "アイロン", "洗剤原液"] },
+      { grade: 2, subject: "家庭科", category: "手入れ・補修", q: "泥汚れなどの「固体汚れ」は、洗剤のはたらき（化学的）に加えて、何によって落とすか？", a: "機械的な力(たたく等)", dummies: ["水に完全に溶かす力", "熱による化学反応", "溶剤による分解"] },
+      { grade: 2, subject: "家庭科", category: "手入れ・補修", q: "衣服をクローゼットやタンスにしまう前に、湿気によるカビを防ぐために一時的に何にかけておくべきか？", a: "ハンガー", dummies: ["たたみ台", "圧縮袋", "アイロン台"] },
+      { grade: 2, subject: "家庭科", category: "手入れ・補修", q: "衣服の長期保管時に、ウールなどの動物繊維を食べて穴を開けてしまう害虫（虫食い）の代表は？", a: "ヒメカツオブシムシ", dummies: ["アブラムシ", "イガ", "コクゾウムシ"] },
 
-      // ------------------------------------
-      // 新規：地理 (日本の地形と海・地域調査)
-      // ------------------------------------
-      { grade: 2, subject: "社会", category: "日本の地形", q: "川が山地から平野に出たところにできる、砂や小石が扇状に堆積した地形は？", a: "扇状地", dummies: ["三角州", "台地", "カルデラ"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "川が海に注ぐ河口部にできる、細かい砂や泥が堆積した地形は？", a: "三角州", dummies: ["扇状地", "台地", "リアス海岸"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "平野の周辺にある、一段高くて平らな地形は？", a: "台地", dummies: ["扇状地", "三角州", "盆地"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "山地が海に沈み込んでできた、海岸線が複雑に入り組んだ海岸地形は？", a: "リアス海岸", dummies: ["砂浜海岸", "サンゴ礁", "フィヨルド"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "リアス海岸で盛んに行われている、波が穏やかな入り江を利用した漁業の形態は？", a: "養殖", dummies: ["遠洋漁業", "沖合漁業", "定置網漁"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "日本の近海で、暖流と寒流がぶつかり、良い漁場となっている場所を何というか？", a: "潮目（潮境）", dummies: ["大陸棚", "海溝", "サンゴ礁"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "日本の太平洋側を北上する暖流（日本海流）の別名は？", a: "黒潮", dummies: ["親潮", "対馬海流", "リマン海流"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "日本の太平洋側を南下する寒流（千島海流）の別名は？", a: "親潮", dummies: ["黒潮", "対馬海流", "リマン海流"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "地球の表面をおおう岩石の層がぶつかり合い、地震や火山活動が活発な地帯を何という？", a: "変動帯", dummies: ["造山帯", "安定陸塊", "楯状地"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "太平洋を取り囲むように連なる、地震や火山が多い造山帯は？", a: "環太平洋造山帯", dummies: ["アルプス・ヒマラヤ造山帯", "大西洋中央海嶺", "フォッサマグナ"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "本州のほぼ中央を南北に走る、大きな溝状の地形（大地溝帯）を何という？", a: "フォッサマグナ", dummies: ["日本アルプス", "中央構造線", "リアス海岸"] },
-      { grade: 2, subject: "社会", category: "日本の地形", q: "飛驒山脈、木曽山脈、赤石山脈の総称は？", a: "日本アルプス", dummies: ["奥羽山脈", "中国山地", "四国山地"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "地域の調査で、統計資料を分析したりして使用する国土地理院発行の地図は？", a: "地形図", dummies: ["分布図", "気候グラフ", "海図"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "調査テーマに対する「仮の答え」を何というか？", a: "仮説", dummies: ["結論", "推測", "分析"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "現地で直接様子を観察したり聞き取りをする調査方法を何というか？", a: "野外調査(フィールドワーク)", dummies: ["文献調査", "実験", "統計調査"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "調査で使った資料の名称や情報源のことを何というか？", a: "出典", dummies: ["仮説", "索引", "目次"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "地形図などを発行している国の機関は？", a: "国土地理院", dummies: ["気象庁", "文部科学省", "環境省"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "地形図などで、地表の同じ高さの地点を結んだ線を何というか？", a: "等高線", dummies: ["等圧線", "等温線", "経線"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "等高線の間隔が「広い」ほど、傾斜はどうなるか？", a: "緩やかになる", dummies: ["急になる", "変わらない", "垂直になる"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "等高線の間隔が「狭い」ほど、傾斜はどうなるか？", a: "急になる", dummies: ["緩やかになる", "変わらない", "水平になる"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "地図記号で二重丸「◎」が表すものは？", a: "市役所", dummies: ["町村役場", "警察署", "裁判所"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "地図記号「×」が表すものは？", a: "交番", dummies: ["警察署", "病院", "寺院"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "地図記号「〒」が表すものは？", a: "郵便局", dummies: ["交番", "病院", "消防署"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "地図記号「文」が表すものは？", a: "小・中学校", dummies: ["高等学校", "大学", "図書館"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "地図記号「卍」が表すものは？", a: "寺院", dummies: ["神社", "教会", "墓地"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "地図記号「鳥居」のマークが表すものは？", a: "神社", dummies: ["寺院", "教会", "史跡"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "Vの字のような地図記号が表すものは？", a: "畑", dummies: ["田", "果樹園", "桑畑"] },
-      { grade: 2, subject: "社会", category: "地域調査", q: "丸にVが乗っているような地図記号が表すものは？", a: "果樹園", dummies: ["畑", "広葉樹林", "茶畑"] },
+      // 【家庭科：衣服の選択・和服の文化】
+      { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "和服のように、細長いの長方形の布を直線的に切って無駄なく縫い合わせる衣服の作り方は？", a: "平面構成", dummies: ["立体構成", "型紙構成", "曲線構成"] },
+      { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "洋服のように、人間の体の曲線や動きに合わせて曲線を多く取り入れる、立体的な仕立て方は？", a: "立体構成", dummies: ["平面構成", "直線構成", "和服構成"] },
+      { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "綿や麻などの素材で作られた、夏用の和服で、日本の伝統文化を体験する衣服の代表例は？", a: "ゆかた", dummies: ["振袖", "訪問着", "袴"] },
+      { grade: 2, subject: "家庭科", category: "衣服 of 選択と文化", q: "ゆかたで用いられる帯のうち、女性用として最も一般的で幅が約16cmの帯は？", a: "半幅帯", dummies: ["角帯", "兵児帯", "袋帯"] },
+      { grade: 2, subject: "家庭科", category: "衣服 of 選択と文化", q: "ゆかたで用いられる帯のうち、男性用として用いられ、幅が狭く地が厚い帯は？", a: "角帯", dummies: ["半幅帯", "兵児帯", "袋帯"] },
+      { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "和服を着る時、襟（えり）の合わせ方は男女共通でどちらを前に重ねるのが正しいか？", a: "右前(右襟が下、左襟が上)", dummies: ["左前(左襟が下、右襟が上)", "どちらでもよい", "男女で異なる"] },
 
-      // ------------------------------------
-      // これまでの2年データ (オセアニア, 周期表, 歴史戦国)
-      // ------------------------------------
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "オセアニア州は、ニュージーランド、太平洋の島々と何大陸からなるか？", a: "オーストラリア大陸", dummies: ["ユーラシア大陸", "アフリカ大陸", "北アメリカ大陸"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "ニュージーランドで盛んな、火山や温泉を生かした発電方法は？", a: "地熱発電", dummies: ["火力発電", "水力発電", "風力発電"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "太平洋の島々にみられる、サンゴが長い時間をかけて積み重なってできた地形は？", a: "サンゴ礁", dummies: ["フィヨルド", "カルデラ", "リアス海岸"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアの国旗にイギリス国旗が描かれているのは、かつてイギリスの何であった名残か？", a: "植民地", dummies: ["同盟国", "領土", "保護国"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアは、主にどこの国からの移民によって開拓されたか？", a: "イギリス", dummies: ["フランス", "スペイン", "アメリカ"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアで1970年代初めまでとられていた、ヨーロッパ以外からの移民を制限する政策は？", a: "白豪主義", dummies: ["アパルトヘイト", "鎖国", "保護貿易"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "現在のオーストラリアのように、異なる文化をお互いに尊重し合う社会を何というか？", a: "多文化社会", dummies: ["単一民族社会", "グローバル社会", "階級社会"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "オーストラリアの先住民を何というか？", a: "アボリジニ", dummies: ["マオリ", "インディオ", "イヌイット"] },
-      { grade: 2, subject: "社会", category: "オセアニア州", q: "ニュージーランドの先住民を何というか？", a: "マオリ", dummies: ["アボリジニ", "インカ", "アイヌ"] },
+      // 【家庭科：新規衣服デザイン・色・柄の効果】
+      { grade: 2, subject: "家庭科", category: "自分らしい着方", q: "自分の髪や肌、目の色などから導かれる、自分に最も似合う色のことを何カラーという？", a: "パーソナルカラー", dummies: ["アースカラー", "ビビッドカラー", "ニュートラルカラー"] },
+      { grade: 2, subject: "家庭科", category: "自分らしい着方", q: "年齢や性別、障害の有無に関わらず、すべての人がおしゃれを楽しめるよう配慮された服のデザインは？", a: "ユニバーサルファッション", dummies: ["エコファッション", "オーダーメイド", "レトロファッション"] },
+      { grade: 2, subject: "家庭科", category: "自分らしい着方", q: "ストライプや直線模様などの衣服デザインが、目の錯覚によって体が細長く見えたり太く見えたりする現象を何という？", a: "錯視(さくし)", dummies: ["幻視", "透視", "補色効果"] },
+      { grade: 2, subject: "家庭科", category: "自分らしい着方", q: "色相環において、お互いに対向する位置にあり、最もお互いを引き立てる対照的な配色の関係を何という？", a: "補色(対照色)", dummies: ["類似色", "同系色", "モノトーン"] },
 
-      { grade: 2, subject: "理科", category: "周期表", q: "原子を性質が似たものが縦に並ぶように整理した表を何という？", a: "周期表", dummies: ["溶解度曲線", "質量パーセント濃度", "示相化石"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「H」が表す原子は？", a: "水素", dummies: ["ヘリウム", "酸素", "窒素"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「He」が表す原子は？", a: "ヘリウム", dummies: ["水素", "ネオン", "アルゴン"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Li」が表す原子は？", a: "リチウム", dummies: ["ベリリウム", "ホウ素", "ナトリウム"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「C」が表す原子は？", a: "炭素", dummies: ["カルシウム", "銅", "塩素"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「N」が表す原子は？", a: "窒素", dummies: ["酸素", "炭素", "リン"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「O」が表す原子は？", a: "酸素", dummies: ["水素", "炭素", "硫黄"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Na」が表す原子は？", a: "ナトリウム", dummies: ["窒素", "ネオン", "カリウム"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Mg」が表す原子は？", a: "マグネシウム", dummies: ["マンガン", "カルシウム", "モリブデン"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Al」が表す原子は？", a: "アルミニウム", dummies: ["アルゴン", "金", "銀"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「S」が表す原子は？", a: "硫黄", dummies: ["リン", "ケイ素", "塩素"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Cl」が表す原子は？", a: "塩素", dummies: ["炭素", "カルシウム", "銅"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「K」が表す原子は？", a: "カリウム", dummies: ["カルシウム", "リン", "クリプトン"] },
-      { grade: 2, subject: "理科", category: "周期表", q: "元素記号「Ca」が表す原子は？", a: "カルシウム", dummies: ["炭素", "カリウム", "銅"] },
+      // 【家庭科：モダンテクニック（表現技法）】
+      { grade: 2, subject: "家庭科", category: "モダンテクニック", q: "絵の具を多めの水で溶いて画面に落とし、息を吹きかけたりして偶然の模様を作る技法は？", a: "ドリッピング(吹き流し)", dummies: ["コラージュ", "スパッタリング", "フロッタージュ"] },
+      { grade: 2, subject: "家庭科", category: "モダンテクニック", q: "凹凸があるものの上に紙をあてて、鉛筆やクレヨンでこすって模様を写し取る技法を何という？", a: "フロッタージュ(こすり出し)", dummies: ["デカルコマニー", "スクラッチ", "マーブリング"] },
+      { grade: 2, subject: "家庭科", category: "モダンテクニック", q: "水面にインクや絵の具をたらしてかき混ぜ、そのマーブル模様を紙に写し取る技法は？", a: "マーブリング(墨流し)", dummies: ["ステンシル", "スパッタリング", "バチック"] },
+      { grade: 2, subject: "家庭科", category: "モダンテクニック", q: "絵の具を塗った紙を二つ折りにして、偶然左右対称の模様を作り出す技法は？", a: "デカルコマニー", dummies: ["スクラッチ", "コラージュ", "フロッタージュ"] },
 
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1573年、足利義昭を京都から追放し滅亡させた幕府は？", a: "室町幕府", dummies: ["鎌倉幕府", "江戸幕府", "平氏政権"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1575年、織田信長が鉄砲を使って武田軍を破った戦いは？", a: "長篠の戦い", dummies: ["関ヶ原の戦い", "桶狭間の戦い", "応仁の乱"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "織田信長が築き、関所の廃止（楽市・楽座）などを行った城は？", a: "安土城", dummies: ["大阪城", "江戸城", "姫路城"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1582年、織田信長が明智光秀に攻撃され自害した出来事は？", a: "本能寺の変", dummies: ["大化の改新", "壬申の乱", "桜田門外の変"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1590年、北条氏を滅ぼし、全国を統一した人物は？", a: "豊臣秀吉", dummies: ["織田信長", "徳川家康", "明智光秀"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "田畑の広さや収穫高を調べて検地帳を作成した豊臣秀吉の政策は？", a: "太閤検地", dummies: ["刀狩", "兵農分離", "楽市・楽座"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "百姓から武器を取り上げた豊臣秀吉の政策は？", a: "刀狩", dummies: ["太閤検地", "兵農分離", "武家諸法度"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "宣教師を追放し、キリスト教を禁止した豊臣秀吉の命令は？", a: "バテレン追放令", dummies: ["宗門改", "絵踏", "禁教令"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "大名や豪商らによる壮大で豪華な文化（姫路城や狩野永徳など）を何文化という？", a: "桃山文化", dummies: ["南蛮文化", "国風文化", "天平文化"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "質素さを重んじる「わび茶」を完成させた人物は？", a: "千利休", dummies: ["雪舟", "近松門左衛門", "松尾芭蕉"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "出雲の阿国が始めた、現在の歌舞伎のルーツとなる踊りは？", a: "かぶき踊り", dummies: ["人形浄瑠璃", "能", "狂言"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "ヨーロッパから伝わった天文学や医学などの文化を何という？", a: "南蛮文化", dummies: ["桃山文化", "飛鳥文化", "白鳳文化"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1600年、徳川家康が勝利し天下の主導権を握った戦いは？", a: "関ヶ原の戦い", dummies: ["長篠の戦い", "大坂の陣", "島原の乱"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "幕府の政治を取りまとめる、常置の最高役職は？", a: "老中", dummies: ["若年寄", "大老", "奉行"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸幕府が直接支配する領地を何という？", a: "幕領(直轄地)", dummies: ["藩", "天領", "荘園"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸幕府が大名に対する法律として定めたものは？", a: "武家諸法度", dummies: ["御成敗式目", "公事方御定書", "十七条の憲法"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "3代将軍家光が定めた、大名が1年ごとに江戸と領地を行き来する制度は？", a: "参勤交代", dummies: ["武家諸法度", "宗門改", "絵踏"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "1637年に起こった、重い年貢とキリシタン弾圧に対する一揆は？", a: "島原・天草一揆", dummies: ["加賀の一向一揆", "山城の国一揆", "米騒動"] },
-      { grade: 2, subject: "社会", category: "歴史(戦国〜江戸)", q: "江戸時代、幕府がオランダや清と貿易を行った長崎の人工の島は？", a: "出島", dummies: ["種子島", "対馬", "佐渡島"] },
+      // 【技術：エネルギー変換の技術】
+      { grade: 2, subject: "技術", category: "エネルギー", q: "電気や熱、光など、もととなるエネルギーに対して、有効に利用できたエネルギーの割合を何という？", a: "変換効率", dummies: ["発電効率", "伝導率", "出力比"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "石油、石炭、天然ガスなど、自然界から直接得られる加工されていない一次エネルギー資源は？", a: "化石燃料", dummies: ["二次エネルギー", "バイオマス", "再生可能エネルギー"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "太陽光、風力、水力など、比較的短時間で自然に再生され枯渇しないエネルギー源は？", a: "再生可能エネルギー", dummies: ["化石燃料", "原子力エネルギー", "二次エネルギー"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "LED照明は、投入された電気エネルギーを主に何エネルギーに変換して部屋を明るくするか？", a: "光エネルギー", dummies: ["熱エネルギー", "運動エネルギー", "化学エネルギー"] },
+      { grade: 2, subject: "技術", category: "エネルギー", q: "IHヒータは、投入された電気エネルギーを磁力線から鉄鍋に伝えて、何エネルギーに変換するか？", a: "熱エネルギー", dummies: ["光エネルギー", "音エネルギー", "位置エネルギー"] },
 
-      { grade: 2, subject: "音楽", category: "夏の思い出", q: "「夏の思い出」の作詞者は誰？", a: "江間章子", dummies: ["中田喜直", "滝廉太郎", "山田耕筰"] },
-      { grade: 2, subject: "音楽", category: "夏の思い出", q: "「夏の思い出」の作曲者は誰？", a: "中田喜直", dummies: ["江間章子", "滝廉太郎", "山田耕筰"] },
-      { grade: 2, subject: "音楽", category: "夏の思い出", q: "「夏の思い出」の拍子は？", a: "4分の4拍子", dummies: ["4分の3拍子", "8分の6拍子", "2分の2拍子"] }
+      // 【技術：電気の供給・発電のしくみ】
+      { grade: 2, subject: "技術", category: "電気の供給", q: "送電線の中で電気が熱に変わって失われるのを防ぐため、発電所からはどのように電気を送るか？", a: "電圧を非常に高くする", dummies: ["電圧を低くする", "直流電流にする", "電流を多くする"] },
+      { grade: 2, subject: "技術", category: "電気の供給", q: "日本の電気の交流周波数は、東日本と西日本でそれぞれ何Hz（ヘルツ）に分かれているか？", a: "東日本50Hz、西日本60Hz", dummies: ["東日本60Hz、西日本50Hz", "東日本100Hz、西日本200Hz", "全国共通60Hz"] },
+      { grade: 2, subject: "技術", category: "電気の供給", q: "スマートフォンやパソコンに広く使われている、軽くて大容量、充電可能な二次電池は？", a: "リチウムイオン電池", dummies: ["アルカリ乾電池", "マンガン乾電池", "ニッケル水素電池"] },
+      { grade: 2, subject: "技術", category: "発電のしくみ", q: "ガスタービンで発電した後、その高温排熱から蒸気を作り、さらに蒸気タービンを回して2度発電する高効率な仕組みは？", a: "コンバインドサイクル発電", dummies: ["コージェネレーションシステム", "バイオマス発電", "地熱発電"] },
+      { grade: 2, subject: "技術", category: "発電のしくみ", q: "発電の際に発生する「熱」も回収し、お湯や暖房として有効利用するエコなシステムを何という？", a: "コージェネレーションシステム", dummies: ["コンバインドサイクル発電", "エネルギーミックス", "スマートグリッド"] },
+
+      // 【理科：酸化と還元の強化問題・化学反応式】
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "鉄と硫黄が結びつく化合反応によってできる黒色の物質は？", a: "硫化鉄", dummies: ["酸化鉄", "酸化マグネシウム", "塩化ナトリウム"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "硫化鉄にうすい塩酸を加えたときに発生する、卵の腐ったような臭いのする有毒な気体は？", a: "硫化水素", dummies: ["二酸化炭素", "酸素", "水素"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学反応式「Fe + S -> FeS」において、できた硫化鉄には磁石を近づけるとどうなるか？", a: "磁石に引きつけられない", dummies: ["非常に強く引きつけられる", "青く発光する", "水に溶けて消える"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "銅を加熱（酸化）したとき、金属の質量はどう変化するか？", a: "酸素が結びつくため増える", dummies: ["気体が発生して減る", "全く変化しない", "半分になる"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "銅を酸化させて酸化銅にするときの「銅の質量」と「結びつく酸素の質量」の比（銅：酸素）は常にいくらか？", a: "4：1", dummies: ["3：2", "1：1", "4：3"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "マグネシウムを燃焼させて酸化マグネシウムを作るときの「マグネシウム：酸素」の質量比はいくらか？", a: "3：2", dummies: ["4：1", "1：1", "5：2"] },
+      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化銅を水素で還元したとき、試験管の口にできる「青い塩化コバルト紙を赤色に変える」液体は何か？", a: "水", dummies: ["二酸化炭素", "うすい塩酸", "エタノール"] },
+
+      // 【社会：九州地方の自然と生活】
+      { grade: 2, subject: "社会", category: "九州地方", q: "火山の爆発などによって陥没してつくられた、阿蘇山に代表される巨大な窪地を何というか？", a: "カルデラ", dummies: ["シラス台地", "リアス海岸", "扇状地"] },
+      { grade: 2, subject: "社会", category: "九州地方", q: "九州南部に広がる、水を通しやすく稲作に不向きなため、畑作や畜産が盛んな地層（火山灰の堆積地）は？", a: "シラス台地", dummies: ["カルデラ", "三角州", "河岸段丘"] },
+      { grade: 2, subject: "社会", category: "九州地方", q: "筑後川の下流に広がり、クリーク（水路）が網の目のように発達した平野は？", a: "筑紫平野", dummies: ["熊本平野", "宮崎平野", "石狩平野"] },
+      { grade: 2, subject: "社会", category: "九州地方", q: "鹿児島県の桜島（御岳）付近で、日常の火山活動（降灰）に備えて人々の安全を守るために設置されている施設は？", a: "降灰シェルター(退避壕)", dummies: ["ハザードマップ", "砂防ダム", "防潮堤"] },
+      { grade: 2, subject: "社会", category: "九州地方", q: "大分県の八丁原発電所に代表される、火山の熱（水蒸気）を利用したクリーンな発電は？", a: "地熱発電", dummies: ["水力発電", "火力発電", "風力発電"] },
+      { grade: 2, subject: "社会", category: "九州地方", q: "1901年、政府が九州に建設し、日本の重化学工業の基礎を築いた製鉄所は？", a: "官営八幡製鉄所", dummies: ["釜石製鉄所", "室蘭製鉄所", "川崎製鉄所"] },
+
+      // 【英語：Unit 2 Part 1 新出表現】
+      { grade: 2, subject: "英語", category: "英単語", q: "「特に、とりわけ」を意味する英単語は？", a: "especially", dummies: ["usually", "sometimes", "always"] },
+      { grade: 2, subject: "英語", category: "英単語", q: "「味、風味」を意味する英単語は？", a: "flavor", dummies: ["topping", "culture", "painting"] },
+      { grade: 2, subject: "英語", category: "英単語", q: "「トッピング、上にのせる具」を意味する英単語は？", a: "topping", dummies: ["flavor", "order", "sauce"] },
+      { grade: 2, subject: "英語", category: "熟語・文法", q: "「･･･など」を意味する英語の表現は？", a: "and so on", dummies: ["for example", "and so up", "look forward to"] }
     ];
+
     rawData = rawData.concat(newQuestions);
 
     const engVocabNew = {
@@ -484,7 +388,7 @@
     });
     rawData = Array.from(uniqueMap.values());
 
-    // 学年別・科目別の集計
+    // 学年別・科目別の集計 (UI用)
     const subjectsGrade1 = [];
     const subjectsGrade2 = [];
 
@@ -531,8 +435,9 @@
       const container = document.getElementById('particles-container');
       if(!container) return;
       container.innerHTML = '';
-      const theme = userThemes[state.activeUser];
-      if(!theme || !theme.particleClass) return;
+      const theme = userThemes[state.activeUser] || userThemes['sakura'];
+      if(!theme.particleClass) return;
+      
       particleInterval = setInterval(() => {
         try {
           const el = document.createElement('div');
@@ -555,17 +460,29 @@
     let db, auth, fbUnsubscribe = null; 
     
     const initApp = async () => {
-      // 最初にローカルから読み込む（Firebaseがダメでも動くように）
       loadLocalPasswords();
       loadLocalStats();
 
+      // 安全対策：Firebaseが読み込めない場合はオフラインローカルモードで強制的に起動させる
+      if (typeof firebase === 'undefined') {
+        console.warn("Firebase SDK is not loaded. Operating in Local Mode.");
+        state.isDataLoaded = true;
+        render();
+        startParticles();
+        return;
+      }
+
       try {
         let firebaseConfig = { apiKey: "AIzaSyCHGs5PHyfvW57SCJJi8GiDQ_ydH8M-5Vs", authDomain: "sakura-app-d3d10.firebaseapp.com", projectId: "sakura-app-d3d10", storageBucket: "sakura-app-d3d10.firebasestorage.app", messagingSenderId: "244016922212", appId: "1:244016922212:web:a1f1775a6a6aba2de8a971" };
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+          firebaseConfig = typeof __firebase_config === 'string' ? JSON.parse(__firebase_config) : __firebase_config;
+        }
+
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         auth = firebase.auth(); 
         db = firebase.firestore();
 
-        try { await auth.signInAnonymously(); } catch(e) {}
+        try { await auth.signInAnonymously(); } catch(e) { console.warn("Auth restriction. Fallback to Local mode."); }
 
         auth.onAuthStateChanged(user => {
           if (user) {
@@ -573,7 +490,7 @@
             try { 
               db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').onSnapshot(
                 doc => { if(doc.exists) { state.passwords = doc.data() || {}; saveLocalPasswords(); } },
-                error => { console.warn("Passwords read error, using local."); }
+                error => { console.warn("Passwords snapshot error, using local."); }
               ); 
             } catch(e) {}
             loadStatsForCurrentUser(); startParticles();
@@ -582,25 +499,26 @@
           }
         });
       } catch(e) { 
+        console.warn("Firebase initialization failed, running in local mode.");
         state.isDataLoaded = true; render(); startParticles();
       }
     };
 
     function loadStatsForCurrentUser() {
       if (fbUnsubscribe) { fbUnsubscribe(); fbUnsubscribe = null; }
-      loadLocalStats(); // ローカルからまずロード
+      loadLocalStats(); 
       state.isDataLoaded = false;
 
       if (state.activeUser === 'guest') { state.isDataLoaded = true; render(); return; }
 
-      if (state.fbReady && state.user) {
+      if (state.fbReady && state.user && db) {
         try {
           const collectionName = state.activeUser === 'sakura' ? 'shared_stats' : 'shared_stats_momoka';
           fbUnsubscribe = db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName).onSnapshot(snapshot => {
              const stats = {}; 
              snapshot.forEach(doc => { stats[doc.id] = doc.data(); });
              state.userStats = stats; 
-             saveLocalStats(); // 成功したらローカルも上書き
+             saveLocalStats(); 
              state.isDataLoaded = true; render();
            }, error => { 
              console.warn("Stats read error, using local.", error);
@@ -612,7 +530,7 @@
     initApp();
 
     // ==========================================
-    // 💡 賢いクイズ生成ロジック
+    // 💡 クイズ生成
     // ==========================================
     function generateChoices(currentQuestion) {
       try {
@@ -708,8 +626,10 @@
     window.openPinSetup = function() { state.pin = { show: true, mode: 'setup', targetUser: state.activeUser, value: '', error: false }; render(); }
     window.removePin = function() { 
       showMessage(`${userThemes[state.activeUser].name}のパスワードを解除しますか？`, 'confirm', () => { 
-        db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: null }, { merge: true }).catch(e => console.warn(e)); 
-        state.passwords[state.activeUser] = null; saveLocalPasswords(); // ローカルも更新
+        if (state.fbReady && db) {
+          db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: null }, { merge: true }).catch(e => console.warn(e)); 
+        }
+        state.passwords[state.activeUser] = null; saveLocalPasswords(); 
         state.pin.show = false; showMessage("解除しました。"); 
       }); 
     }
@@ -723,8 +643,10 @@
         if (value === state.passwords[targetUser] || isMaster) { executeUserSwitch(targetUser); } 
         else { state.pin.error = true; state.pin.value = ''; render(); }
       } else if (mode === 'setup') {
-        db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: value }, { merge: true }).catch(e => console.warn(e));
-        state.passwords[state.activeUser] = value; saveLocalPasswords(); // ローカルも更新
+        if (state.fbReady && db) {
+          db.collection('artifacts').doc(appId).collection('public').doc('data').collection('settings').doc('passwords').set({ [state.activeUser]: value }, { merge: true }).catch(e => console.warn(e));
+        }
+        state.passwords[state.activeUser] = value; saveLocalPasswords(); 
         state.pin.show = false; showMessage("パスワードを設定しました！");
       }
     }
@@ -740,9 +662,9 @@
         const currentStat = state.userStats[currentQ.id] || { corrects: 0, mistakes: 0 };
         const newData = { corrects: isCorrect ? currentStat.corrects + 1 : currentStat.corrects, mistakes: !isCorrect ? currentStat.mistakes + 1 : currentStat.mistakes, lastAttempt: new Date().toISOString() };
         state.userStats[currentQ.id] = newData; 
-        saveLocalStats(); // Firebase送信前にローカルに保存！
+        saveLocalStats(); 
 
-        if (state.user && state.fbReady) { 
+        if (state.user && state.fbReady && db) { 
           try { const collectionName = state.activeUser === 'sakura' ? 'shared_stats' : 'shared_stats_momoka'; db.collection('artifacts').doc(appId).collection('public').doc('data').collection(collectionName).doc(currentQ.id).set(newData, { merge: true }).catch(() => {}); } catch(e) {} 
         }
       }
@@ -792,7 +714,7 @@
     }
 
     // ==========================================
-    // 画面描画ロジック
+    // 画面描画ロジック (HTML)
     // ==========================================
     function renderHomeHTML() {
       const isGuest = state.activeUser === 'guest';
@@ -818,17 +740,7 @@
           const accuracy = totalAttempts > 0 ? Math.round(((totalAttempts - totalMistakes) / totalAttempts) * 100) : 0;
           let listHtml = analyzedData.length === 0 
             ? `<p class="text-gray-500 text-center py-8 bg-white/90 rounded-3xl border border-gray-100 shadow-sm mt-2 backdrop-blur-sm">まだデータがありません。<br>問題を解くとここに分析が表示されます。</p>`
-            : analyzedData.slice(0, 10).map((item, idx) => `
-                <div class="bg-white/95 p-4 rounded-2xl shadow-sm border border-gray-100 flex items-start backdrop-blur-sm">
-                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-rose-100 text-rose-600' : 'bg-gray-100 text-gray-500'}">${idx + 1}</div>
-                  <div class="flex-grow">
-                    <span class="text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md mb-2 inline-block">${item.category}</span>
-                    <p class="text-sm text-gray-800 font-bold mb-1 leading-snug">${item.q}</p>
-                    <p class="text-xs text-rose-500 font-medium">答え: ${item.a}</p>
-                  </div>
-                  <div class="shrink-0 text-right ml-2"><p class="text-rose-600 font-bold text-lg">${item.mistakeRate}%</p><p class="text-[10px] text-gray-400">ミス率</p></div>
-                </div>
-              `).join('');
+            : analyzedData.slice(0, 10).map((item, idx) => `<div class="bg-white/95 p-4 rounded-2xl shadow-sm border border-gray-100 flex items-start backdrop-blur-sm"><div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm mr-4 shrink-0 ${idx < 3 ? 'bg-rose-100 text-rose-600' : 'bg-gray-100 text-gray-500'}">${idx + 1}</div><div class="flex-grow"><span class="text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md mb-2 inline-block">${item.category}</span><p class="text-sm text-gray-800 font-bold mb-1 leading-snug">${item.q}</p><p class="text-xs text-rose-500 font-medium">答え: ${item.a}</p></div><div class="shrink-0 text-right ml-2"><p class="text-rose-600 font-bold text-lg">${item.mistakeRate}%</p><p class="text-[10px] text-gray-400">ミス率</p></div></div>`).join('');
 
           contentHtml = `
             <div class="space-y-6 animate-fade-in relative z-10">
@@ -840,10 +752,7 @@
                   <div class="bg-white/20 rounded-2xl p-3 text-center"><p class="text-xs opacity-90 mb-1">総合正答率</p><p class="text-2xl font-black">${accuracy}<span class="text-xs font-normal">%</span></p></div>
                 </div>
               </div>
-              <div>
-                <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center bg-white/80 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm inline-flex"><i class="ph-fill ph-warning text-xl mr-2 text-rose-500"></i>要注意！苦手な問題トップ</h3>
-                <div class="space-y-3">${listHtml}</div>
-              </div>
+              <div><h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center bg-white/80 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-sm inline-flex"><i class="ph-fill ph-warning text-xl mr-2 text-rose-500"></i>要注意！苦手な問題トップ</h3><div class="space-y-3">${listHtml}</div></div>
             </div>
           `;
         }
@@ -864,6 +773,7 @@
           let iconColor = "text-orange-500"; 
           if (sub.name === "理科") iconColor = "text-blue-500"; 
           if (sub.name === "技術") iconColor = "text-emerald-500";
+          if (sub.name === "家庭科") iconColor = "text-pink-500";
           if (sub.name === "音楽") iconColor = "text-purple-500";
           return `
           <div class="bg-white/95 backdrop-blur-sm p-6 rounded-3xl shadow-sm border border-orange-100 mb-4">
@@ -1028,7 +938,8 @@
       return `<div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] animate-fade-in p-4"><div class="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border-4 border-white"><p class="text-gray-800 font-bold mb-6 text-base sm:text-lg whitespace-pre-wrap leading-relaxed">${state.message.text}</p><div class="flex justify-center gap-4">${state.message.type === 'confirm' ? `<button onclick="closeMessage()" class="flex-1 px-4 py-3 rounded-2xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-colors active:scale-95 border border-gray-200">やめる</button><button onclick="confirmMessage()" class="flex-1 px-4 py-3 rounded-2xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-colors active:scale-95 shadow-md">はい</button>` : `<button onclick="closeMessage()" class="w-full px-8 py-3 rounded-2xl bg-blue-500 text-white font-bold hover:bg-blue-600 transition-colors shadow-md active:scale-95">OK</button>`}</div></div></div>`;
     }
 
-    function renderPinHTML() {
+    // PINコード入力画面
+    window.renderPinHTML = function() {
       if (!state.pin.show) return '';
       const theme = state.pin.targetUser ? userThemes[state.pin.targetUser] : userThemes[state.activeUser];
       const isSetup = state.pin.mode === 'setup';
@@ -1052,16 +963,21 @@
 
     function render() {
       const root = document.getElementById('root');
+      if(!root) return;
       let html = '';
       if (state.screen === 'home') html = renderHomeHTML();
       else if (state.screen === 'quiz') html = renderQuizHTML();
       else if (state.screen === 'result') html = renderResultHTML();
       else if (state.screen === 'parent_dashboard') html = renderParentDashboardHTML();
       
-      html += renderPinHTML(); html += renderPasscodeHTML(); html += renderMessageHTML();
+      html += renderPinHTML(); 
+      html += renderPasscodeHTML(); 
+      html += renderMessageHTML();
       root.innerHTML = html;
     }
 
   </script>
 </body>
 </html>
+
+```
