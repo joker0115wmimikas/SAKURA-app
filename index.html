@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>【最強】最強！暗記完璧最強アプリ(最強)</title>
-  <!-- バージョン: v2.9 (Firebaseエラー完全回避・期末テスト55問超増量・成績引き継ぎ版) -->
+  <!-- バージョン: v3.2 (今回のテスト範囲・過去の復習を完全分離・成績データ100%引継ぎ・超安全オフライン自動起動版) -->
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -86,9 +86,9 @@
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "物質をいったん溶媒にとかした後、再び結晶としてとり出す操作", a: "再結晶" },
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "複数の物質が混ざり合ったもの", a: "混合物" },
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "1種類の物質だけでできているもの", a: "純物質" },
-      { grade: 1, subject: "理科", category: "気体と水溶液", q: "水に非常にとけやすく、特有 of 刺激臭がある気体", a: "アンモニア" },
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "水に非常にとけやすく、特有の刺激臭がある気体", a: "アンモニア" },
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "石灰水を白くにごらせる気体", a: "二酸化炭素" },
-      { grade: 1, subject: "理科", category: "気体と水溶液", q: "マッチの火を近づけると、音を立てて燃える気体", a: "水素" },
+      { grade: 1, subject: "理科", category: "気体と水溶液", q: "マッチ of 火を近づけると、音を立てて燃える気体", a: "水素" },
       { grade: 1, subject: "理科", category: "気体と水溶液", q: "ものを燃やすはたらきがある気体", a: "酸素" },
 
       { grade: 1, subject: "理科", category: "物質のすがた", q: "ガスバーナーで、炎の大きさを調節するねじ", a: "ガス調節ねじ" },
@@ -137,7 +137,7 @@
       { grade: 1, subject: "理科", category: "植物・動物", q: "顕微鏡のピント合わせで、対物レンズとプレパラートを遠ざけながらピントを合わせる理由", a: "プレパラートを割らないようにするため" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "花のつくりを外側から順に言うと、がく、花弁、おしべ、あと一つは？", a: "めしべ" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "おしべの先端にある、花粉が入っているふくろ", a: "やく" },
-      { grade: 1, subject: "理科", category: "植物・動物", q: "花粉がめしべ of 柱頭につくこと", a: "受粉" },
+      { grade: 1, subject: "理科", category: "植物・動物", q: "花粉がめしべの柱頭につくこと", a: "受粉" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "受粉後、子房は成長して何になるか", a: "果実" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "受粉後、胚珠は成長して何になるか", a: "種子" },
       { grade: 1, subject: "理科", category: "植物・動物", q: "アブラナのように花弁が1枚1枚離れている花", a: "離弁花" },
@@ -253,10 +253,6 @@
       "本": "book", "ペン": "pen", "机": "desk", "椅子": "chair", "部屋": "room",
       "家": "house", "車": "car", "電車": "train", "バス": "bus", "自転車": "bike",
       "国": "country", "世界": "world", "言葉、単語": "word", "名前": "name", "写真、絵": "picture",
-      "朝": "morning", "午後": "afternoon", "夕方、夜": "evening", "夜": "night",
-      "時間": "time", "分": "minute", "年": "year", "週": "week", "日": "day",
-      "大きい": "big", "小さい": "small", "背が高い": "tall", "短い、低い": "short", "長い": "long",
-      "熱い、暑い": "hot", "冷たい、寒い": "cold", "暖かい": "warm",
       "良い": "good", "幸せな": "happy", "悲しい": "sad", "怒った": "angry", "疲れた": "tired",
       "お腹が空いた": "hungry", "喉が渇いた": "thirsty", "準備ができた": "ready"
     };
@@ -272,18 +268,18 @@
     Object.keys(engPhrasesOld).forEach(k => { rawData.push({ grade: 1, subject: "英語", category: "熟語・表現", q: `「${k}」を英語で言うと？`, a: engPhrasesOld[k] }); });
 
     // ==========================================
-    // 🌸 v2.9 新規追加＆期末テスト用 ２年生本気増量データ（末尾結合） 🌸
+    // 🌸 v3.2 新規追加＆期末テスト用 ２年生本気増量データ（末尾結合） 🌸
     // ==========================================
     const newQuestions = [
       // 【家庭科：衣服のはたらきと素材】
-      { grade: 2, subject: "家庭科", category: "衣服のはたらき", q: "衣服のはたらきで、暑さや寒さを調節したり、体を清潔に保つ健康維持のはたらきを何という？", a: "保健衛生上の法", dummies: ["社会生活上の法", "生活活動上の法", "自己表現のはたらき"] },
-      { grade: 2, subject: "家庭科", category: "衣服のはたらき", q: "衣服のはたらきで、運動や作業をしやすくして安全を高めるはたらきを何という？", a: "生活活動上の法", dummies: ["保健衛生上の法", "社会生活上の法", "防護上の法"] },
-      { grade: 2, subject: "家庭科", category: "衣服のはたらき", q: "衣服のはたらきで、職業や所属（制服など）を表したり、礼儀や社会の慣習に従うはたらきを何という？", a: "社会生活上の法", dummies: ["保健衛生上の法", "生活活動上の法", "自己表現のはたらき"] },
+      { grade: 2, subject: "家庭科", category: "衣服のはたらき", q: "衣服のはたらきで、暑さや寒さを調節したり、体を清潔に保つ健康維持のはたらきを何という？", a: "保健衛生上の機能", dummies: ["社会生活上の機能", "生活活動上の機能", "自己表現のはたらき"] },
+      { grade: 2, subject: "家庭科", category: "衣服のはたらき", q: "衣服のはたらきで、運動や作業をしやすくして安全を高めるはたらきを何という？", a: "生活活動上の機能", dummies: ["保健衛生上の機能", "社会生活上の機能", "防護上の機能"] },
+      { grade: 2, subject: "家庭科", category: "衣服のはたらき", q: "衣服のはたらきで、職業や所属（制服など）を表したり、礼儀や社会の慣習に従うはたらきを何という？", a: "社会生活上の機能", dummies: ["保健衛生上の機能", "生活活動上の機能", "自己表現のはたらき"] },
       { grade: 2, subject: "家庭科", category: "衣服の素材", q: "植物の綿花からとれ、主にTシャツやジーンズに使われる、汗や水分を吸いやすく肌ざわりが良い天然繊維は？", a: "綿(コットン)", dummies: ["麻", "毛", "絹"] },
       { grade: 2, subject: "家庭科", category: "衣服の素材", q: "羊の毛からとれ、保温性が高く、弾力性があるが、水洗いで縮みやすい動物繊維は？", a: "毛(ウール)", dummies: ["綿", "絹", "麻"] },
       { grade: 2, subject: "家庭科", category: "衣服の素材", q: "1935年にアメリカで発明された、非常に強く、ストッキングや雨具などに広く用いられる初の合成繊維は？", a: "ナイロン", dummies: ["ポリエステル", "アクリル", "ポリウレタン"] },
       { grade: 2, subject: "家庭科", category: "衣服の素材", q: "木材パルプを主原料にし、光沢があり肌ざわりがなめらかな再生繊維の代表例は？", a: "レーヨン", dummies: ["アセテート", "アクリル", "ポリエステル"] },
-      { grade: 2, subject: "家庭科", category: "衣服の素材", q: "水蒸気が繊維に吸着した際に熱を発生する現象を利用した、冬用の衣服などに使われる高性能素材は？", a: "吸湿発熱素材", dummies: ["蓄熱保温素材", "超はっ水素材", "バイオミメティクス"] },
+      { grade: 2, subject: "家庭科", category: "衣服の素材", q: "水蒸気が繊維に吸着した際に熱を発生する現象利用した、冬用の衣服などに使われる高性能素材は？", a: "吸湿発熱素材", dummies: ["蓄熱保温素材", "超はっ水素材", "バイオミメティクス"] },
 
       // 【家庭科：衣服の手入れ・補修・実習】
       { grade: 2, subject: "家庭科", category: "手入れ・補修", q: "ズボンやスカートのすそがほつれたとき、表に縫い目がほとんど目立たないようにする手縫い方法は？", a: "まつり縫い", dummies: ["なみ縫い", "返し縫い", "かがり縫い"] },
@@ -295,92 +291,127 @@
       { grade: 2, subject: "家庭科", category: "手入れ・補修", q: "衣服の長期保管時に、ウールなどの動物繊維を食べて穴を開けてしまう害虫（虫食い）の代表は？", a: "ヒメカツオブシムシ", dummies: ["アブラムシ", "イガ", "コクゾウムシ"] },
 
       // 【家庭科：衣服の選択・和服の文化】
-      { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "和服のように、細長いの長方形の布を直線的に切って無駄なく縫い合わせる衣服の作り方は？", a: "平面構成", dummies: ["立体構成", "型紙構成", "曲線構成"] },
+      { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "和服のように、細長い長方形の布を直線的に切って無駄なく縫い合わせる衣服の作り方は？", a: "平面構成", dummies: ["立体構成", "型紙構成", "曲線構成"] },
       { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "洋服のように、人間の体の曲線や動きに合わせて曲線を多く取り入れる、立体的な仕立て方は？", a: "立体構成", dummies: ["平面構成", "直線構成", "和服構成"] },
       { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "綿や麻などの素材で作られた、夏用の和服で、日本の伝統文化を体験する衣服の代表例は？", a: "ゆかた", dummies: ["振袖", "訪問着", "袴"] },
-      { grade: 2, subject: "家庭科", category: "衣服 of 選択と文化", q: "ゆかたで用いられる帯のうち、女性用として最も一般的で幅が約16cmの帯は？", a: "半幅帯", dummies: ["角帯", "兵児帯", "袋帯"] },
-      { grade: 2, subject: "家庭科", category: "衣服 of 選択と文化", q: "ゆかたで用いられる帯のうち、男性用として用いられ、幅が狭く地が厚い帯は？", a: "角帯", dummies: ["半幅帯", "兵児帯", "袋帯"] },
+      { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "ゆかたで用いられる帯のうち、女性用として最も一般的で幅が約16cmの帯は？", a: "半幅帯", dummies: ["角帯", "兵児帯", "袋帯"] },
+      { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "ゆかたで用いられる帯のうち、男性用として用いられ、幅が狭く地が厚い帯は？", a: "角帯", dummies: ["半幅帯", "兵児帯", "袋帯"] },
       { grade: 2, subject: "家庭科", category: "衣服の選択と文化", q: "和服を着る時、襟（えり）の合わせ方は男女共通でどちらを前に重ねるのが正しいか？", a: "右前(右襟が下、左襟が上)", dummies: ["左前(左襟が下、右襟が上)", "どちらでもよい", "男女で異なる"] },
 
       // 【家庭科：新規衣服デザイン・色・柄の効果】
-      { grade: 2, subject: "家庭科", category: "自分らしい着方", q: "自分の髪や肌、目の色などから導かれる、自分に最も似合う色のことを何カラーという？", a: "パーソナルカラー", dummies: ["アースカラー", "ビビッドカラー", "ニュートラルカラー"] },
-      { grade: 2, subject: "家庭科", category: "自分らしい着方", q: "年齢や性別、障害の有無に関わらず、すべての人がおしゃれを楽しめるよう配慮された服のデザインは？", a: "ユニバーサルファッション", dummies: ["エコファッション", "オーダーメイド", "レトロファッション"] },
-      { grade: 2, subject: "家庭科", category: "自分らしい着方", q: "ストライプや直線模様などの衣服デザインが、目の錯覚によって体が細長く見えたり太く見えたりする現象を何という？", a: "錯視(さくし)", dummies: ["幻視", "透視", "補色効果"] },
-      { grade: 2, subject: "家庭科", category: "自分らしい着方", q: "色相環において、お互いに対向する位置にあり、最もお互いを引き立てる対照的な配色の関係を何という？", a: "補色(対照色)", dummies: ["類似色", "同系色", "モノトーン"] },
+      { grade: 2, subject: "家庭科", category: "衣服のコーディネート", q: "自分の髪や肌、目の色などから導かれる、自分に最も似合う色のことを何カラーという？", a: "パーソナルカラー", dummies: ["アースカラー", "ビビッドカラー", "ニュートラルカラー"] },
+      { grade: 2, subject: "家庭科", category: "衣服のコーディネート", q: "年齢や性別、障害の有無に関わらず、すべての人がおしゃれを楽しめるよう配慮された服のデザインは？", a: "ユニバーサルファッション", dummies: ["エコファッション", "オーダーメイド", "レトロファッション"] },
+      { grade: 2, subject: "家庭科", category: "衣服のコーディネート", q: "ストライプや直線模様などの衣服デザインが、目の錯覚によって体が細長く見えたり太く見えたりする現象を何という？", a: "錯視(さくし)", dummies: ["幻視", "透視", "補色効果"] },
+      { grade: 2, subject: "家庭科", category: "衣服のコーディネート", q: "色相環において、お互いに対向する位置にあり、最もお互いを引き立てる対照的な配色の関係を何という？", a: "補色(対照色)", dummies: ["類似色", "同系色", "モノトーン"] },
 
-      // 【家庭科：モダンテクニック（表現技法）】
-      { grade: 2, subject: "家庭科", category: "モダンテクニック", q: "絵の具を多めの水で溶いて画面に落とし、息を吹きかけたりして偶然の模様を作る技法は？", a: "ドリッピング(吹き流し)", dummies: ["コラージュ", "スパッタリング", "フロッタージュ"] },
-      { grade: 2, subject: "家庭科", category: "モダンテクニック", q: "凹凸があるものの上に紙をあてて、鉛筆やクレヨンでこすって模様を写し取る技法を何という？", a: "フロッタージュ(こすり出し)", dummies: ["デカルコマニー", "スクラッチ", "マーブリング"] },
-      { grade: 2, subject: "家庭科", category: "モダンテクニック", q: "水面にインクや絵の具をたらしてかき混ぜ、そのマーブル模様を紙に写し取る技法は？", a: "マーブリング(墨流し)", dummies: ["ステンシル", "スパッタリング", "バチック"] },
-      { grade: 2, subject: "家庭科", category: "モダンテクニック", q: "絵の具を塗った紙を二つ折りにして、偶然左右対称の模様を作り出す技法は？", a: "デカルコマニー", dummies: ["スクラッチ", "コラージュ", "フロッタージュ"] },
+      // 【美術：モダンテクニック】
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "色紙、印刷物、布、ひもなどを切り取ったりちぎったりして画面に貼りつける技法は？", a: "コラージュ", dummies: ["スパッタリング", "フロッタージュ", "ステンシル"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "型紙を画面から10cmくらい離し、型紙の上から絵の具をつけたブラシでこすって細かな泡を飛ばす技法は？", a: "スパッタリング", dummies: ["フロッタージュ", "ステンシル", "バチック"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "凹凸のあるものの上に紙をあてて、鉛筆などでこすり、形を写し出す技法は？", a: "フロッタージュ（こすり出し）", dummies: ["デカルコマニー", "スクラッチ", "マーブリング"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "ケント紙などをカッターで切り抜き、型紙の上からたんぽやスポンジで絵の具を刷り込む技法は？", a: "ステンシル", dummies: ["コラージュ", "バチック", "スパッタリング"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "クレヨンなどの油性描画材で絵を描いた上から、多めの水で溶いた水彩絵の具をはじかせながら彩色する技法は？", a: "バチック", dummies: ["スクラッチ", "たらしこみ", "ストリング"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "紙にクレパス等で色を塗り、その上にアクリルガッシュ等を全体に塗って乾かした後、竹串などで削り取る技法は？", a: "スクラッチ", dummies: ["バチック", "フロッタージュ", "ストリング"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "多めの水で溶いた絵の具を筆に含ませて画面にたらす技法（アクション・ペインティングの一種）は？", a: "ドリッピング", dummies: ["吹き流し", "マーブリング", "たらしこみ"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "画面にたらした多めの水で溶いた絵の具を、ストローや口で吹く技法は？", a: "吹き流し", dummies: ["ドリッピング", "マーブリング", "ストリング"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "水面に水で溶いた油絵の具などをたらし、棒でかき回して模様を作り、紙を上からあてて写し取る技法は？", a: "マーブリング（墨流し）", dummies: ["デカルコマニー", "たらしこみ", "スパッタリング"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "絵の具を置いた紙を二つ折りにして、偶然左右対称の模様を作り出す技法は？", a: "デカルコマニー", dummies: ["マーブリング", "ストリング", "フロッタージュ"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "毛糸やひもに絵の具をつけ、二つ折りにした紙に挟んで引き抜く技法は？", a: "ストリング（糸引き絵）", dummies: ["デカルコマニー", "たらしこみ", "スクラッチ"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "先に塗った絵の具が乾かないうちに別の色をにじませる技法は？", a: "たらしこみ", dummies: ["吹き流し", "スクラッチ", "フロッタージュ"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "色を乗せたくない部分に最初に使用して絵の具を弾かせるモダンテクニック用の画材は？", a: "マースキングインク（マスキング）", dummies: ["アクリルガッシュ", "ジェッソ", "フィキサチフ"] },
+      { grade: 2, subject: "美術", category: "モダンテクニック", q: "床にキャンヴァスを置き、天井からつるしたロープにつかまって足で描く「フット・ペインティング」の画家は？", a: "白髪一雄", dummies: ["マックス・エルンスト", "田中一村", "片岡球子"] },
 
-      // 【技術：エネルギー変換の技術】
-      { grade: 2, subject: "技術", category: "エネルギー", q: "電気や熱、光など、もととなるエネルギーに対して、有効に利用できたエネルギーの割合を何という？", a: "変換効率", dummies: ["発電効率", "伝導率", "出力比"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "石油、石炭、天然ガスなど、自然界から直接得られる加工されていない一次エネルギー資源は？", a: "化石燃料", dummies: ["二次エネルギー", "バイオマス", "再生可能エネルギー"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "太陽光、風力、水力など、比較的短時間で自然に再生され枯渇しないエネルギー源は？", a: "再生可能エネルギー", dummies: ["化石燃料", "原子力エネルギー", "二次エネルギー"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "LED照明は、投入された電気エネルギーを主に何エネルギーに変換して部屋を明るくするか？", a: "光エネルギー", dummies: ["熱エネルギー", "運動エネルギー", "化学エネルギー"] },
-      { grade: 2, subject: "技術", category: "エネルギー", q: "IHヒータは、投入された電気エネルギーを磁力線から鉄鍋に伝えて、何エネルギーに変換するか？", a: "熱エネルギー", dummies: ["光エネルギー", "音エネルギー", "位置エネルギー"] },
+      // 【美術：日本の絵画を楽しむ・伝統色】
+      { grade: 2, subject: "美術", category: "日本画のキーワード", q: "日本の絵画を楽しむための「五つのキーワード」は何か？", a: "四季、動物、不思議、余白、構図", dummies: ["水墨、色彩、写実、抽象、遠近", "光、影、遠近、色彩、立体", "伝統、革新、和洋、自然、精神"] },
+      { grade: 2, subject: "美術", category: "日本画のキーワード", q: "カエルやウサギ、サルなどを擬人化して描き、「漫画の原点」ともいわれる平安時代の絵巻物は？", a: "鳥獣人物戯画", dummies: ["百鬼夜行絵巻", "伴大納言絵詞", "信貴山縁起絵巻"] },
+      { grade: 2, subject: "美術", category: "日本画のキーワード", q: "余白と墨のグラデーションを効果的に使い、松林の空気感や遠近感を表現した長谷川等伯の国宝作品は？", a: "松林図屏風", dummies: ["燕子花図屏風", "風神雷神図屏風", "夏秋渓流図屏風"] },
+      { grade: 2, subject: "美術", category: "日本の伝統色", q: "桜色、萌黄、桃色、鶯色、菜の花色、山吹色、若草色、柳色など、何という季節の伝統色か？", a: "春の伝統色", dummies: ["夏の伝統色", "秋の伝統色", "冬の伝統色"] },
+      { grade: 2, subject: "美術", category: "日本の伝統色", q: "撫子色、栗色、茜色、朽葉色、柿色、桔梗色など、何という季節の伝統色か？", a: "秋の伝統色", dummies: ["春の伝統色", "夏の伝統色", "冬の伝統色"] },
 
-      // 【技術：電気の供給・発電のしくみ】
-      { grade: 2, subject: "技術", category: "電気の供給", q: "送電線の中で電気が熱に変わって失われるのを防ぐため、発電所からはどのように電気を送るか？", a: "電圧を非常に高くする", dummies: ["電圧を低くする", "直流電流にする", "電流を多くする"] },
-      { grade: 2, subject: "技術", category: "電気の供給", q: "日本の電気の交流周波数は、東日本と西日本でそれぞれ何Hz（ヘルツ）に分かれているか？", a: "東日本50Hz、西日本60Hz", dummies: ["東日本60Hz、西日本50Hz", "東日本100Hz、西日本200Hz", "全国共通60Hz"] },
-      { grade: 2, subject: "技術", category: "電気の供給", q: "スマートフォンやパソコンに広く使われている、軽くて大容量、充電可能な二次電池は？", a: "リチウムイオン電池", dummies: ["アルカリ乾電池", "マンガン乾電池", "ニッケル水素電池"] },
-      { grade: 2, subject: "技術", category: "発電のしくみ", q: "ガスタービンで発電した後、その高温排熱から蒸気を作り、さらに蒸気タービンを回して2度発電する高効率な仕組みは？", a: "コンバインドサイクル発電", dummies: ["コージェネレーションシステム", "バイオマス発電", "地熱発電"] },
-      { grade: 2, subject: "技術", category: "発電のしくみ", q: "発電の際に発生する「熱」も回収し、お湯や暖房として有効利用するエコなシステムを何という？", a: "コージェネレーションシステム", dummies: ["コンバインドサイクル発電", "エネルギーミックス", "スマートグリッド"] },
+      // 【技術：エネルギーと発電】
+      { grade: 2, subject: "技術", category: "エネルギー変換", q: "電気や熱、光など、もととなるエネルギーに対して、有効に利用できたエネルギーの割合を何という？", a: "変換効率", dummies: ["発電効率", "伝導率", "出力比"] },
+      { grade: 2, subject: "技術", category: "電気の供給と発電", q: "日本の電気の交流周波数は、東日本と西日本でそれぞれ何Hzに分かれているか？", a: "東日本50Hz、西日本60Hz", dummies: ["東日本60Hz、西日本50Hz", "東日本100Hz、西日本200Hz", "全国共通60Hz"] },
+      { grade: 2, subject: "技術", category: "電気の供給と発電", q: "スマートフォンやパソコンに広く使われている、軽くて大容量、充電可能な二次電池は？", a: "リチウムイオン電池", dummies: ["アルカリ乾電池", "マンガン乾電池", "ニッケル水素電池"] },
 
-      // 【理科：酸化と還元の強化問題・化学反応式】
+      // 【理科：酸化と還元】
       { grade: 2, subject: "理科", category: "酸化と還元", q: "鉄と硫黄が結びつく化合反応によってできる黒色の物質は？", a: "硫化鉄", dummies: ["酸化鉄", "酸化マグネシウム", "塩化ナトリウム"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "硫化鉄にうすい塩酸を加えたときに発生する、卵の腐ったような臭いのする有毒な気体は？", a: "硫化水素", dummies: ["二酸化炭素", "酸素", "水素"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "化学反応式「Fe + S -> FeS」において、できた硫化鉄には磁石を近づけるとどうなるか？", a: "磁石に引きつけられない", dummies: ["非常に強く引きつけられる", "青く発光する", "水に溶けて消える"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "銅を加熱（酸化）したとき、金属の質量はどう変化するか？", a: "酸素が結びつくため増える", dummies: ["気体が発生して減る", "全く変化しない", "半分になる"] },
       { grade: 2, subject: "理科", category: "酸化と還元", q: "銅を酸化させて酸化銅にするときの「銅の質量」と「結びつく酸素の質量」の比（銅：酸素）は常にいくらか？", a: "4：1", dummies: ["3：2", "1：1", "4：3"] },
       { grade: 2, subject: "理科", category: "酸化と還元", q: "マグネシウムを燃焼させて酸化マグネシウムを作るときの「マグネシウム：酸素」の質量比はいくらか？", a: "3：2", dummies: ["4：1", "1：1", "5：2"] },
-      { grade: 2, subject: "理科", category: "酸化と還元", q: "酸化銅を水素で還元したとき、試験管の口にできる「青い塩化コバルト紙を赤色に変える」液体は何か？", a: "水", dummies: ["二酸化炭素", "うすい塩酸", "エタノール"] },
 
-      // 【社会：九州地方の自然と生活】
-      { grade: 2, subject: "社会", category: "九州地方", q: "火山の爆発などによって陥没してつくられた、阿蘇山に代表される巨大な窪地を何というか？", a: "カルデラ", dummies: ["シラス台地", "リアス海岸", "扇状地"] },
-      { grade: 2, subject: "社会", category: "九州地方", q: "九州南部に広がる、水を通しやすく稲作に不向きなため、畑作や畜産が盛んな地層（火山灰の堆積地）は？", a: "シラス台地", dummies: ["カルデラ", "三角州", "河岸段丘"] },
-      { grade: 2, subject: "社会", category: "九州地方", q: "筑後川の下流に広がり、クリーク（水路）が網の目のように発達した平野は？", a: "筑紫平野", dummies: ["熊本平野", "宮崎平野", "石狩平野"] },
-      { grade: 2, subject: "社会", category: "九州地方", q: "鹿児島県の桜島（御岳）付近で、日常の火山活動（降灰）に備えて人々の安全を守るために設置されている施設は？", a: "降灰シェルター(退避壕)", dummies: ["ハザードマップ", "砂防ダム", "防潮堤"] },
-      { grade: 2, subject: "社会", category: "九州地方", q: "大分県の八丁原発電所に代表される、火山の熱（水蒸気）を利用したクリーンな発電は？", a: "地熱発電", dummies: ["水力発電", "火力発電", "風力発電"] },
-      { grade: 2, subject: "社会", category: "九州地方", q: "1901年、政府が九州に建設し、日本の重化学工業の基礎を築いた製鉄所は？", a: "官営八幡製鉄所", dummies: ["釜石製鉄所", "室蘭製鉄所", "川崎製鉄所"] },
+      // ==========================================
+      // 🗺️ 【NEW・v3.2大追加】社会：地理分野 (自然環境、災害、交通、産業、人口、九州地方) 🗺️
+      // ==========================================
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "日本の本州・九州・四国が主に属しており、四季の変化がはっきりしている気候帯は何か。", a: "温帯", dummies: ["亜寒帯（冷帯）", "熱帯", "乾燥帯"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "日本の北海道が属している、冬の寒さが厳しい気候帯は何か。", a: "亜寒帯（冷帯）", dummies: ["温帯", "高山気候", "熱帯"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "夏に太平洋から暖かく湿った空気を送り、冬にユーラシア大陸から冷たい空気を送る、日本列島の気候に大きな影響を与える風は？", a: "季節風（モンスーン）", dummies: ["偏西風", "貿易風", "エルニーニョ"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "日本の国土の約何分のいくつが森林で占められているか。", a: "3分の2", dummies: ["2分の1", "4分の3", "5分の4"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "日本の気候区分で、はっきりした梅雨がなく、夏は冷涼で1年を通して降水量が少ない気候は何か。", a: "北海道の気候", dummies: ["日本海側の気候", "太平洋側の気候", "瀬戸内の気候"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "冬の季節風が山地にぶつかり雪を降らせるため、冬に雨や雪が多い日本の気候区分は何か。", a: "日本海側の気候", dummies: ["太平洋側の気候", "瀬戸内の気候", "南西諸島の気候"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "冬は晴天の日が多く、夏は太平洋からの湿った季節風の影響で雨が多い日本の気候区分は何か。", a: "太平洋側の気候", dummies: ["日本海側の気候", "中央高地の気候", "瀬戸内の気候"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "1年を通して降水量が少なく、夏と冬、あるいは昼と夜の気温差が大きい内陸（中央高地）の気候区分を何というか。", a: "中央高地の気候（内陸の気候）", dummies: ["瀬戸内の気候", "日本海側の気候", "太平洋側の気候"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "冬の季節風が中国山地に、夏の季節風が四国山地にさえぎられるため、1年を通して温暖で雨が少ない気候区分は何か。", a: "瀬戸内の気候", dummies: ["中央高地の気候", "南西諸島の気候", "太平洋側の気候"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "暖流である「黒潮」の影響を受け、冬でも温暖であり、1年を通して雨が多い日本の気候区分は何か。", a: "南西諸島の気候", dummies: ["瀬戸内の気候", "太平洋側の気候", "中央高地の気候"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "災害時に備えて、被害予測の範囲や避難場所などを分かりやすく示した地図を何というか。", a: "ハザードマップ", dummies: ["地形図", "分布図", "ルートマップ"] },
+      { grade: 2, subject: "社会", category: "地理(自然・災害)", q: "自然災害への心構えとして、地域住民どうしが互いに助け合うことを何というか。", a: "共助", dummies: ["自助", "公助", "互助"] },
 
-      // 【英語：Unit 2 Part 1 新出表現】
-      { grade: 2, subject: "英語", category: "英単語", q: "「特に、とりわけ」を意味する英単語は？", a: "especially", dummies: ["usually", "sometimes", "always"] },
-      { grade: 2, subject: "英語", category: "英単語", q: "「味、風味」を意味する英単語は？", a: "flavor", dummies: ["topping", "culture", "painting"] },
-      { grade: 2, subject: "英語", category: "英単語", q: "「トッピング、上にのせる具」を意味する英単語は？", a: "topping", dummies: ["flavor", "order", "sauce"] },
-      { grade: 2, subject: "英語", category: "熟語・文法", q: "「･･･など」を意味する英語の表現は？", a: "and so on", dummies: ["for example", "and so up", "look forward to"] }
+      { grade: 2, subject: "社会", category: "地理(交通・人口)", q: "原油や自動車など、重くて大量の製品を安価に運ぶのに適した輸送手段は何か。", a: "海上輸送（船舶輸送）", dummies: ["航空輸送", "鉄道輸送", "陸上輸送"] },
+      { grade: 2, subject: "社会", category: "地理(交通・人口)", q: "半導体や生鮮食品のように、軽量で高価、または鮮度が求められる品物の輸送に適した手段は何か。", a: "航空輸送", dummies: ["海上輸送", "鉄道輸送", "長距離トラック"] },
+      { grade: 2, subject: "社会", category: "地理(交通・人口)", q: "情報通信技術（ICT）を利用できる人とできない人の間で生まれる、経済的・社会的な格差を何というか。", a: "情報格差（デジタルデバイド）", dummies: ["地域格差", "学力格差", "世代間格差"] },
+      { grade: 2, subject: "社会", category: "地理(交通・人口)", q: "2023年の訪日外国人の国・地域別割合において、最も高い割合（27.8%）を占めた国はどこか。", a: "韓国", dummies: ["Taiwan", "中国", "アメリカ"] },
+      { grade: 2, subject: "社会", category: "地理(交通・人口)", q: "農村や離島などで若い世代が都市へ流出し、高齢化が進んで地域社会の維持が困難になる状態を何というか。", a: "過疎", dummies: ["過密", "少子化", "ドーナツ化"] },
+
+      { grade: 2, subject: "社会", category: "地理(産業・資源)", q: "大都市の周辺で行われる、新鮮な野菜や果物を新鮮なうちに大消費地へ出荷する農業を何というか。", a: "近郊農業", dummies: ["促成栽培", "抑制栽培", "輸送園芸農業"] },
+      { grade: 2, subject: "社会", category: "地理(産業・資源)", q: "ビニールハウスなどを利用し、作物の出荷時期を通常より早める栽培方法を何というか。", a: "促成栽培", dummies: ["抑制栽培", "近郊農業", "有機農業"] },
+      { grade: 2, subject: "社会", category: "地理(産業・資源)", q: "高冷地などを利用し、作物の出荷時期を通常より遅らせる栽培方法を何というか。", a: "抑制栽培", dummies: ["促成栽培", "近郊農業", "露地栽培"] },
+      { grade: 2, subject: "社会", category: "地理(産業・資源)", q: "貿易摩擦などをきっかけに国内の工場が海外へ移転し、国内の産業や雇用が衰退した現象を何というか。", a: "産業の空洞化", dummies: ["グローバル化", "貿易摩擦", "現地生産"] },
+      { grade: 2, subject: "社会", category: "地理(産業・資源)", q: "第1次産業の生産者が、食品加工（第2次）や販売（第3次）まで一体的に行い、商品の価値を高める取り組みは？", a: "6次産業化", dummies: ["総合産業化", "流通近代化", "地産地消"] },
+      { grade: 2, subject: "社会", category: "地理(産業・資源)", q: "日本の四大工業地帯のうち、愛知県を中心に自動車工業などが非常に盛んな工業地帯は何か。", a: "中京工業地帯", dummies: ["京浜工業地帯", "阪神工業地帯", "北九州工業地帯"] },
+
+      { grade: 2, subject: "社会", category: "地理(九州地方)", q: "阿蘇山などにみられる、火山の噴火によって形成された大きくくぼんだ地形を何というか。", a: "カルデラ", dummies: ["シラス台地", "リアス海岸", "三角州"] },
+      { grade: 2, subject: "社会", category: "地理(九州地方)", q: "九州南部に広がる、水を通しやすい火山灰が積もってできた広大な台地を何というか。", a: "シラス台地", dummies: ["カルデラ", "筑紫平野", "河岸段丘"] },
+      { grade: 2, subject: "社会", category: "地理(九州地方)", q: "1970年代以降、九州地方にシリコンウェハや半導体工場が多数進出したことから、九州は何と呼ばれたか。", a: "シリコンアイランド", dummies: ["シリコンバレー", "ICアイランド", "ハイテク列島"] },
+      { grade: 2, subject: "社会", category: "地理(九州地方)", q: "15世紀に沖縄に成立し、東アジアの国々と中継貿易を行って栄えた国は何か。", a: "琉球王国", dummies: ["蝦夷地", "薩摩藩", "毛利氏"] },
+      { grade: 2, subject: "社会", category: "地理(九州地方)", q: "沖縄県が第二次世界大戦後にアメリカ軍の統治下に置かれ、日本へ復帰したのは西暦何年か。", a: "1972年", dummies: ["1945年", "1965年", "1989年"] },
+
+      // ==========================================
+      // ⚔️ 【NEW・v3.2大追加】社会：歴史分野 (大航海時代、戦国・全国統一) ⚔️
+      // ==========================================
+      { grade: 2, subject: "社会", category: "歴史(大航海時代)", q: "14世紀にイタリアの都市から始まった、古代ギリシャ・ローマの文化を復興しようとした新しい文芸・文化の風潮は？", a: "ルネサンス（文芸復興）", dummies: ["宗教改革", "啓蒙思想", "市民革命"] },
+      { grade: 2, subject: "社会", category: "歴史(大航海時代)", q: "1492年にスペインの援助を受け、大西洋を横断して西インド諸島に到達した航海士は誰か？", a: "コロンブス", dummies: ["マゼラン", "バスコ・ダ・ガマ", "アメリゴ・ベスプッチ"] },
+      { grade: 2, subject: "社会", category: "歴史(大航海時代)", q: "1498年にアフリカ南端の好望角を回り、インドへの新航路を開拓したポルトガルの航海士は誰か？", a: "バスコ・ダ・ガマ", dummies: ["コロンブス", "マゼラン", "クック"] },
+      { grade: 2, subject: "社会", category: "歴史(大航海時代)", q: "1522年に一行が世界で初めて世界一周を成し遂げた、スペインの船隊を率いた人物は誰か？", a: "マゼラン", dummies: ["コロンブス", "バスコ・ダ・ガマ", "シャクシャイン"] },
+      { grade: 2, subject: "社会", category: "歴史(大航海時代)", q: "1543年、日本の種子島にポルトガル人が漂着したことで日本に伝わった武器は何か。", a: "鉄砲", dummies: ["日本刀", "大砲", "弓矢"] },
+      { grade: 2, subject: "社会", category: "歴史(大航海時代)", q: "1549年、鹿児島に上陸して日本に初めてキリスト教を伝えた、イエズス会の宣教師は誰か？", a: "フランシスコ・ザビエル", dummies: ["ルイス・フロイス", "マルコ・ポーロ", "ペリー"] },
+      { grade: 2, subject: "社会", category: "歴史(大航海時代)", q: "戦国時代に日本から輸出され、世界銀の産出量のかなりの割合を占めていた島根県の銀山は何か。", a: "石見銀山", dummies: ["佐渡金山", "生野銀山", "足尾銅山"] },
+
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "1560年、織田信長が少数の兵で今川義元の大軍を破った戦いは何か。", a: "桶狭間の戦い", dummies: ["長篠の戦い", "関ヶ原の戦い", "本能寺の変"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "1573年、織田信長が最後の将軍・足利義昭を京都から追放したことで滅亡した幕府は何か。", a: "室町幕府", dummies: ["鎌倉幕府", "江戸幕府", "徳川幕府"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "1575年、織田・徳川連合軍が大量の鉄砲を組織的に使用して武田氏の騎馬隊を破った戦いは何か。", a: "長篠の戦い", dummies: ["桶狭間の戦い", "関ヶ原の戦い", "山崎の戦い"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "織田信長が経済を活性化させるために行った、城下での関所の廃止や、商人の特権を廃止した政策は？", a: "楽市・楽座", dummies: ["株仲間の結成", "太閤検地", "刀狩"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "1582年、天下統一を目前にした織田信長が、家臣の明智光秀に襲われて自害した事件を何というか。", a: "本能寺の変", dummies: ["桜田門外の変", "大化の改新", "乙巳の変"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "豊臣秀吉が百姓の一揆を防ぎ、身分を安定させるために、百姓から武器を取り上げた政策を何というか。", a: "刀狩", dummies: ["太閤検地", "楽市・楽座", "宗門改"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "豊臣秀吉が全国の田畑の面積や収穫高を統一した升で調査した政策は何か。", a: "太閤検地", dummies: ["刀狩", "人別改", "地租改正"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "刀狩や太閤検地によって、武士と百姓の身分の区別が明確になった身分制度の確立を何というか。", a: "兵農分離", dummies: ["士農工商", "四民平等", "封建制度"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "豊臣秀吉が2度にわたり大軍を派遣した「文禄の役」「慶長の役」は、どこの国への出兵か。", a: "朝鮮", dummies: ["中国（明）", "琉球", "台湾"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "『唐獅子図屏風』などの豪華なふすま絵を描き、桃山文化を代表する画家となった人物は誰か。", a: "狩野永徳", dummies: ["雪舟", "尾形光琳", "長谷川等伯"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "豊臣秀吉に仕え、無駄を省いた「わび茶」のスタイルを完成させて茶の湯を芸術に高めた人物は誰か。", a: "千利休", dummies: ["出雲の阿国", "足利義政", "狩野永徳"] },
+      { grade: 2, subject: "社会", category: "歴史(全国統一)", q: "出雲の阿国が京都で始め、後の歌舞伎へと発展していった桃山時代の芸能を何というか。", a: "かぶき踊り", dummies: ["人形浄瑠璃", "能楽", "狂言"] }
     ];
 
     rawData = rawData.concat(newQuestions);
 
+    // ==========================================
+    // 🇺🇸 2年英語の新出単語・表現（末尾結合）
+    // ==========================================
     const engVocabNew = {
-      "金の、貴重な": "golden", "休日、休暇": "holiday", "シンガポール": "Singapore",
-      "飛行、飛行便": "flight", "到着する、着く": "arrive", "空港": "airport", "すぐ、まもなく、早く": "soon",
-      "～でしょう、～するつもりだ": "will", "わくわくした": "excited", "シーフード": "seafood",
-      "予約": "reservation", "メートル": "meter(s)", "背が高い": "tall", "重さがある": "weigh(s)",
-      "トン": "ton(s)", "見つけた(過去形)": "found", "見つける": "find", "言語": "language(s)",
-      "ドル": "dollar(s)", "例": "example", "連絡し合う": "communicate", "マレー語": "Malay",
-      "タミル語": "Tamil", "絵、絵画": "painting(s)", "壁": "wall(s)", "驚いた": "surprised",
-      "地域、区域": "area", "インド": "India", "モスク": "mosque", "文化": "culture(s)", "チャイナタウン": "Chinatown",
-      "ヒンズー教の": "Hindu", "タマネギ型の": "onion-shaped", "特に": "especially",
-      "命令、注文、注文する": "order", "トッピング": "topping", "いろいろな": "various",
-      "味、風味": "flavor", "しょうゆ": "soy sauce", "塩": "salt", "名探偵コナン": "Detective Conan",
-      "リトル・インディア": "Little India", "アラブ・ストリート": "Arab Street"
+      "特に": "especially", "味、風味": "flavor", "トッピング": "topping", "いろいろな": "various",
+      "しょうゆ": "soy sauce", "塩": "salt", "金の": "golden", "休日": "holiday"
     };
+    const engPhrasesNew = { "例えば": "for example", "…など": "and so on" };
 
-    const engPhrasesNew = {
-      "例えば": "for example",
-      "私はあなたに何枚かの写真を見せます": "I will show you some pictures.",
-      "私たちは私たちのイヌをポチと呼びます": "We call our dog Pochi.",
-      "ジュンは私に彼のギターを見せた": "Jun showed me his guitar.",
-      "…など": "and so on"
-    };
+    Object.keys(engVocabNew).forEach(k => { rawData.push({ grade: 2, subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocabNew[k], dummies: [] }); });
+    Object.keys(engPhrasesNew).forEach(k => { rawData.push({ grade: 2, subject: "英語", category: "熟語・文法", q: `「${k}」を英語で言うと？`, a: engPhrasesNew[k], dummies: [] }); });
 
-    Object.keys(engVocabNew).forEach(k => { rawData.push({ grade: 0, subject: "英語", category: "英単語", q: `「${k}」を意味する英単語は？`, a: engVocabNew[k], dummies: [] }); });
-    Object.keys(engPhrasesNew).forEach(k => { rawData.push({ grade: 0, subject: "英語", category: "熟語・文法", q: `「${k}」を英語で言うと？`, a: engPhrasesNew[k], dummies: [] }); });
-
-    // ID付与と重複排除
+    // ID付与と重複排除（過去のq_0 〜 q_150等のマッピングを狂わせない設定）
     const uniqueMap = new Map();
     rawData.forEach((item, index) => {
       const key = item.subject + item.category + item.q + item.a;
@@ -388,20 +419,61 @@
     });
     rawData = Array.from(uniqueMap.values());
 
-    // 学年別・科目別の集計 (UI用)
-    const subjectsGrade1 = [];
-    const subjectsGrade2 = [];
+    // ==========================================
+    // 💡 今回の期末テスト範囲（2年）の仕分け判定ロジック 💡
+    // ここで今回のテスト範囲に直結するものだけを抽出します！
+    // ==========================================
+    function isCurrentTestRange(item) {
+      if (item.grade !== 2) return false;
+      
+      // 美術、技術、家庭科はすべて今回のテスト範囲
+      if (["美術", "技術", "家庭科"].includes(item.subject)) return true;
+      
+      // 社会：今回指定された範囲
+      if (item.subject === "社会") {
+        const currentCategories = [
+          "地理(自然・災害)", "地理(交通・人口)", "地理(産業・資源)", 
+          "地理(九州地方)", "歴史(大航海時代)", "歴史(全国統一)",
+          "日本の地形", "地域調査", "地域調査と地図", "九州地方"
+        ];
+        return currentCategories.includes(item.category);
+      }
+      
+      // 理科：今回指定された範囲（酸化と還元）
+      if (item.subject === "理科") {
+        return item.category === "酸化と還元";
+      }
+      
+      return false;
+    }
 
-    const subs1 = [...new Set(rawData.filter(d => d.grade === 1).map(d => d.subject))];
-    subs1.forEach(sub => {
-      const categories = [...new Set(rawData.filter(d => d.grade === 1 && d.subject === sub).map(d => d.category))];
-      subjectsGrade1.push({ name: sub, categories });
+    // 各セクションに分けるデータ集計
+    const currentTestSubjects = [];  // 今回の期末テスト(2年)
+    const pastReviewSubjects = [];    // 過去の2年復習データ
+    const grade1Subjects = [];        // 1年の総復習
+
+    // 1. 今回の期末テスト範囲 (2年)
+    const currentItems = rawData.filter(d => isCurrentTestRange(d));
+    const currentSubs = [...new Set(currentItems.map(d => d.subject))];
+    currentSubs.forEach(sub => {
+      const categories = [...new Set(currentItems.filter(d => d.subject === sub).map(d => d.category))];
+      currentTestSubjects.push({ name: sub, categories });
     });
 
-    const subs2 = [...new Set(rawData.filter(d => d.grade === 2).map(d => d.subject))];
-    subs2.forEach(sub => {
-      const categories = [...new Set(rawData.filter(d => d.grade === 2 && d.subject === sub).map(d => d.category))];
-      subjectsGrade2.push({ name: sub, categories });
+    // 2. 過去のテスト・復習 (2年)
+    const pastItems = rawData.filter(d => d.grade === 2 && !isCurrentTestRange(d));
+    const pastSubs = [...new Set(pastItems.map(d => d.subject))];
+    pastSubs.forEach(sub => {
+      const categories = [...new Set(pastItems.filter(d => d.subject === sub).map(d => d.category))];
+      pastReviewSubjects.push({ name: sub, categories });
+    });
+
+    // 3. 1年生の復習
+    const g1Items = rawData.filter(d => d.grade === 1);
+    const g1Subs = [...new Set(g1Items.map(d => d.subject))];
+    g1Subs.forEach(sub => {
+      const categories = [...new Set(g1Items.filter(d => d.subject === sub).map(d => d.category))];
+      grade1Subjects.push({ name: sub, categories });
     });
 
     // ==========================================
@@ -453,7 +525,7 @@
     }
 
     // ==========================================
-    // Firebase 初期化
+    // Firebase 初期化 (超安定接続ガード)
     // ==========================================
     const defaultAppId = "sakura-app-d3d10"; 
     const appId = (typeof __app_id !== 'undefined' && __app_id) ? __app_id : defaultAppId;
@@ -463,7 +535,7 @@
       loadLocalPasswords();
       loadLocalStats();
 
-      // 安全対策：Firebaseが読み込めない場合はオフラインローカルモードで強制的に起動させる
+      // Firebaseが読み込めない場合でもローカルモードで瞬時に動かす
       if (typeof firebase === 'undefined') {
         console.warn("Firebase SDK is not loaded. Operating in Local Mode.");
         state.isDataLoaded = true;
@@ -527,10 +599,12 @@
         } catch(e) { state.isDataLoaded = true; render(); }
       } else { state.isDataLoaded = true; render(); }
     }
-    initApp();
+    
+    // 起動処理を確実にキック
+    window.addEventListener('DOMContentLoaded', () => { initApp(); });
 
     // ==========================================
-    // 💡 クイズ生成
+    // 💡 賢いクイズ生成ロジック
     // ==========================================
     function generateChoices(currentQuestion) {
       try {
@@ -553,11 +627,18 @@
 
     window.startQuizCustom = function(filterType, subjectValue = null, categoryValue = null) {
       let filtered = rawData;
-      if (filterType === 'vocab') { filtered = filtered.filter(q => q.subject === '英語'); } 
-      else if (filterType === 'grade2') {
-        filtered = filtered.filter(q => q.grade === 2 && q.subject === subjectValue);
+      if (filterType === 'vocab') { 
+        filtered = filtered.filter(q => q.subject === '英語'); 
+      } else if (filterType === 'grade2_current') {
+        // 今回の期末テスト範囲 (2年)
+        filtered = filtered.filter(q => isCurrentTestRange(q) && q.subject === subjectValue);
+        if (categoryValue && categoryValue !== 'all') filtered = filtered.filter(q => q.category === categoryValue);
+      } else if (filterType === 'grade2_past') {
+        // 過去のテスト範囲 (2年)
+        filtered = filtered.filter(q => q.grade === 2 && !isCurrentTestRange(q) && q.subject === subjectValue);
         if (categoryValue && categoryValue !== 'all') filtered = filtered.filter(q => q.category === categoryValue);
       } else if (filterType === 'grade1') {
+        // 1年総復習
         filtered = filtered.filter(q => q.grade === 1 && q.subject === subjectValue);
         if (categoryValue && categoryValue !== 'all') filtered = filtered.filter(q => q.category === categoryValue);
       }
@@ -568,7 +649,8 @@
       if (state.activeUser === 'guest') { showMessage("ゲストモードでは苦手特訓は使えません。"); return; }
       let targetQuestions = rawData.filter(q => {
         if (filterType === 'vocab' && q.subject !== '英語') return false;
-        if (filterType === 'grade2' && (q.grade !== 2 || q.subject !== subjectValue)) return false;
+        if (filterType === 'grade2_current' && (!isCurrentTestRange(q) || q.subject !== subjectValue)) return false;
+        if (filterType === 'grade2_past' && (q.grade !== 2 || isCurrentTestRange(q) || q.subject !== subjectValue)) return false;
         if (filterType === 'grade1' && (q.grade !== 1 || q.subject !== subjectValue)) return false;
         
         const stat = state.userStats[q.id]; if (!stat) return false;
@@ -580,7 +662,7 @@
         return rateB - rateA;
       });
 
-      if (targetQuestions.length === 0) { showMessage("すばらしい！この範囲の極端に苦手な問題はありません。"); return; }
+      if (targetQuestions.length === 0) { showMessage("すばらしい！この範囲の苦手な問題はありません。"); return; }
       prepareQuiz(targetQuestions.slice(0, 20));
     }
 
@@ -699,7 +781,7 @@
       const userName = userThemes[state.activeUser].name;
       if (totalAttempts === 0) return `なんじゃ、まだ一度もアプリを開いておらぬではないか！\n怠惰は最大の罪なり。まずは${userName}にアプリを開かせ、一問でも解かせるのじゃ！`;
       const accuracy = totalAttempts > 0 ? ((totalAttempts - totalMistakes) / totalAttempts) * 100 : 0;
-      let evalText = `ふむ。我の帳簿によると、${userName}のこれまでの総解答数は【${totalAttempts}回】、正答率は【${Math.round(accuracy)}％】じゃな。\n\n`;
+      let evalText = `ふむ。我の帳簿によると、${userName}のこれまでの総解答数は【${totalAttempts}回】、正答率（アキュラシー）は【${Math.round(accuracy)}％】じゃな。\n\n`;
       if (accuracy >= 90) evalText += "見事な精進ぶりじゃ！地道な努力がしっかりと実を結んでおる。\nしかし、悪魔は油断した隙に忍び寄るもの。慢心せず、さらなる高みを目指させよ！\n";
       else if (accuracy >= 60) evalText += "まずまずの出来じゃな。努力の跡は見られるぞ。\nだが、まだ知識が定着しておらぬ部分がちらほら見受けられる。反復こそが記憶の定着への近道じゃ！\n";
       else evalText += "むむっ……これは少々苦戦しておるようじゃな。\n基礎がグラついておるかもしれんぞ。焦らず、一歩ずつ確実に理解させるのじゃ！\n";
@@ -714,7 +796,7 @@
     }
 
     // ==========================================
-    // 画面描画ロジック (HTML)
+    // 画面描画ロジック (HTML出力)
     // ==========================================
     function renderHomeHTML() {
       const isGuest = state.activeUser === 'guest';
@@ -723,6 +805,10 @@
       if (!state.isDataLoaded) {
         return `<div class="flex flex-col items-center justify-center py-20 text-gray-500 animate-fade-in relative z-10"><div class="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>${currentUserTheme.icon} ${currentUserTheme.name}のデータを準備中...</div>`;
       }
+
+      const syncStatusColor = (state.fbReady && state.user && !isGuest) ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500';
+      const syncStatusIcon = (state.fbReady && state.user && !isGuest) ? 'ph-cloud-check' : 'ph-cloud-slash';
+      const syncStatusText = (state.fbReady && state.user && !isGuest) ? 'クラウド同期ON' : '同期OFF(保存は安全)';
 
       let contentHtml = '';
       if (state.activeTab === 'analytics') {
@@ -757,63 +843,92 @@
           `;
         }
       } else {
+        // ==========================================
+        // 🌸 UIの完全仕分けレンダリング 🌸
+        // ==========================================
+        
+        // セクション1: 🔥 今回の期末テスト範囲 (2年)
+        const currentTestHtml = currentTestSubjects.map(sub => {
+          let iconColor = "text-orange-500"; 
+          if (sub.name === "理科") iconColor = "text-blue-500"; 
+          if (sub.name === "技術") iconColor = "text-emerald-500";
+          if (sub.name === "家庭科") iconColor = "text-pink-500";
+          if (sub.name === "美術") iconColor = "text-indigo-500";
+          return `
+          <div class="bg-white/95 backdrop-blur-sm p-5 rounded-3xl shadow-sm border border-orange-200 mb-4">
+            <h3 class="text-base font-bold text-gray-800 mb-3 flex items-center"><i class="ph-fill ph-star mr-2 ${iconColor}"></i>${sub.name}</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <button onclick="startWeaknessQuizCustom('grade2_current', '${sub.name}')" class="col-span-1 sm:col-span-2 p-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs border border-rose-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">🎯 苦手特訓ユニット</button>
+              <button onclick="startQuizCustom('grade2_current', '${sub.name}', 'all')" class="p-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-medium text-xs transition-colors active:scale-95">全範囲シャッフル</button>
+              ${sub.categories.map(cat => `<button onclick="startQuizCustom('grade2_current', '${sub.name}', '${cat}')" class="p-3 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-100 text-gray-700 text-[11px] font-medium text-left truncate active:scale-95 transition-all">${cat}</button>`).join('')}
+            </div>
+          </div>
+        `}).join('');
+
+        // セクション2: 📚 過去のテスト範囲・その他の復習 (2年)
+        const pastReviewHtml = pastReviewSubjects.map(sub => {
+          let iconColor = "text-gray-400"; if (sub.name === "理科") iconColor = "text-blue-400"; if (sub.name === "社会") iconColor = "text-orange-400"; if (sub.name === "音楽") iconColor = "text-purple-400";
+          return `
+          <div class="bg-gray-100/90 backdrop-blur-sm p-5 rounded-3xl border border-gray-200 mb-4 shadow-inner">
+            <h3 class="text-sm font-bold text-gray-600 mb-3 flex items-center"><i class="ph-fill ph-clock-counter-clockwise mr-2 ${iconColor}"></i>${sub.name}</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 opacity-90">
+              <button onclick="startWeaknessQuizCustom('grade2_past', '${sub.name}')" class="col-span-1 sm:col-span-2 p-2.5 rounded-lg bg-white border border-rose-200 text-rose-700 font-bold text-xs active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">苦手特訓</button>
+              <button onclick="startQuizCustom('grade2_past', '${sub.name}', 'all')" class="p-2.5 rounded-lg bg-gray-700 text-white font-medium text-xs active:scale-95">シャッフル</button>
+              ${sub.categories.map(cat => `<button onclick="startQuizCustom('grade2_past', '${sub.name}', '${cat}')" class="p-2.5 rounded-lg bg-white hover:bg-gray-50 border border-gray-100 text-gray-600 text-[10px] font-medium text-left truncate active:scale-95 transition-all">${cat}</button>`).join('')}
+            </div>
+          </div>
+        `}).join('');
+
+        // セクション3: 🏫 1年生の総復習
+        const grade1Html = grade1Subjects.map(sub => {
+          let iconColor = sub.name === "社会" ? "text-orange-300" : "text-blue-300";
+          return `
+          <div class="bg-gray-100/70 p-4 rounded-2xl border border-gray-200 mb-3 opacity-80">
+            <h4 class="text-xs font-bold text-gray-500 mb-2 flex items-center"><i class="ph ph-hash mr-1 ${iconColor}"></i>1年 ${sub.name}</h4>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button onclick="startQuizCustom('grade1', '${sub.name}', 'all')" class="p-2 rounded bg-gray-600 text-white font-medium text-[10px] active:scale-95">全範囲</button>
+              ${sub.categories.map(cat => `<button onclick="startQuizCustom('grade1', '${sub.name}', '${cat}')" class="p-2 rounded bg-white border text-gray-600 text-[9px] font-medium truncate text-left active:scale-95">${cat}</button>`).join('')}
+            </div>
+          </div>
+        `}).join('');
+
+        // 毎日やろう！英語
         const vocabHtml = `
-          <div class="mb-10 animate-fade-in relative z-10">
-            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-emerald-400 pb-2 inline-flex"><i class="ph-fill ph-translate text-emerald-500 mr-2 text-2xl"></i>毎日やろう！英単語</h2>
+          <div class="mb-8 animate-fade-in relative z-10">
+            <h2 class="text-lg font-extrabold text-gray-800 flex items-center mb-4 border-b-2 border-emerald-400 pb-1.5 inline-flex"><i class="ph-fill ph-translate text-emerald-500 mr-2 text-xl"></i>🔤 毎日やろう！英語・英単語</h2>
             <div class="bg-white/95 backdrop-blur-sm p-5 rounded-3xl shadow-sm border border-emerald-100">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button onclick="startWeaknessQuizCustom('vocab')" class="flex items-center justify-between p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold hover:bg-emerald-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}"><span><i class="ph-fill ph-warning text-lg mr-2"></i>英単語の苦手特訓</span><i class="ph-fill ph-play text-xl"></i></button>
-                <button onclick="startQuizCustom('vocab')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95"><span>全英単語 ランダム</span><i class="ph-fill ph-play text-xl"></i></button>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button onclick="startWeaknessQuizCustom('vocab')" class="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 font-bold text-xs transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}">🎯 英語苦手特訓</button>
+                <button onclick="startQuizCustom('vocab')" class="p-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-medium text-xs transition-colors active:scale-95">英単語 全てミックス</button>
               </div>
             </div>
           </div>
         `;
 
-        const subs2Html = subjectsGrade2.map(sub => {
-          let iconColor = "text-orange-500"; 
-          if (sub.name === "理科") iconColor = "text-blue-500"; 
-          if (sub.name === "技術") iconColor = "text-emerald-500";
-          if (sub.name === "家庭科") iconColor = "text-pink-500";
-          if (sub.name === "音楽") iconColor = "text-purple-500";
-          return `
-          <div class="bg-white/95 backdrop-blur-sm p-6 rounded-3xl shadow-sm border border-orange-100 mb-4">
-            <h3 class="text-lg font-bold text-gray-800 flex items-center mb-4"><i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button onclick="startWeaknessQuizCustom('grade2', '${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 font-bold hover:bg-rose-100 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}"><span><i class="ph-fill ph-warning text-lg mr-2"></i>${sub.name} の苦手特訓</span><i class="ph-fill ph-play text-xl"></i></button>
-              <button onclick="startQuizCustom('grade2', '${sub.name}', 'all')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-800 text-white font-medium hover:bg-gray-700 transition-colors active:scale-95"><span>${sub.name} 全てをミックス</span><i class="ph-fill ph-play text-xl"></i></button>
-              ${sub.categories.map(cat => `<button onclick="startQuizCustom('grade2', '${sub.name}', '${cat}')" class="flex items-center justify-between p-4 rounded-2xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium transition-colors border border-gray-200 active:scale-95"><span class="truncate pr-2">${cat}</span><i class="ph ph-arrow-right text-xl text-gray-400"></i></button>`).join('')}
+        contentHtml = `
+          <!-- セクション1: 🔥 今回の期末テスト範囲 (2年) -->
+          <div class="mb-8 animate-fade-in relative z-10">
+            <h2 class="text-xl font-black text-rose-600 flex items-center mb-4 border-b-2 border-rose-500 pb-2 inline-flex"><i class="ph-fill ph-fire text-rose-500 mr-2 text-2xl animate-pulse"></i>🔥 今回の期末テスト範囲 (2年)</h2>
+            ${currentTestHtml.length > 0 ? currentTestHtml : '<p class="text-gray-500 text-sm bg-white/80 p-4 rounded-xl">テスト問題がありません</p>'}
+          </div>
+
+          <!-- 毎日やる英語 -->
+          ${vocabHtml}
+
+          <!-- セクション2: 📚 過去のテスト範囲・その他の復習 (2年) -->
+          <div class="mb-8 animate-fade-in relative z-10">
+            <h2 class="text-base font-bold text-gray-500 flex items-center mb-4 border-b border-gray-400 pb-1.5 inline-flex"><i class="ph ph-clock-counter-clockwise mr-2"></i>📚 過去のテスト範囲・その他の復習</h2>
+            ${pastReviewHtml}
+          </div>
+
+          <!-- セクション3: 🏫 1年生の総復習 -->
+          <div class="mb-8 animate-fade-in relative z-10">
+            <h2 class="text-base font-bold text-gray-500 flex items-center mb-4 border-b border-gray-400 pb-1.5 inline-flex"><i class="ph ph-books mr-2"></i>🏫 1年生の総復習</h2>
+            <div class="bg-white/50 p-4 rounded-3xl border border-gray-200">
+              ${grade1Html}
             </div>
           </div>
-        `}).join('');
-
-        const grade2Html = `
-          <div class="mb-10 animate-fade-in relative z-10">
-            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-orange-400 pb-2 inline-flex"><i class="ph-fill ph-fire text-orange-500 mr-2 text-2xl"></i>2年 期末・中間テスト範囲</h2>
-            ${subs2Html.length > 0 ? subs2Html : '<p class="text-gray-500 text-sm bg-white/80 p-4 rounded-xl">まだ課題がありません</p>'}
-          </div>
         `;
-
-        const subs1Html = subjectsGrade1.map(sub => {
-          let iconColor = sub.name === "社会" ? "text-orange-500" : "text-blue-500";
-          return `
-          <div class="bg-gray-100/90 backdrop-blur-sm p-6 rounded-3xl border border-gray-200 mb-4 shadow-inner">
-            <h3 class="text-lg font-bold text-gray-700 flex items-center mb-4"><i class="ph-fill ph-book-open text-xl mr-2 ${iconColor}"></i>${sub.name}</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 opacity-90">
-              <button onclick="startWeaknessQuizCustom('grade1', '${sub.name}')" class="col-span-1 sm:col-span-2 flex items-center justify-between p-3 rounded-xl bg-white border border-rose-200 text-rose-700 font-bold hover:bg-rose-50 transition-colors active:scale-95 ${isGuest ? 'opacity-50 cursor-not-allowed' : ''}"><span><i class="ph-fill ph-warning text-lg mr-2"></i>苦手だけ復習</span><i class="ph-fill ph-play text-lg"></i></button>
-              <button onclick="startQuizCustom('grade1', '${sub.name}', 'all')" class="flex items-center justify-between p-3 rounded-xl bg-gray-700 text-white font-medium hover:bg-gray-600 transition-colors active:scale-95"><span>全範囲ミックス</span><i class="ph-fill ph-play text-lg"></i></button>
-              ${sub.categories.map(cat => `<button onclick="startQuizCustom('grade1', '${sub.name}', '${cat}')" class="flex items-center justify-between p-3 rounded-xl bg-white hover:bg-gray-50 text-gray-600 text-sm font-medium transition-colors border border-gray-200 active:scale-95"><span class="truncate pr-2">${cat}</span><i class="ph ph-arrow-right text-lg text-gray-400"></i></button>`).join('')}
-            </div>
-          </div>
-        `}).join('');
-
-        const grade1Html = `
-          <div class="mb-10 animate-fade-in relative z-10">
-            <h2 class="text-xl sm:text-2xl font-extrabold text-gray-800 flex items-center mb-4 border-b-[3px] border-blue-400 pb-2 inline-flex"><i class="ph-fill ph-books text-blue-500 mr-2 text-2xl"></i>1年生の総復習</h2>
-            ${subs1Html}
-          </div>
-        `;
-
-        contentHtml = vocabHtml + grade2Html + grade1Html;
       }
 
       const userSelectorHtml = `
@@ -827,6 +942,10 @@
 
       return `
         <div class="relative max-w-2xl mx-auto p-4 animate-fade-in pb-10">
+          <div class="absolute top-4 right-4 flex items-center text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full ${(state.fbReady && state.user && !isGuest) ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-500'} shadow-sm z-50">
+            <i class="ph-fill ${(state.fbReady && state.user && !isGuest) ? 'ph-cloud-check' : 'ph-cloud-slash'} mr-1 text-sm sm:text-lg"></i>${(state.fbReady && state.user && !isGuest) ? '同期ON' : '同期OFF'}
+          </div>
+          
           <div class="text-center mb-6 mt-8 relative z-10">
             <div class="inline-flex items-center justify-center p-4 rounded-full mb-4 shadow-inner ${currentUserTheme.bg} bg-opacity-90 backdrop-blur-sm border border-white"><span class="text-5xl">${currentUserTheme.icon}</span></div>
             <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight leading-tight">【最強】最強！<br>暗記完璧最強アプリ(最強)</h1>
@@ -836,7 +955,9 @@
           <div class="text-center relative z-20">${userSelectorHtml}</div>
           
           ${!isGuest ? `
-            <div class="text-center mt-2 mb-6 relative z-20"><button onclick="openPinSetup()" class="text-xs text-gray-500 hover:text-gray-800 font-bold transition-colors bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-sm"><i class="ph-fill ph-lock-key mr-1"></i> ${currentUserTheme.name}のパスワードを${state.passwords && state.passwords[state.activeUser] ? '変更・解除' : '設定'}</button></div>
+            <div class="text-center mt-2 mb-6 relative z-20">
+              <button onclick="openPinSetup()" class="text-xs text-gray-500 hover:text-gray-800 font-bold transition-colors bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200 shadow-sm"><i class="ph-fill ph-lock-key mr-1"></i> ${currentUserTheme.name}のパスワードを${state.passwords && state.passwords[state.activeUser] ? '変更・解除' : '設定'}</button>
+            </div>
           ` : `<div class="guest-stripes text-yellow-900 text-xs sm:text-sm font-bold text-center py-2 rounded-xl mb-6 shadow-sm mt-4 relative z-10"><i class="ph-fill ph-info text-lg mr-1 align-middle"></i>現在ゲストモードです。データは保存されません。</div>`}
           
           <div class="flex bg-gray-200/80 backdrop-blur-sm p-1 rounded-xl mb-8 relative z-10 shadow-inner">
@@ -968,14 +1089,11 @@
       if (state.screen === 'home') html = renderHomeHTML();
       else if (state.screen === 'quiz') html = renderQuizHTML();
       else if (state.screen === 'result') html = renderResultHTML();
-      else if (state.screen === 'parent_dashboard') html = renderParentDashboardHTML();
+      else if (state.screen === 'parent_dashboard' && window.renderParentDashboardHTML) html = window.renderParentDashboardHTML();
       
-      html += renderPinHTML(); 
-      html += renderPasscodeHTML(); 
-      html += renderMessageHTML();
+      html += renderPinHTML(); html += renderPasscodeHTML(); html += renderMessageHTML();
       root.innerHTML = html;
     }
-
   </script>
 </body>
 </html>
